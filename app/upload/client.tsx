@@ -6,28 +6,30 @@ import { Sparkles, Linkedin, Loader2, X } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useS3Upload } from "next-s3-upload";
 
 export default function UploadPageClient() {
-  const [file, setFile] = useState<File | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
   const router = useRouter();
+  let { files, uploadToS3 } = useS3Upload();
 
-  const handleGenerateWebsite = async () => {
+  const fileBeingUploaded = files.length > 0 ? files[0] : null;
+  const uploadProgress = fileBeingUploaded ? fileBeingUploaded.progress : 0;
+  const isUploading = files.length > 0 && uploadProgress < 100;
+
+  const [uploadedFileUrl, setUploadedFileUrl] = useState("");
+
+  const handleUploadFile = async (file: File) => {
     if (!file) return;
 
-    setIsUploading(true);
+    let { url } = await uploadToS3(file);
 
-    // Simulate file upload and processing
-    try {
-      // In a real implementation, you would upload the file to S3 here
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+    console.log("Uploaded file URL:", url);
 
-      // Navigate to preview page after successful upload
-      router.push("/preview");
-    } catch (error) {
-      console.error("Upload failed:", error);
-      setIsUploading(false);
-    }
+    setUploadedFileUrl(url);
+  };
+
+  const handleGenerateWebsite = async () => {
+    router.push(`/preview?url=${encodeURIComponent(uploadedFileUrl)}`);
   };
 
   return (
@@ -46,23 +48,27 @@ export default function UploadPageClient() {
           resume and generate your personal site
         </h1>
 
-        {file && !isUploading ? (
+        {!isUploading && fileBeingUploaded ? (
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-12 flex flex-col items-center justify-center font-mono">
             <div className="bg-gray-100 p-4 rounded-full mb-2">
               <Linkedin className="h-6 w-6 text-gray-600" />
             </div>
-            <p className="text-sm font-medium">{file.name}</p>
+            <p className="text-sm font-medium">{fileBeingUploaded.file.name}</p>
             <p className="text-xs text-gray-500 mt-1">
-              {(file.size / 1024 / 1024).toFixed(2)} MB
+              {(fileBeingUploaded.size / 1024 / 1024).toFixed(2)} MB
             </p>
-            <Button
-              variant="outline"
-              className="mt-4 text-sm text-gray-500 border border-gray-300 flex items-center"
-              onClick={() => setFile(null)}
-            >
-              <X className="h-4 w-4 mr-1" />
-              Replace file
-            </Button>
+          </div>
+        ) : isUploading ? (
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-12 flex flex-col items-center justify-center font-mono">
+            <div className="bg-gray-100 p-4 rounded-full mb-2">
+              <Loader2 className="h-6 w-6 text-gray-600 animate-spin" />
+            </div>
+            <p className="text-sm font-medium">
+              Uploading {fileBeingUploaded?.file.name}
+            </p>
+            <p className="text-xs text-gray-500 mt-1">
+              {uploadProgress.toFixed(0)}% complete
+            </p>
           </div>
         ) : (
           <Dropzone
@@ -76,7 +82,7 @@ export default function UploadPageClient() {
             isUploading={isUploading}
             onDrop={(acceptedFiles) => {
               if (acceptedFiles.length > 0) {
-                setFile(acceptedFiles[0]);
+                handleUploadFile(acceptedFiles[0]);
               }
             }}
             onDropRejected={(fileRejections) => {
@@ -88,7 +94,7 @@ export default function UploadPageClient() {
         <div className="pt-8 font-mono">
           <Button
             className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-4 h-auto"
-            disabled={!file || isUploading}
+            disabled={!fileBeingUploaded || isUploading}
             onClick={handleGenerateWebsite}
           >
             {isUploading ? (
