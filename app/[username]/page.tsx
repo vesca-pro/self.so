@@ -1,35 +1,34 @@
-export default function ProfilePage({ params }: { params: { username: string } }) {
+import { Education } from "./Education";
+import { HeaderCV } from "./HeaderCV";
+import { RESUME_DATA } from "./resumeData";
+import { Skills } from "./Skills";
+import { Summary } from "./Summary";
+import { WorkExperience } from "./WorkExperience";
+
+export default function ProfilePage({
+  params,
+}: {
+  params: { username: string };
+}) {
   // In a real implementation, you would fetch the user's profile data here
   // For now, we'll just display a placeholder
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-8">
-      <div className="w-full max-w-3xl space-y-12">
-        <header className="text-center space-y-4">
-          <h1 className="text-4xl font-bold">{params.username}'s Profile</h1>
-          <p className="text-xl text-muted-foreground">Professional Title Would Appear Here</p>
-        </header>
+    <section
+      className="mx-auto w-full max-w-2xl space-y-8 bg-white print:space-y-4"
+      aria-label="Resume Content"
+    >
+      <HeaderCV />
 
-        <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">About</h2>
-          <p className="text-muted-foreground">Profile information extracted from the resume would appear here.</p>
-        </section>
+      <div className="space-y-8 print:space-y-4">
+        <Summary summary={RESUME_DATA.summary} />
 
-        <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">Experience</h2>
-          <div className="border rounded-lg p-6">
-            <p className="text-muted-foreground">Work experience extracted from the resume would appear here.</p>
-          </div>
-        </section>
+        <WorkExperience work={RESUME_DATA.work} />
 
-        <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">Skills</h2>
-          <div className="border rounded-lg p-6">
-            <p className="text-muted-foreground">Skills extracted from the resume would appear here.</p>
-          </div>
-        </section>
+        <Education education={RESUME_DATA.education} />
+
+        <Skills skills={RESUME_DATA.skills} />
       </div>
-    </main>
-  )
+    </section>
+  );
 }
-

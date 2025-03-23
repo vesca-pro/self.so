@@ -33,7 +33,7 @@ export default function UploadPageClient() {
   return (
     <div className="flex flex-col items-center justify-center flex-1 px-4 py-12">
       <div className="w-full max-w-2xl space-y-12 text-center">
-        <h1 className="text-xl text-center">
+        <h1 className="text-xl text-center font-mono">
           Upload a PDF of your{" "}
           <span className="inline-flex items-center">
             <span className="text-gray-600 mr-1">LinkedIn</span>
@@ -47,7 +47,7 @@ export default function UploadPageClient() {
         </h1>
 
         {file && !isUploading ? (
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-12 flex flex-col items-center justify-center">
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-12 flex flex-col items-center justify-center font-mono">
             <div className="bg-gray-100 p-4 rounded-full mb-2">
               <Linkedin className="h-6 w-6 text-gray-600" />
             </div>
@@ -85,9 +85,9 @@ export default function UploadPageClient() {
           />
         )}
 
-        <div className="pt-8">
+        <div className="pt-8 font-mono">
           <Button
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-8 py-6 h-auto"
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-4 h-auto"
             disabled={!file || isUploading}
             onClick={handleGenerateWebsite}
           >

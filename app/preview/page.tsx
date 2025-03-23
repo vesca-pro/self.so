@@ -1,30 +1,10 @@
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+import { auth } from "@clerk/nextjs/server";
+import PreviewClient from "./client";
 
-export default function Preview() {
-  return (
-    <div className="flex flex-col items-center justify-center flex-1 p-4">
-      <div className="w-full max-w-3xl space-y-8">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Your Website Preview</h1>
-          <Link href="/upload">
-            <Button variant="outline" size="sm">
-              Back to Upload
-            </Button>
-          </Link>
-        </div>
+export default async function Preview() {
+  const { userId, redirectToSignIn } = await auth();
 
-        <div className="border rounded-lg p-8 min-h-[400px] flex items-center justify-center">
-          <p className="text-muted-foreground">Your website will appear here after uploading and processing your PDF</p>
-        </div>
+  if (!userId) return redirectToSignIn();
 
-        <div className="pt-4">
-          <Link href="/username">
-            <Button className="w-full">Publish Website</Button>
-          </Link>
-        </div>
-      </div>
-    </div>
-  )
+  return <PreviewClient initialUserName={userId} />;
 }
-

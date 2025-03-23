@@ -20,7 +20,7 @@ export default function Home() {
         {/* Left side - Call to action */}
         <div className="w-full md:w-1/2 flex flex-col justify-center items-start px-8 md:px-16 py-12">
           <div className="max-w-md">
-            <div className="inline-block bg-gray-100 rounded-full px-4 py-1 text-sm mb-8">
+            <div className="inline-block font-mono bg-gray-100 rounded-full px-4 py-1 text-sm mb-8">
               100% free & open source
             </div>
 
@@ -30,12 +30,12 @@ export default function Home() {
               in one <Play className="h-6 w-6 ml-2 text-gray-400" />
             </h1>
 
-            <p className="text-xl text-gray-600 mb-8">
+            <p className="text-xl text-gray-600 mb-8 font-mono">
               Turn your resume/CV into
               <br />a professional website.
             </p>
 
-            <div className="relative flex flex-col items-center">
+            <div className="relative flex flex-col items-center font-mono w-fit">
               <Link href="/upload">
                 <Button className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 h-auto text-lg">
                   <Sparkles className="h-5 w-5 mr-2" />
@@ -45,39 +45,6 @@ export default function Home() {
 
               <p className="text-sm text-gray-500 mt-4 text-center">
                 Free signup required
-              </p>
-
-              {/* Arrow pointing to the preview */}
-              <div className="hidden md:block absolute right-0 top-1/2 mt-4">
-                <svg
-                  width="200"
-                  height="200"
-                  viewBox="0 0 200 200"
-                  className="text-blue-500"
-                >
-                  <path
-                    d="M10,10 Q100,10 150,100 T190,190"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
-                  <polygon
-                    points="190,190 170,175 175,195"
-                    fill="currentColor"
-                  />
-                </svg>
-              </div>
-            </div>
-
-            <div className="mt-auto pt-16">
-              <p className="text-sm text-gray-600 flex items-center">
-                Powered by{" "}
-                <a
-                  href="https://together.ai"
-                  className="text-blue-600 hover:underline ml-1"
-                >
-                  Together.ai
-                </a>
               </p>
             </div>
           </div>
