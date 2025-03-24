@@ -26,17 +26,21 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body className={`${inter.className} min-h-screen flex flex-col`}>
-          <Header />
-          <main className="flex-1 flex flex-col">{children}</main>
-          <Footer />
-          <Toaster richColors />
-        </body>
-      </html>
+      <ReactQueryClientProvider>
+        <html lang="en">
+          <body className={`${inter.className} min-h-screen flex flex-col`}>
+            <Header />
+            <main className="flex-1 flex flex-col">{children}</main>
+            <Footer />
+            <Toaster richColors />
+          </body>
+        </html>
+      </ReactQueryClientProvider>
     </ClerkProvider>
   );
 }
 
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryClientProvider } from "@/components/ReactQueryClientProvider";
