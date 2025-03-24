@@ -84,41 +84,46 @@ export default function UploadPageClient() {
           resume and generate your personal site
         </h1>
 
-        {fileState.status !== "empty" ? (
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-12 flex flex-col items-center justify-center font-mono relative">
+        <div className="relative">
+          {fileState.status !== "empty" && (
             <button
               onClick={handleReset}
-              className="absolute top-2 right-2 p-1 hover:bg-gray-100 rounded-full"
+              className="absolute top-2 right-2 p-1 hover:bg-gray-100 rounded-full z-10"
               disabled={fileState.status === "uploading"}
             >
               <X className="h-4 w-4 text-gray-500" />
             </button>
-            <div className="bg-gray-100 p-4 rounded-full mb-2">
-              {fileState.status === "uploading" ? (
-                <Loader2 className="h-6 w-6 text-gray-600 animate-spin" />
-              ) : (
-                <Linkedin className="h-6 w-6 text-gray-600" />
-              )}
-            </div>
-            <p className="text-sm font-medium">{fileState.file.name}</p>
-            <p className="text-xs text-gray-500 mt-1">
-              {(fileState.file.size / 1024 / 1024).toFixed(2)} MB
-            </p>
-          </div>
-        ) : (
+          )}
+
           <Dropzone
             accept={{ "application/pdf": [".pdf"] }}
             maxFiles={1}
-            icon={<Linkedin className="h-6 w-6" />}
-            title="Upload PDF"
-            description="Resume or LinkedIn"
+            icon={
+              fileState.status !== "empty" ? (
+                fileState.status === "uploading" ? (
+                  <Loader2 className="h-6 w-6 text-gray-600 animate-spin" />
+                ) : (
+                  <Linkedin className="h-6 w-6 text-gray-600" />
+                )
+              ) : (
+                <Linkedin className="h-6 w-6" />
+              )
+            }
+            title={
+              fileState.status !== "empty" ? fileState.file.name : "Upload PDF"
+            }
+            description={
+              fileState.status !== "empty"
+                ? `${(fileState.file.size / 1024 / 1024).toFixed(2)} MB`
+                : "Resume or LinkedIn"
+            }
             isUploading={isUploading}
             onDrop={(acceptedFiles) => {
               if (acceptedFiles[0]) handleUploadFile(acceptedFiles[0]);
             }}
             onDropRejected={() => toast.error("Only PDF files are supported")}
           />
-        )}
+        </div>
 
         <div className="pt-8 font-mono">
           <div className="relative">
