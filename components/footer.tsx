@@ -8,7 +8,7 @@ export function Footer() {
         Powered by{" "}
         <Link
           href="https://together.ai"
-          className="text-blue-600 hover:underline"
+          className="text-blue-600 underline underline-offset-2"
         >
           Together.ai
         </Link>{" "}

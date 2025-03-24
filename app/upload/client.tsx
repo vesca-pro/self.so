@@ -7,6 +7,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useS3Upload } from "next-s3-upload";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function UploadPageClient() {
   const router = useRouter();
@@ -38,10 +44,24 @@ export default function UploadPageClient() {
         <h1 className="text-xl text-center font-mono">
           Upload a PDF of your{" "}
           <span className="inline-flex items-center">
-            <span className="text-gray-600 mr-1">LinkedIn</span>
-            <span className="inline-block w-4 h-4 rounded-full border border-gray-300 items-center justify-center text-xs">
-              i
-            </span>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="flex items-center">
+                    <span className="text-gray-600 cursor-help">LinkedIn</span>
+                    <span className="ml-1 inline-block w-4 h-4 rounded-full border border-gray-300 items-center justify-center text-xs cursor-help">
+                      i
+                    </span>
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="max-w-[200px] whitespace-pre-line">
+                    Go to your LinkedIn profile, click "More" → "Save to PDF" to
+                    download your profile
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </span>{" "}
           or your
           <br />

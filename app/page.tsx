@@ -24,10 +24,9 @@ export default function Home() {
               100% free & open source
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 flex items-center gap-2">
-              LinkedIn <ArrowRight className="h-8 w-8" /> Website
-              <br />
-              in one <Play className="h-6 w-6 ml-2 text-gray-400" />
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 flex items-center gap-2 flex-wrap">
+              LinkedIn <ArrowRight className="h-8 w-8" /> Website in one{" "}
+              <Play className="h-6 w-6 ml-2 text-gray-400" />
             </h1>
 
             <p className="text-xl text-gray-600 mb-8 font-mono">
