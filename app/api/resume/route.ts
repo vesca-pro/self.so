@@ -1,25 +1,8 @@
-import { upstashRedis } from "@/lib/redis";
-import { ResumeDataSchema } from "@/lib/resume";
+import { getResume, Resume, storeResume } from "@/app/components/resumeActions";
 import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+
 import { z } from "zod";
-
-// Define the file schema
-const FileSchema = z.object({
-  name: z.string(),
-  url: z.string().optional(),
-  size: z.number(),
-});
-
-// Define the complete resume schema
-const ResumeSchema = z.object({
-  file: FileSchema,
-  resumeData: ResumeDataSchema.optional(),
-});
-
-// Type inference for the resume data
-export type ResumeData = z.infer<typeof ResumeDataSchema>;
-export type Resume = z.infer<typeof ResumeSchema>;
 
 // API Response Types
 export type GetResumeResponse = { resume?: Resume } | { error: string };
@@ -35,12 +18,8 @@ export async function GET(): Promise<NextResponse<GetResumeResponse>> {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const resume = await upstashRedis.get<Resume>(user.id);
-    if (!resume) {
-      return NextResponse.json({ resume: undefined });
-    }
-
-    return NextResponse.json({ resume: resume });
+    const resume = await getResume(user.id);
+    return NextResponse.json({ resume });
   } catch (error) {
     console.error("Error retrieving resume:", error);
     return NextResponse.json(
@@ -61,9 +40,7 @@ export async function POST(
     }
 
     const body = await request.json();
-    const validatedData = ResumeSchema.parse(body);
-
-    await upstashRedis.set(user.id, validatedData);
+    await storeResume(user.id, body);
 
     return NextResponse.json({ success: true });
   } catch (error) {
