@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useResumeData } from "@/hooks/useResumeData";
 import { useEffect, useState } from "react";
+import LoadingFallback from "../components/LoadingFallback";
 
 type FileState =
   | { status: "empty" }
@@ -47,11 +48,7 @@ export default function UploadPageClient() {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center flex-1">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
-    );
+    return <LoadingFallback message="Loading..." />;
   }
 
   return (
