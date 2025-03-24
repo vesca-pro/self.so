@@ -1,8 +1,8 @@
+import { ResumeDataSchemaType } from "@/lib/resume";
 import { Section } from "../../components/ui/section";
-import { RESUME_DATA } from "./resumeData";
 
 interface AboutProps {
-  summary: typeof RESUME_DATA.summary;
+  summary: ResumeDataSchemaType["summary"];
   className?: string;
 }
 

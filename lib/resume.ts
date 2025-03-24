@@ -30,8 +30,20 @@ const WorkExperienceSection = z.array(
   })
 );
 
+const EducationSection = z.array(
+  z.object({
+    school: z.string().describe("School or university name"),
+    degree: z.string().describe("Degree or certification obtained"),
+    start: z.string().describe("Start year"),
+    end: z.string().describe("End year"),
+  })
+);
+
 export const ResumeDataSchema = z.object({
   header: HeaderSection,
   summary: SummarySection,
   workExperience: WorkExperienceSection,
+  education: EducationSection,
 });
+
+export type ResumeDataSchemaType = z.infer<typeof ResumeDataSchema>;

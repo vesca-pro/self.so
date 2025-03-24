@@ -1,6 +1,8 @@
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import PreviewClient from "./client";
-import { getResume } from "../components/resumeActions";
+import { getResume, storeResume } from "../components/resumeActions";
+import { generateResumeObject } from "@/components/server/generateResumeObject";
+import { redirect } from "next/navigation";
 
 export default async function Preview() {
   const { userId, redirectToSignIn, ...rest } = await auth();
@@ -13,12 +15,21 @@ export default async function Preview() {
 
   const resume = await getResume(userId);
 
-  if (resume && resume.file && !resume.fileContent) {
-    // ingest the content from the pdf file
-    console.log("scraping text content from pdf");
-  }
+  if (!resume || !resume.file) redirect("/resume");
 
-  // we can for now do the AI parsing here?
+  // if (resume && resume.file && !resume.fileContent) {
+  //   // ingest the content from the pdf file
+  //   console.log("scraping text content from pdf");
+
+  //   return <> Scraping content from pdf</>;
+  // }
+
+  const resumeObject = await generateResumeObject();
+
+  await storeResume(userId, {
+    ...resume,
+    resumeData: resumeObject,
+  });
 
   return <PreviewClient initialUserName={userId} />;
 }

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Resume } from "@/app/api/resume/route";
+import { Resume } from "@/app/components/resumeActions";
 import { useS3Upload } from "next-s3-upload";
 
 // Fetch resume data

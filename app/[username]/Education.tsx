@@ -1,18 +1,12 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { RESUME_DATA } from "./resumeData";
 import { Section } from "@/components/ui/section";
-
-type Education = (typeof RESUME_DATA)["education"][number];
-
-interface EducationPeriodProps {
-  start: Education["start"];
-  end: Education["end"];
-}
+import { ResumeDataSchemaType } from "@/lib/resume";
 
 /**
  * Displays the education period in a consistent format
  */
-function EducationPeriod({ start, end }: EducationPeriodProps) {
+function EducationPeriod({ start, end }: { start: string; end: string }) {
   return (
     <div
       className="text-sm tabular-nums text-gray-500"
@@ -23,14 +17,14 @@ function EducationPeriod({ start, end }: EducationPeriodProps) {
   );
 }
 
-interface EducationItemProps {
-  education: Education;
-}
-
 /**
  * Individual education card component
  */
-function EducationItem({ education }: EducationItemProps) {
+function EducationItem({
+  education,
+}: {
+  education: ResumeDataSchemaType["education"][0];
+}) {
   const { school, start, end, degree } = education;
 
   return (
@@ -58,15 +52,15 @@ function EducationItem({ education }: EducationItemProps) {
   );
 }
 
-interface EducationListProps {
-  education: readonly Education[];
-}
-
 /**
  * Main education section component
  * Renders a list of education experiences
  */
-export function Education({ education }: EducationListProps) {
+export function Education({
+  educations,
+}: {
+  educations: ResumeDataSchemaType["education"];
+}) {
   return (
     <Section>
       <h2 className="text-xl font-bold" id="education-section">
@@ -77,7 +71,7 @@ export function Education({ education }: EducationListProps) {
         role="feed"
         aria-labelledby="education-section"
       >
-        {education.map((item) => (
+        {educations.map((item) => (
           <article key={item.school} role="article">
             <EducationItem education={item} />
           </article>

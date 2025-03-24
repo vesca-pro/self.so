@@ -5,15 +5,15 @@ import { z } from "zod";
 // Define the file schema
 const FileSchema = z.object({
   name: z.string(),
-  url: z.string().optional(),
+  url: z.string().nullish(),
   size: z.number(),
 });
 
 // Define the complete resume schema
 const ResumeSchema = z.object({
   file: FileSchema,
-  fileContent: z.string().optional(),
-  resumeData: ResumeDataSchema.optional(),
+  fileContent: z.string().nullish(),
+  resumeData: ResumeDataSchema.nullish(),
 });
 
 // Type inference for the resume data

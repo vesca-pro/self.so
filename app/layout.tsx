@@ -1,8 +1,8 @@
 import type React from "react";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
+import { TopMenu } from "@/components/TopMenu";
+import { Footer } from "@/components/Footer";
 import {
   ClerkProvider,
   SignInButton,
@@ -29,7 +29,7 @@ export default function RootLayout({
       <ReactQueryClientProvider>
         <html lang="en">
           <body className={`${inter.className} min-h-screen flex flex-col`}>
-            <Header />
+            <TopMenu />
             <main className="flex-1 flex flex-col">{children}</main>
             <Footer />
             <Toaster richColors />

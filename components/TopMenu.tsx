@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
-export function Header() {
+export function TopMenu() {
   return (
     <>
       <header className="w-full py-4 px-6 flex justify-between items-center">
