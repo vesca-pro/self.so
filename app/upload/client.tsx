@@ -13,6 +13,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 export default function UploadPageClient() {
   const router = useRouter();
@@ -112,23 +113,44 @@ export default function UploadPageClient() {
         )}
 
         <div className="pt-8 font-mono">
-          <Button
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-4 h-auto"
-            disabled={!fileBeingUploaded || isUploading}
-            onClick={handleGenerateWebsite}
-          >
-            {isUploading ? (
-              <>
-                <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                Processing...
-              </>
-            ) : (
-              <>
-                <Sparkles className="h-5 w-5 mr-2" />
-                Generate Website
-              </>
+          <div className="relative">
+            <Button
+              className={cn(
+                "px-4 py-4 h-auto",
+                !fileBeingUploaded || isUploading
+                  ? "bg-gray-300 hover:bg-gray-400 text-gray-800 "
+                  : "bg-gray-900 hover:bg-gray-800 text-white "
+              )}
+              disabled={!fileBeingUploaded || isUploading}
+              onClick={handleGenerateWebsite}
+              data-tooltip-id="upload-tooltip"
+              data-tooltip-content="Upload a PDF to continue"
+            >
+              {isUploading ? (
+                <>
+                  <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="h-5 w-5 mr-2" />
+                  Generate Website
+                </>
+              )}
+            </Button>
+            {!fileBeingUploaded && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="absolute inset-0" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Upload a PDF to continue</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             )}
-          </Button>
+          </div>
         </div>
       </div>
     </div>
