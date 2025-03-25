@@ -11,10 +11,11 @@ import { Metadata } from "next";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://self.so"),
   title: "Self.so - Resume to Website",
   description: "LinkedIn to Website in one click!",
   openGraph: {
-    images: ["/og.png"],
+    images: "/og.png",
   },
 };
 
