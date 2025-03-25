@@ -53,7 +53,7 @@ export default function Home() {
 
             <div className="relative flex flex-col items-center font-mono w-fit">
               <Link href="/upload">
-                <Button className="bg-design-black hover:bg-design-black/90 text-white px-6 py-3 h-auto text-lg">
+                <Button className="bg-design-black hover:bg-design-black/95 text-white px-6 py-3 h-auto text-lg">
                   <img
                     src="/sparkle.png"
                     alt="Sparkle Icon"

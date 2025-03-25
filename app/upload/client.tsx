@@ -79,10 +79,10 @@ export default function UploadPageClient() {
                 fileState.status === "uploading" ? (
                   <CustomSpinner className="size-7" />
                 ) : (
-                  <Linkedin className="h-6 w-6 text-gray-600" />
+                  <img src="/uploaded-pdf.svg" className="h-6 w-6" />
                 )
               ) : (
-                <Linkedin className="h-6 w-6" />
+                <Linkedin className="h-6 w-6 text-gray-600" />
               )
             }
             title={
@@ -119,7 +119,7 @@ export default function UploadPageClient() {
       <div className="font-mono">
         <div className="relative">
           <Button
-            className="px-4 py-4 h-auto"
+            className="px-4 py-4 h-auto bg-design-black hover:bg-design-black/95"
             disabled={
               fileState.status === "empty" || fileState.status === "uploading"
             }
