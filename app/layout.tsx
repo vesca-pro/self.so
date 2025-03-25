@@ -1,7 +1,7 @@
 import type React from "react";
 import { Inter } from "next/font/google";
-import { TopMenu } from "../components/TopMenu";
-import { Footer } from "../components/Footer";
+import { TopMenu } from "./components/TopMenu";
+import { Footer } from "./components/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
