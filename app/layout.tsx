@@ -29,9 +29,7 @@ export default function RootLayout({
       <ReactQueryClientProvider>
         <html lang="en">
           <body className={`${inter.className} min-h-screen flex flex-col`}>
-            <TopMenu />
             <main className="flex-1 flex flex-col">{children}</main>
-            <Footer />
             <Toaster richColors />
           </body>
         </html>

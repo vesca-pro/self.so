@@ -7,6 +7,7 @@ import { Summary } from "./Summary";
 import { WorkExperience } from "./WorkExperience";
 import { clerkClient } from "@clerk/nextjs/server";
 import { unstable_cache } from "next/cache";
+import { Footer } from "../components/Footer";
 export default async function ProfilePage({
   params,
 }: {
@@ -48,24 +49,27 @@ export default async function ProfilePage({
   ];
 
   return (
-    <section
-      className="mx-auto w-full max-w-2xl space-y-8 bg-white print:space-y-4"
-      aria-label="Resume Content"
-    >
-      <Header
-        header={resume?.resumeData?.header}
-        picture={clerkUser?.imageUrl}
-      />
+    <>
+      <section
+        className="mx-auto w-full max-w-2xl space-y-8 bg-white print:space-y-4 mt-8"
+        aria-label="Resume Content"
+      >
+        <Header
+          header={resume?.resumeData?.header}
+          picture={clerkUser?.imageUrl}
+        />
 
-      <div className="space-y-8 print:space-y-4">
-        <Summary summary={resume?.resumeData?.summary} />
+        <div className="space-y-8 print:space-y-4">
+          <Summary summary={resume?.resumeData?.summary} />
 
-        <WorkExperience work={resume?.resumeData?.workExperience} />
+          <WorkExperience work={resume?.resumeData?.workExperience} />
 
-        <Education educations={resume?.resumeData.education} />
+          <Education educations={resume?.resumeData.education} />
 
-        <Skills skills={allSkills} />
-      </div>
-    </section>
+          <Skills skills={allSkills} />
+        </div>
+      </section>
+      <Footer />
+    </>
   );
 }

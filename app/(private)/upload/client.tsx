@@ -13,8 +13,8 @@ import {
 } from "@/components/ui/tooltip";
 import { useResumeData } from "@/hooks/useResumeData";
 import { useEffect, useState } from "react";
-import LoadingFallback from "../components/LoadingFallback";
 import { CustomSpinner } from "@/components/CustomSpinner";
+import LoadingFallback from "@/app/components/LoadingFallback";
 
 type FileState =
   | { status: "empty" }
