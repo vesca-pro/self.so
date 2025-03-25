@@ -11,6 +11,7 @@ const FileSchema = z.object({
 
 // Define the complete resume schema
 const ResumeSchema = z.object({
+  status: z.enum(["live", "draft"]).default("draft"),
   file: FileSchema,
   fileContent: z.string().nullish(),
   resumeData: ResumeDataSchema.nullish(),

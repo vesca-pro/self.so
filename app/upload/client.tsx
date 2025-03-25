@@ -60,7 +60,7 @@ export default function UploadPageClient() {
           personal site
         </h1>
 
-        <div className="relative">
+        <div className="relative mx-2.5">
           {fileState.status !== "empty" && (
             <button
               onClick={handleReset}
