@@ -7,10 +7,7 @@ export function TopMenu() {
     <>
       <header className="w-full py-4 px-6 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2">
-          <div className="bg-gray-200 w-6 h-6 rounded-md flex items-center justify-center">
-            <span className="text-xs font-medium">S</span>
-          </div>
-          <span className="font-medium">Self.so</span>
+          <img src="/logo.svg" alt="Self.so Logo" className="h-[30px] w-auto" />
         </Link>
 
         <div>
@@ -19,12 +16,29 @@ export function TopMenu() {
             <UserButton />
           </SignedIn>
           <SignedOut>
-            {/* User is signed out */}
-            <Link href="/upload">
-              <Button variant="outline" className="font-medium">
-                Sign up &gt;&gt;
-              </Button>
-            </Link>
+            <div className="flex flex-row gap-3 font-mono ">
+              <a href="https://github.com" target="_blank" rel="noreferrer">
+                <Button
+                  variant="outline"
+                  className=" flex flex-row gap-1.5 py-2 px-4 border-gray-300 text-design-gray text-sm font-medium"
+                >
+                  <img
+                    src="/github.svg"
+                    alt="Github Logo"
+                    className="size-[14px]"
+                  />
+                  <span>Github</span>
+                </Button>
+              </a>
+              <Link href="/upload">
+                <Button
+                  variant="default"
+                  className="text-sm font-medium py-2 px-4 bg-design-black hover:bg-design-black/90"
+                >
+                  Sign up
+                </Button>
+              </Link>
+            </div>
           </SignedOut>
         </div>
       </header>

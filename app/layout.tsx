@@ -1,16 +1,11 @@
 import type React from "react";
 import { Inter } from "next/font/google";
-import "./globals.css";
 import { TopMenu } from "@/components/TopMenu";
 import { Footer } from "@/components/Footer";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
+import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
+import { ReactQueryClientProvider } from "@/components/ReactQueryClientProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -39,8 +34,3 @@ export default function RootLayout({
     </ClerkProvider>
   );
 }
-
-import "./globals.css";
-import { Toaster } from "@/components/ui/sonner";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryClientProvider } from "@/components/ReactQueryClientProvider";

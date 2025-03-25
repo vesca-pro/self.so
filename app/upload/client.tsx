@@ -14,6 +14,7 @@ import {
 import { useResumeData } from "@/hooks/useResumeData";
 import { useEffect, useState } from "react";
 import LoadingFallback from "../components/LoadingFallback";
+import { CustomSpinner } from "@/components/CustomSpinner";
 
 type FileState =
   | { status: "empty" }
@@ -52,33 +53,11 @@ export default function UploadPageClient() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center flex-1 px-4 py-12">
-      <div className="w-full max-w-2xl space-y-12 text-center">
-        <h1 className="text-xl text-center font-mono">
-          Upload a PDF of your{" "}
-          <span className="inline-flex items-center">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span className="flex items-center">
-                    <span className="text-gray-600 cursor-help">LinkedIn</span>
-                    <span className="ml-1 inline-block w-4 h-4 rounded-full border border-gray-300 items-center justify-center text-xs cursor-help">
-                      i
-                    </span>
-                  </span>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p className="max-w-[200px] whitespace-pre-line">
-                    Go to your LinkedIn profile, click "More" → "Save to PDF" to
-                    download your profile
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </span>{" "}
-          or your
-          <br />
-          resume and generate your personal site
+    <div className="flex flex-col items-center justify-between flex-1 px-4 py-12">
+      <div className="w-full max-w-[438px] text-center font-mono">
+        <h1 className="text-base text-center pb-6">
+          Upload a PDF of your LinkedIn or your resume and generate your
+          personal site
         </h1>
 
         <div className="relative">
@@ -98,7 +77,7 @@ export default function UploadPageClient() {
             icon={
               fileState.status !== "empty" ? (
                 fileState.status === "uploading" ? (
-                  <Loader2 className="h-6 w-6 text-gray-600 animate-spin" />
+                  <CustomSpinner className="size-7" />
                 ) : (
                   <Linkedin className="h-6 w-6 text-gray-600" />
                 )
@@ -107,12 +86,18 @@ export default function UploadPageClient() {
               )
             }
             title={
-              fileState.status !== "empty" ? fileState.file.name : "Upload PDF"
+              <span className="text-base font-bold text-center text-design-black">
+                {fileState.status !== "empty"
+                  ? fileState.file.name
+                  : "Upload PDF"}
+              </span>
             }
             description={
-              fileState.status !== "empty"
-                ? `${(fileState.file.size / 1024 / 1024).toFixed(2)} MB`
-                : "Resume or LinkedIn"
+              <span className="text-xs font-light text-center text-design-gray">
+                {fileState.status !== "empty"
+                  ? `${(fileState.file.size / 1024 / 1024).toFixed(2)} MB`
+                  : "Resume or LinkedIn"}
+              </span>
             }
             isUploading={isUploading}
             onDrop={(acceptedFiles) => {
@@ -122,40 +107,52 @@ export default function UploadPageClient() {
           />
         </div>
 
-        <div className="pt-8 font-mono">
-          <div className="relative">
-            <Button
-              className="px-4 py-4 h-auto"
-              disabled={
-                fileState.status === "empty" || fileState.status === "uploading"
-              }
-              onClick={() => router.push("/preview")}
-            >
-              {fileState.status === "uploading" ? (
-                <>
-                  <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                  Processing...
-                </>
-              ) : (
-                <>
-                  <Sparkles className="h-5 w-5 mr-2" />
-                  Generate Website
-                </>
-              )}
-            </Button>
-            {fileState.status === "empty" && (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <span className="absolute inset-0" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Upload a PDF to continue</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+        <div className="pt-3 font-mono text-center cursor-help flex flex-row gap-1.5 justify-center">
+          <span className="ml-1 inline-block w-4 h-4 rounded-full border border-gray-300 items-center justify-center text-xs cursor-help">
+            i
+          </span>
+          <p className="text-xs text-center text-design-gray">
+            How to upload LinkedIn profile
+          </p>
+        </div>
+      </div>
+      <div className="font-mono">
+        <div className="relative">
+          <Button
+            className="px-4 py-4 h-auto"
+            disabled={
+              fileState.status === "empty" || fileState.status === "uploading"
+            }
+            onClick={() => router.push("/preview")}
+          >
+            {fileState.status === "uploading" ? (
+              <>
+                <CustomSpinner className="h-5 w-5 mr-2" />
+                Processing...
+              </>
+            ) : (
+              <>
+                <img
+                  src="/sparkle.png"
+                  alt="Sparkle Icon"
+                  className="h-5 w-5 mr-2"
+                />
+                Generate Website
+              </>
             )}
-          </div>
+          </Button>
+          {fileState.status === "empty" && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="absolute inset-0" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Upload a PDF to continue</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
         </div>
       </div>
     </div>

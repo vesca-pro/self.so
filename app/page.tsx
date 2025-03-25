@@ -20,30 +20,51 @@ export default function Home() {
         {/* Left side - Call to action */}
         <div className="w-full md:w-1/2 flex flex-col justify-center items-start px-8 md:px-16 py-12">
           <div className="max-w-md">
-            <div className="inline-block font-mono bg-gray-100 rounded-full px-4 py-1 text-sm mb-8">
+            <div className="inline-block font-mono gap-2.5 px-2.5 py-1.5 rounded bg-gray-100 text-sm mb-5 text-design-gray">
               100% free & open source
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 flex items-center gap-2 flex-wrap">
-              LinkedIn <ArrowRight className="h-8 w-8" /> Website in one{" "}
-              <Play className="h-6 w-6 ml-2 text-gray-400" />
+            <h1 className="text-[32px] font-bold mb-4 flex items-center gap-2 flex-wrap text-design-black font-mono">
+              <span>LinkedIn</span>
+              <img
+                src="/right-arrow.png"
+                alt="Arrow Right Icon"
+                width={32}
+                height={32}
+                className="inline size-8"
+              />
+              <span>Website</span>
+              <br />
+              <span>
+                in one <span className="hidden sm:inline">click</span>
+              </span>
+              <img
+                src="/highlight-pointer.png"
+                alt="Pointer Icon"
+                width={37}
+                height={37}
+                className="size-[37px] text-gray-400"
+              />
             </h1>
 
-            <p className="text-xl text-gray-600 mb-8 font-mono">
-              Turn your resume/CV into
-              <br />a professional website.
+            <p className="text-xl text-gray-600 mb-[30px] font-mono">
+              Turn your resume/LinkedIn into a professional website.
             </p>
 
             <div className="relative flex flex-col items-center font-mono w-fit">
               <Link href="/upload">
-                <Button className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 h-auto text-lg">
-                  <Sparkles className="h-5 w-5 mr-2" />
+                <Button className="bg-design-black hover:bg-design-black/90 text-white px-6 py-3 h-auto text-lg">
+                  <img
+                    src="/sparkle.png"
+                    alt="Sparkle Icon"
+                    className="h-5 w-5 mr-2"
+                  />
                   Upload Resume
                 </Button>
               </Link>
 
               <p className="text-sm text-gray-500 mt-4 text-center">
-                Free signup required
+                Takes 1 minute!
               </p>
             </div>
           </div>

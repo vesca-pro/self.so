@@ -4,15 +4,15 @@ import { Github } from "lucide-react";
 export function Footer() {
   return (
     <footer className="w-full py-4 px-6 flex justify-between items-center mt-auto">
-      <div className="text-sm text-gray-600 font-mono">
+      <div className="text-sm text-design-gray font-mono font-bold">
         Powered by{" "}
         <Link
           href="https://together.ai"
-          className="text-blue-600 underline underline-offset-2"
+          className="text-design-black underline underline-offset-2"
         >
           Together.ai
         </Link>{" "}
-        & Llama 3.1
+        & <span className="text-design-black">Llama 3.1</span>
       </div>
 
       <div className="flex gap-2">
