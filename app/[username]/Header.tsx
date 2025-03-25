@@ -34,7 +34,13 @@ function SocialButton({ href, icon: Icon, label }: SocialButtonProps) {
 /**
  * Header component displaying personal information and contact details
  */
-export function Header({ header }: { header: ResumeDataSchemaType["header"] }) {
+export function Header({
+  header,
+  picture,
+}: {
+  header: ResumeDataSchemaType["header"];
+  picture?: string;
+}) {
   return (
     <header className="flex items-center justify-between">
       <div className="flex-1 space-y-1.5">
@@ -150,7 +156,7 @@ export function Header({ header }: { header: ResumeDataSchemaType["header"] }) {
       </div>
 
       <Avatar className="size-28" aria-hidden="true">
-        <AvatarImage alt={`${header.name}'s profile picture`} />
+        <AvatarImage src={picture} alt={`${header.name}'s profile picture`} />
         <AvatarFallback>
           {header.name
             .split(" ")

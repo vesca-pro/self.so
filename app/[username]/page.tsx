@@ -5,18 +5,41 @@ import { Header } from "./Header";
 import { Skills } from "./Skills";
 import { Summary } from "./Summary";
 import { WorkExperience } from "./WorkExperience";
+import { clerkClient } from "@clerk/nextjs/server";
+import { unstable_cache } from "next/cache";
 export default async function ProfilePage({
   params,
 }: {
   params: Promise<{ username: string }>;
 }) {
   const { username } = await params;
-  // In a real implementation, you would fetch the user's profile data here
-  // For now, we'll just display a placeholder
 
-  const resume = await getResume(username);
+  const getCachedResume = unstable_cache(
+    async () => {
+      return await getResume(username);
+    },
+    [username],
+    {
+      tags: ["resumes"],
+      revalidate: 60, // 1 day in seconds
+    }
+  );
+
+  const resume = await getCachedResume();
 
   if (!resume?.resumeData) redirect(`/?usernameNotFound=${username}`);
+
+  const getCachedUser = unstable_cache(
+    async () => {
+      return await (await clerkClient()).users.getUser(username);
+    },
+    [username],
+    {
+      tags: ["users"],
+      revalidate: 86400, // 1 day in seconds
+    }
+  );
+  const clerkUser = await getCachedUser();
 
   const allSkills = [
     ...new Set(
@@ -29,7 +52,10 @@ export default async function ProfilePage({
       className="mx-auto w-full max-w-2xl space-y-8 bg-white print:space-y-4"
       aria-label="Resume Content"
     >
-      <Header header={resume?.resumeData?.header} />
+      <Header
+        header={resume?.resumeData?.header}
+        picture={clerkUser?.imageUrl}
+      />
 
       <div className="space-y-8 print:space-y-4">
         <Summary summary={resume?.resumeData?.summary} />

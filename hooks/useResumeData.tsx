@@ -3,26 +3,23 @@ import { Resume } from "@/app/components/resumeActions";
 import { useS3Upload } from "next-s3-upload";
 
 // Fetch resume data
-const fetchResume = async (): Promise<Resume | undefined> => {
+const fetchResume = async (): Promise<{
+  resume: Resume | undefined;
+}> => {
   const response = await fetch("/api/resume");
   if (!response.ok) {
     const error = await response.json();
     throw new Error(error.error || "Failed to fetch resume");
   }
-  const data = (await response.json()) as { resume?: Resume };
-  return data.resume;
+  return await response.json();
 };
 
 export function useResumeData() {
   const queryClient = useQueryClient();
-  const { files, uploadToS3 } = useS3Upload();
+  const { uploadToS3 } = useS3Upload();
 
   // Query for fetching resume data
-  const {
-    data: resume,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ["resume"],
     queryFn: fetchResume,
   });
@@ -34,6 +31,7 @@ export function useResumeData() {
     const newResume: Resume = {
       file: { name: file.name, url: url, size: file.size },
       resumeData: undefined,
+      status: "draft",
     };
 
     const response = await fetch("/api/resume", {
@@ -60,7 +58,7 @@ export function useResumeData() {
   });
 
   return {
-    resume,
+    resume: data?.resume,
     isLoading,
     error,
     uploadResume: uploadResume.mutate,

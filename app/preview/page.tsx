@@ -40,11 +40,9 @@ async function LLMProcessing({
 }
 
 export default async function Preview() {
-  const { userId, redirectToSignIn, ...rest } = await auth();
+  const { userId, redirectToSignIn } = await auth();
 
   if (!userId) return redirectToSignIn();
-
-  await (await clerkClient()).users.getUser(userId);
 
   return (
     <>
