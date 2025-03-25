@@ -6,12 +6,16 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { ReactQueryClientProvider } from "@/components/ReactQueryClientProvider";
+import { Metadata } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Self.so - Resume to Website",
-  description: "Convert your resume to a personal website",
+  description: "LinkedIn to Website in one click!",
+  openGraph: {
+    images: ["/og.png"],
+  },
 };
 
 export default function RootLayout({
