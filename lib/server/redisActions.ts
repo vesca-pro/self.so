@@ -16,6 +16,8 @@ const FileSchema = z.object({
   size: z.number(),
 });
 
+const FORBIDDEN_USERNAMES = ["preview", "api", "upload"];
+
 // Define the complete resume schema
 const ResumeSchema = z.object({
   status: z.enum(["live", "draft"]).default("draft"),
@@ -74,6 +76,11 @@ export const createUsernameLookup = async ({
   userId: string;
   username: string;
 }): Promise<boolean> => {
+  // Check if username is forbidden
+  if (FORBIDDEN_USERNAMES.includes(username.toLowerCase())) {
+    return false;
+  }
+
   // Check if username or user_id already exists
   const [usernameExists, userIdExists] = await Promise.all([
     upstashRedis.exists(`${REDIS_KEYS.USER_NAME_PREFIX}${username}`),
@@ -171,6 +178,11 @@ export const updateUsername = async (
   userId: string,
   newUsername: string
 ): Promise<boolean> => {
+  // Check if new username is forbidden
+  if (FORBIDDEN_USERNAMES.includes(newUsername.toLowerCase())) {
+    return false;
+  }
+
   // Get current username
   const currentUsername = await getUsernameById(userId);
   if (!currentUsername) return false;

@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useUserActions } from "@/hooks/useUserActions";
 
 export type PublishStatuses = "draft" | "live";
 
@@ -15,19 +16,19 @@ export default function PreviewActionbar({
   status,
   onStatusChange,
   isChangingStatus,
-  onUsernameChange,
 }: {
   initialUsername: string;
   prefix?: string;
   status?: PublishStatuses;
   onStatusChange?: (newStatus: PublishStatuses) => Promise<void>;
   isChangingStatus?: boolean;
-  onUsernameChange?: (username: string) => void;
 }) {
   const [username, setUsername] = useState(initialUsername);
-  const [isValid, setIsValid] = useState<boolean | null>(null);
-  const [isChecking, setIsChecking] = useState(false);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const { updateUsernameMutation } = useUserActions();
+
+  const isChecking = updateUsernameMutation.isPending;
+  const isValid = updateUsernameMutation.isSuccess;
 
   // Check username availability with debounce
   useEffect(() => {
@@ -38,30 +39,21 @@ export default function PreviewActionbar({
     const sanitizedUsername = username.trim();
 
     if (sanitizedUsername === "") {
-      setIsValid(false);
       return;
     }
 
     // Validate username format and length
     const isValidFormat = /^[a-zA-Z0-9-]+$/.test(sanitizedUsername);
     if (!isValidFormat || sanitizedUsername.length > 80) {
-      setIsValid(false);
       return;
     }
 
-    setIsChecking(true);
-
     debounceTimerRef.current = setTimeout(async () => {
       try {
-        // Simulate API call to check username availability
-        // Replace with actual API call in production
-        const isAvailable = await checkUsernameAvailability(sanitizedUsername);
-        setIsValid(isAvailable);
+        console.log("saving sanitizedUsername", sanitizedUsername);
+        await updateUsernameMutation.mutateAsync(sanitizedUsername);
       } catch (error) {
         console.error("Error checking username:", error);
-        setIsValid(false);
-      } finally {
-        setIsChecking(false);
       }
     }, 500); // Check every 500ms at most
 
@@ -72,23 +64,11 @@ export default function PreviewActionbar({
     };
   }, [username]);
 
-  // Simulate API call - replace with actual implementation
-  const checkUsernameAvailability = async (
-    username: string
-  ): Promise<boolean> => {
-    // Simulate network request
-    await new Promise((resolve) => setTimeout(resolve, 300));
-
-    // For demo purposes: usernames with "taken" are invalid, others are valid
-    return !username.toLowerCase().includes("taken");
-  };
-
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newUsername = e.target.value
       .replace(/[^a-zA-Z0-9-]/g, "")
       .slice(0, 20);
     setUsername(newUsername);
-    onUsernameChange?.(newUsername);
   };
 
   const handleStatusChange = async () => {

@@ -7,17 +7,11 @@ import { useUser } from "@clerk/nextjs";
 
 import { toast } from "sonner";
 
-export default function PreviewClient({
-  initialUserName,
-}: {
-  initialUserName: string;
-}) {
+export default function PreviewClient() {
   const { user } = useUser();
-  const { resumeQuery, toggleStatusMutation } = useUserActions();
+  const { resumeQuery, toggleStatusMutation, usernameQuery } = useUserActions();
 
-  console.log(resumeQuery.data);
-
-  if (resumeQuery.isLoading) {
+  if (resumeQuery.isLoading || usernameQuery.isLoading || !usernameQuery.data) {
     return <LoadingFallback message="Loading..." />;
   }
 
@@ -25,10 +19,7 @@ export default function PreviewClient({
     <div className="w-full min-h-screen bg-background flex flex-col gap-4 pb-8">
       <div className="max-w-3xl mx-auto w-full md:px-0 px-4">
         <PreviewActionbar
-          initialUsername={initialUserName}
-          onUsernameChange={(newUsername) => {
-            // setUserName(newUsername);
-          }}
+          initialUsername={usernameQuery.data.username}
           status={resumeQuery.data?.resume?.status}
           onStatusChange={async (newStatus) => {
             await toggleStatusMutation.mutateAsync(newStatus);

@@ -15,6 +15,17 @@ const fetchResume = async (): Promise<{
   return await response.json();
 };
 
+const fetchUsername = async (): Promise<{
+  username: string;
+}> => {
+  const response = await fetch("/api/username");
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || "Failed to fetch username");
+  }
+  return await response.json();
+};
+
 export function useUserActions() {
   const queryClient = useQueryClient();
   const { uploadToS3 } = useS3Upload();
@@ -23,6 +34,11 @@ export function useUserActions() {
   const resumeQuery = useQuery({
     queryKey: ["resume"],
     queryFn: fetchResume,
+  });
+
+  const usernameQuery = useQuery({
+    queryKey: ["username"],
+    queryFn: fetchUsername,
   });
 
   const internalResumeUpdate = async (newResume: Resume) => {
@@ -38,6 +54,16 @@ export function useUserActions() {
       const error = await response.json();
       throw new Error(error.error || "Failed to update resume");
     }
+  };
+
+  const internalUsernameUpdate = async (newUsername: string) => {
+    return await fetch("/api/username", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username: newUsername }),
+    });
   };
 
   // Update resume data in Upstash
@@ -77,13 +103,20 @@ export function useUserActions() {
     },
   });
 
-  // query to return current username for user_id
-
   // mutation to allow editing a username for a user_id, if it fails means that username is already taken
+  const updateUsernameMutation = useMutation({
+    mutationFn: internalUsernameUpdate,
+    onSuccess: () => {
+      // Invalidate and refetch username data
+      queryClient.invalidateQueries({ queryKey: ["username"] });
+    },
+  });
 
   return {
     resumeQuery,
     uploadResumeMutation,
     toggleStatusMutation,
+    usernameQuery,
+    updateUsernameMutation,
   };
 }

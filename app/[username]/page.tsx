@@ -1,10 +1,5 @@
 import { redirect } from "next/navigation";
-import { getResume } from "../../lib/server/redisActions";
-import { Education } from "../../components/resume/Education";
-import { Header } from "../../components/resume/Header";
-import { Skills } from "../../components/resume/Skills";
-import { Summary } from "../../components/resume/Summary";
-import { WorkExperience } from "../../components/resume/WorkExperience";
+import { getResume, getUserIdByUsername } from "../../lib/server/redisActions";
 import { clerkClient } from "@clerk/nextjs/server";
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
@@ -16,27 +11,20 @@ export default async function ProfilePage({
 }) {
   const { username } = await params;
 
-  const getCachedResume = unstable_cache(
-    async () => {
-      return await getResume(username);
-    },
-    [username],
-    {
-      tags: ["resumes"],
-      revalidate: 60, // 1 day in seconds
-    }
-  );
+  const user_id = await getUserIdByUsername(username);
 
-  const resume = await getCachedResume();
+  if (!user_id) redirect(`/?usernameNotFound=${username}`);
+
+  const resume = await getResume(user_id);
 
   if (!resume?.resumeData || resume.status !== "live")
-    redirect(`/?usernameNotFound=${username}`);
+    redirect(`/?idNotFound=${user_id}`);
 
   const getCachedUser = unstable_cache(
     async () => {
-      return await (await clerkClient()).users.getUser(username);
+      return await (await clerkClient()).users.getUser(user_id);
     },
-    [username],
+    [user_id],
     {
       tags: ["users"],
       revalidate: 86400, // 1 day in seconds
@@ -52,7 +40,10 @@ export default async function ProfilePage({
       />
 
       <div className="text-center mt-8 mb-4">
-        <Link href="/" className="text-design-gray font-mono text-sm">
+        <Link
+          href={`?ref=${username}`}
+          className="text-design-gray font-mono text-sm"
+        >
           Made by{" "}
           <span className="text-design-black underline underline-offset-2">
             Self.so

@@ -46,7 +46,7 @@ async function LLMProcessing({ userId }: { userId: string }) {
   // collision with existing usernames
 
   // we set the username only
-  let foundUsername = await getUsernameById(userId);
+  const foundUsername = await getUsernameById(userId);
 
   if (!foundUsername) {
     // if it wasn't already set for this user meaning it's new user
@@ -64,8 +64,6 @@ async function LLMProcessing({ userId }: { userId: string }) {
     });
 
     if (!creation) redirect("/resume?error=usernameCreationFailed");
-
-    foundUsername = username;
   }
 
   await storeResume(userId, {
@@ -73,7 +71,7 @@ async function LLMProcessing({ userId }: { userId: string }) {
     resumeData: resumeObject,
   });
 
-  return <PreviewClient initialUserName={foundUsername} />;
+  return <PreviewClient />;
 }
 
 export default async function Preview() {
