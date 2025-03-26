@@ -17,7 +17,5 @@ export const generateResumeObject = async (resumeText: string) => {
     `,
   });
 
-  console.log("resume object", object);
-
   return object;
 };

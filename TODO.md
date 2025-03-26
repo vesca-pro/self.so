@@ -1,5 +1,3 @@
-[] Complete the PDF scraping part
-[] Glue with the LLM part
 [] Add the modal for the website live for the first time then current toast
 
 After these as extra:
