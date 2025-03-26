@@ -35,7 +35,16 @@ export default function PreviewActionbar({
       clearTimeout(debounceTimerRef.current);
     }
 
-    if (username.trim() === "") {
+    const sanitizedUsername = username.trim();
+
+    if (sanitizedUsername === "") {
+      setIsValid(false);
+      return;
+    }
+
+    // Validate username format and length
+    const isValidFormat = /^[a-zA-Z0-9-]+$/.test(sanitizedUsername);
+    if (!isValidFormat || sanitizedUsername.length > 80) {
       setIsValid(false);
       return;
     }
@@ -46,7 +55,7 @@ export default function PreviewActionbar({
       try {
         // Simulate API call to check username availability
         // Replace with actual API call in production
-        const isAvailable = await checkUsernameAvailability(username);
+        const isAvailable = await checkUsernameAvailability(sanitizedUsername);
         setIsValid(isAvailable);
       } catch (error) {
         console.error("Error checking username:", error);
@@ -75,7 +84,9 @@ export default function PreviewActionbar({
   };
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newUsername = e.target.value;
+    const newUsername = e.target.value
+      .replace(/[^a-zA-Z0-9-]/g, "")
+      .slice(0, 20);
     setUsername(newUsername);
     onUsernameChange?.(newUsername);
   };
@@ -89,27 +100,32 @@ export default function PreviewActionbar({
   };
 
   return (
-    <div className="w-full rounded-lg bg-[#fcfcfc] border-[0.5px] border-neutral-300 flex items-center justify-between py-3 px-5  md:px-4 md:py-2.5  flex-col md:flex-row gap-4">
-      <div className="flex items-center gap-4">
+    <div className="w-full rounded-lg bg-[#fcfcfc] border-[0.5px] border-neutral-300 flex items-center justify-between py-3 px-5  sm:px-4 sm:py-2.5  flex-col sm:flex-row gap-4">
+      <div className="flex flex-col sm:flex-row items-center gap-4">
         <div className="flex items-center gap-1 mr-1">
           <img src="/link-icon.png" className="w-4 h-4 text-[#1f1f1f]" />
           <p className="text-sm text-[#1f1f1f]">{prefix}</p>
         </div>
 
-        <div className="w-full h-[34px] overflow-hidden rounded bg-white border-[0.5px] border-neutral-300 flex">
+        <div className="w-full md:max-h-[34px] overflow-hidden rounded bg-white border-[0.5px] border-neutral-300 flex flex-col sm:flex-row">
           <input
             type="text"
             value={username}
             onChange={handleUsernameChange}
-            className="flex-1 px-3 text-sm text-[#5d5d5d] border-none outline-none focus:ring-0 bg-transparent"
+            maxLength={20}
+            placeholder="Only letters, numbers and hyphens allowed"
+            className="flex-1 p-3 text-sm text-[#5d5d5d] border-none outline-none focus:ring-0 bg-transparent"
           />
 
-          {isChecking ? (
-            <div className="w-[34px] flex items-center justify-center">
+          <div
+            className={cn(
+              "min-h-6 sm:w-[34px] w-full flex items-center justify-center border-l-[0.5px] border-[#D4D4D4]",
+              !isChecking && (isValid ? "bg-[#F0FFF0]" : "bg-[#FFF0F0]")
+            )}
+          >
+            {isChecking ? (
               <div className="w-4 h-4 rounded-full border-2 border-gray-300 border-t-primary animate-spin" />
-            </div>
-          ) : isValid ? (
-            <div className="w-[34px] bg-[#F0FFF0] border-l-[0.5px] border-[#D4D4D4] flex items-center justify-center">
+            ) : isValid ? (
               <svg
                 width="24"
                 height="24"
@@ -125,12 +141,10 @@ export default function PreviewActionbar({
                   strokeLinejoin="round"
                 />
               </svg>
-            </div>
-          ) : (
-            <div className="w-[34px] flex items-center justify-center bg-[#FFF0F0] border-l-[0.5px] border-[#D4D4D4]">
+            ) : (
               <X className="w-5 h-5 text-[#950000]" />
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
 
