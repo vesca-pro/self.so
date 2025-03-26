@@ -17,13 +17,14 @@ async function ResumeIngestion({ userId }: { userId: string }) {
 
   if (!resume || !resume.file || !resume.file.url) redirect("/resume");
 
-  const fileContent = await scrapePdfContent(resume?.file.url);
-
-  await storeResume(userId, {
-    ...resume,
-    fileContent: fileContent,
-    resumeData: null,
-  });
+  if (!resume.fileContent) {
+    const fileContent = await scrapePdfContent(resume?.file.url);
+    await storeResume(userId, {
+      ...resume,
+      fileContent: fileContent,
+      resumeData: null,
+    });
+  }
 
   return (
     <Suspense
@@ -37,26 +38,31 @@ async function ResumeIngestion({ userId }: { userId: string }) {
 }
 
 async function LLMProcessing({ userId }: { userId: string }) {
-  const resume = await getResume(userId);
-  const resumeObject = await generateResumeObject();
+  let resume = await getResume(userId);
 
-  if (!resume || !resume.file || !resume.file.url) redirect("/resume");
+  if (!resume?.fileContent) redirect("/upload");
 
-  // here we set the username of the user from the resumeobject.header.name slugified and we also prevent
-  // collision with existing usernames
+  if (!resume.resumeData) {
+    const resumeObject = await generateResumeObject(resume?.fileContent);
+    storeResume(userId, {
+      ...resume,
+      resumeData: resumeObject,
+    });
+    resume.resumeData = resumeObject;
+  }
 
-  // we set the username only
+  // we set the username only if it wasn't already set for this user meaning it's new user
   const foundUsername = await getUsernameById(userId);
 
   if (!foundUsername) {
-    // if it wasn't already set for this user meaning it's new user
     const username =
-      resumeObject.header.name
+      resume.resumeData.header.name ||
+      "user"
         .toLowerCase()
         .replace(/[^a-z0-9\s]/g, "")
         .replace(/\s+/g, "-") +
-      "-" +
-      Math.random().toString(36).substring(2, 8);
+        "-" +
+        Math.random().toString(36).substring(2, 8);
 
     const creation = await createUsernameLookup({
       userId,
@@ -65,11 +71,6 @@ async function LLMProcessing({ userId }: { userId: string }) {
 
     if (!creation) redirect("/resume?error=usernameCreationFailed");
   }
-
-  await storeResume(userId, {
-    ...resume,
-    resumeData: resumeObject,
-  });
 
   return <PreviewClient />;
 }

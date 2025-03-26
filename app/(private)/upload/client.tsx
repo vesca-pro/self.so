@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Dropzone } from "@/components/ui/dropzone";
-import { Sparkles, Linkedin, Loader2, X } from "lucide-react";
+import { Linkedin, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
@@ -15,13 +15,11 @@ import { useUserActions } from "@/hooks/useUserActions";
 import { useEffect, useState } from "react";
 import { CustomSpinner } from "@/components/CustomSpinner";
 import LoadingFallback from "@/components/LoadingFallback";
-import { DialogHeader } from "@/components/ui/dialog";
 import {
   Dialog,
   DialogTrigger,
   DialogContent,
   DialogTitle,
-  DialogDescription,
 } from "@/components/ui/dialog";
 
 type FileState =
@@ -31,6 +29,7 @@ type FileState =
 
 export default function UploadPageClient() {
   const router = useRouter();
+
   const { resumeQuery, uploadResumeMutation } = useUserActions();
   const [fileState, setFileState] = useState<FileState>({ status: "empty" });
 
