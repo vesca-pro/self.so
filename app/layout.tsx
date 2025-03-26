@@ -1,14 +1,12 @@
 import type React from "react";
-import { Inter } from "next/font/google";
-import { TopMenu } from "./components/TopMenu";
-import { Footer } from "./components/Footer";
+import { JetBrains_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { ReactQueryClientProvider } from "@/components/ReactQueryClientProvider";
 import { Metadata } from "next";
 
-const inter = Inter({ subsets: ["latin"] });
+const mono = JetBrains_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://self.so"),
@@ -28,7 +26,7 @@ export default function RootLayout({
     <ClerkProvider>
       <ReactQueryClientProvider>
         <html lang="en">
-          <body className={`${inter.className} min-h-screen flex flex-col`}>
+          <body className={`${mono.className} min-h-screen flex flex-col`}>
             <main className="flex-1 flex flex-col">{children}</main>
             <Toaster richColors />
           </body>

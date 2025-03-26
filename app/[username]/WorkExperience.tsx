@@ -1,6 +1,11 @@
 import { Section } from "@/components/ui/section";
 import { ResumeDataSchemaType } from "@/lib/resume";
 
+const getYear = (date: string) => {
+  const dateObject = new Date(date);
+  return dateObject.getFullYear();
+};
+
 export function WorkExperience({
   work,
 }: {
@@ -18,20 +23,21 @@ export function WorkExperience({
       >
         {work.map((item) => {
           return (
-            <div className="font-mono flex flex-col justify-start items-start">
+            <div className="font-mono flex flex-col justify-start items-start gap-1">
               <div className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 relative">
                 <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-1">
                   <p className="flex-grow-0 flex-shrink-0 text-base font-semibold text-left text-[#050914]">
                     {item.title}
                   </p>
                   <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-2.5 px-[7px] py-0.5 rounded bg-[#eeeff0]">
-                    <p className="flex-grow-0 flex-shrink-0 text-[12px] font-medium text-center text-[#54575e]">
+                    <p className="flex-grow-0 flex-shrink-0 text-[12px] font-semibold text-center text-[#54575e]">
                       {item.location}
                     </p>
                   </div>
                 </div>
                 <p className="flex-grow-0 flex-shrink-0 text-sm text-right text-[#54575e]">
-                  {item.start} - {item.end ?? "Present"}
+                  {getYear(item.start)} -{" "}
+                  {!!item.end ? getYear(item.end) : "Present"}
                 </p>
               </div>
               <div className="flex flex-col justify-start items-start flex-grow-0 flex-shrink-0 relative gap-1.5">
