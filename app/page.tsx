@@ -20,7 +20,7 @@ export default function Home() {
       <TopMenu />
 
       <section className="flex-1 flex flex-col">
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-[80vh]">
           {/* Main content */}
           <div className="flex-1 flex flex-col md:flex-row max-w-4xl mx-auto items-center px-5 pt-8 md:pt-0">
             {/* Left side - Call to action */}
@@ -77,7 +77,7 @@ export default function Home() {
             </div>
 
             {/* Right side - Preview */}
-            <div className="w-full md:w-1/2 flex justify-center items-center flex-1 relative max-h-[700px]">
+            <div className="w-full md:w-1/2 flex justify-center items-center flex-1 relative max-h-[700px] animate-in fade-in scale-95 duration-1000">
               <div className="absolute inset-0 -bottom-4 rounded-3xl bg-black/5 blur-xl h-full"></div>
 
               <img
