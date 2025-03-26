@@ -2,11 +2,9 @@
 import LoadingFallback from "@/components/LoadingFallback";
 import PreviewActionbar from "@/components/PreviewActionbar";
 import { FullResume } from "@/components/resume/FullResume";
-import { useResumeData } from "@/hooks/useResumeData";
+import { useUserActions } from "@/hooks/useUserActions";
 import { useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
 
-import { useState } from "react";
 import { toast } from "sonner";
 
 export default function PreviewClient({
@@ -14,22 +12,14 @@ export default function PreviewClient({
 }: {
   initialUserName: string;
 }) {
-  const router = useRouter();
   const { user } = useUser();
-  const { resume, isLoading, toggleStatusMutation } = useResumeData();
-  const [userName, setUserName] = useState(initialUserName);
+  const { resumeQuery, toggleStatusMutation } = useUserActions();
 
-  const handlePublish = () => {
-    console.log("publish");
-    // redirect to the username page with the username
-    router.push(`/${userName}`);
-  };
+  console.log(resumeQuery.data);
 
-  if (isLoading) {
+  if (resumeQuery.isLoading) {
     return <LoadingFallback message="Loading..." />;
   }
-
-  console.log("toggleStatusMutation", toggleStatusMutation.isPending);
 
   return (
     <div className="w-full min-h-screen bg-background flex flex-col gap-4 pb-8">
@@ -39,7 +29,7 @@ export default function PreviewClient({
           onUsernameChange={(newUsername) => {
             // setUserName(newUsername);
           }}
-          status={resume?.status}
+          status={resumeQuery.data?.resume?.status}
           onStatusChange={async (newStatus) => {
             await toggleStatusMutation.mutateAsync(newStatus);
             if (newStatus === "live") {
@@ -52,7 +42,7 @@ export default function PreviewClient({
 
       <div className="max-w-3xl mx-auto w-full md:rounded-lg border-[0.5px] border-neutral-300 flex items-center justify-between px-4">
         <FullResume
-          resume={resume?.resumeData}
+          resume={resumeQuery.data?.resume?.resumeData}
           profilePicture={user?.imageUrl}
         />
       </div>

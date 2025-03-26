@@ -1,4 +1,4 @@
-import { getResume, Resume, storeResume } from "@/lib/server/resumeActions";
+import { getResume, Resume, storeResume } from "@/lib/server/redisActions";
 import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 

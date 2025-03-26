@@ -11,7 +11,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useResumeData } from "@/hooks/useResumeData";
+import { useUserActions } from "@/hooks/useUserActions";
 import { useEffect, useState } from "react";
 import { CustomSpinner } from "@/components/CustomSpinner";
 import LoadingFallback from "@/components/LoadingFallback";
@@ -31,7 +31,7 @@ type FileState =
 
 export default function UploadPageClient() {
   const router = useRouter();
-  const { resume, isLoading, uploadResumeMutation } = useResumeData();
+  const { resume, isLoading, uploadResumeMutation } = useUserActions();
   const [fileState, setFileState] = useState<FileState>({ status: "empty" });
 
   // Update fileState whenever resume changes

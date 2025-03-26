@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getResume } from "../../lib/server/resumeActions";
+import { getResume } from "../../lib/server/redisActions";
 import { Education } from "../../components/resume/Education";
 import { Header } from "../../components/resume/Header";
 import { Skills } from "../../components/resume/Skills";

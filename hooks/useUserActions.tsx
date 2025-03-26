@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Resume } from "@/lib/server/resumeActions";
+import { Resume } from "@/lib/server/redisActions";
 import { useS3Upload } from "next-s3-upload";
 import { PublishStatuses } from "@/components/PreviewActionbar";
 
@@ -15,12 +15,12 @@ const fetchResume = async (): Promise<{
   return await response.json();
 };
 
-export function useResumeData() {
+export function useUserActions() {
   const queryClient = useQueryClient();
   const { uploadToS3 } = useS3Upload();
 
   // Query for fetching resume data
-  const { data, isLoading, error } = useQuery({
+  const resumeQuery = useQuery({
     queryKey: ["resume"],
     queryFn: fetchResume,
   });
@@ -53,20 +53,6 @@ export function useResumeData() {
     internalResumeUpdate(newResume);
   };
 
-  const toggleStatusMutation = useMutation({
-    mutationFn: async (newPublishStatus: PublishStatuses) => {
-      if (!data?.resume) return;
-      await internalResumeUpdate({
-        ...data?.resume,
-        status: newPublishStatus,
-      });
-    },
-    onSuccess: () => {
-      // Invalidate and refetch resume data
-      queryClient.invalidateQueries({ queryKey: ["resume"] });
-    },
-  });
-
   // Mutation for updating resume
   const uploadResumeMutation = useMutation({
     mutationFn: uploadFileResume,
@@ -77,11 +63,26 @@ export function useResumeData() {
   });
 
   // Mutation for toggling status of publishment
+  const toggleStatusMutation = useMutation({
+    mutationFn: async (newPublishStatus: PublishStatuses) => {
+      if (!resumeQuery.data?.resume) return;
+      await internalResumeUpdate({
+        ...resumeQuery.data?.resume,
+        status: newPublishStatus,
+      });
+    },
+    onSuccess: () => {
+      // Invalidate and refetch resume data
+      queryClient.invalidateQueries({ queryKey: ["resume"] });
+    },
+  });
+
+  // query to return current username for user_id
+
+  // mutation to allow editing a username for a user_id, if it fails means that username is already taken
 
   return {
-    resume: data?.resume,
-    isLoading,
-    error,
+    resumeQuery,
     uploadResumeMutation,
     toggleStatusMutation,
   };
