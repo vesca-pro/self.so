@@ -48,7 +48,7 @@ export function Header({
           {header.name}
         </h1>
         <p
-          className="max-w-md text-pretty font-mono text-sm text-foreground/80 print:text-[12px]"
+          className="max-w-md text-pretty font-mono text-sm text-design-resume print:text-[12px]"
           aria-labelledby="resume-name"
         >
           {header.shortAbout}
@@ -56,7 +56,7 @@ export function Header({
 
         <p className="max-w-md items-center text-pretty font-mono text-xs text-foreground">
           <a
-            className="inline-flex gap-x-1.5 align-baseline leading-none hover:underline"
+            className="inline-flex gap-x-1.5 align-baseline leading-none hover:underline text-[#9CA0A8]"
             href={`https://www.google.com/maps/search/${encodeURIComponent(
               header.location
             )}`}
@@ -64,13 +64,12 @@ export function Header({
             rel="noopener noreferrer"
             aria-label={`Location: ${header.location}`}
           >
-            <GlobeIcon className="size-3" aria-hidden="true" />
             {header.location}
           </a>
         </p>
 
         <div
-          className="flex gap-x-1 pt-1 font-mono text-sm text-foreground/80 print:hidden"
+          className="flex gap-x-1 pt-1 font-mono text-sm text-design-resume print:hidden"
           role="list"
           aria-label="Contact links"
         >
@@ -119,7 +118,7 @@ export function Header({
         </div>
 
         <div
-          className="hidden gap-x-2 font-mono text-sm text-foreground/80 print:flex print:text-[12px]"
+          className="hidden gap-x-2 font-mono text-sm text-design-resume print:flex print:text-[12px]"
           aria-label="Print contact information"
         >
           {header.contacts.website && (

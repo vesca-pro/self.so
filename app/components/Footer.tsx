@@ -3,7 +3,7 @@ import { Github } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="w-full py-4 px-6 flex justify-between items-center mt-auto">
+    <footer className="w-full py-4 px-6 flex justify-between items-center mt-auto flex-col-reverse md:flex-row gap-2 border-t border-gray-200">
       <div className="text-sm text-design-gray font-mono font-bold">
         Powered by{" "}
         <Link
@@ -18,15 +18,16 @@ export function Footer() {
       <div className="flex gap-2">
         <Link
           href="https://github.com"
-          className="text-gray-600 hover:text-gray-900"
+          className="size-[22px] flex items-center justify-center border-design-gray border rounded-md"
         >
-          <Github className="h-5 w-5" />
+          <img src="/footer/github.svg" className="size-3" />
           <span className="sr-only">GitHub</span>
         </Link>
         <Link
-          href="#"
-          className="text-gray-600 hover:text-gray-900 bg-gray-200 rounded-full w-5 h-5 flex items-center justify-center"
+          href="https://x.com"
+          className="size-[22px] flex items-center justify-center border-design-gray border rounded-md"
         >
+          <img src="/footer/x.svg" className="size-[15px]" />
           <span className="sr-only">Social</span>
         </Link>
       </div>

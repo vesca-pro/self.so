@@ -15,6 +15,14 @@ import { useResumeData } from "@/hooks/useResumeData";
 import { useEffect, useState } from "react";
 import { CustomSpinner } from "@/components/CustomSpinner";
 import LoadingFallback from "@/app/components/LoadingFallback";
+import { DialogHeader } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 type FileState =
   | { status: "empty" }
@@ -107,14 +115,24 @@ export default function UploadPageClient() {
           />
         </div>
 
-        <div className="pt-3 font-mono text-center cursor-help flex flex-row gap-1.5 justify-center">
-          <span className="ml-1 inline-block w-4 h-4 rounded-full border border-gray-300 items-center justify-center text-xs cursor-help">
-            i
-          </span>
-          <p className="text-xs text-center text-design-gray">
-            How to upload LinkedIn profile
-          </p>
-        </div>
+        <Dialog>
+          <DialogTrigger asChild>
+            <button className="pt-3 font-mono text-center cursor-help flex flex-row gap-1.5 justify-center mx-auto">
+              <span className="ml-1 inline-block w-4 h-4 rounded-full border border-gray-300 items-center justify-center text-xs cursor-help">
+                i
+              </span>
+              <p className="text-xs text-center text-design-gray">
+                How to upload LinkedIn profile
+              </p>
+            </button>
+          </DialogTrigger>
+          <DialogContent className="w-full max-w-[652px] text-center font-mono !p-0 gap-0">
+            <DialogTitle className="font-mono text-base text-center text-design-gray px-7 py-4">
+              Go to your profile → Click on “Resources” → Then “Save to PDF”
+            </DialogTitle>
+            <img src="/linkedin-save-to-pdf.png" className="h-auto w-full" />
+          </DialogContent>
+        </Dialog>
       </div>
       <div className="font-mono">
         <div className="relative">

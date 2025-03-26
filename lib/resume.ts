@@ -23,9 +23,17 @@ const WorkExperienceSection = z.array(
     company: z.string().describe("Company name"),
     link: z.string().describe("Company website URL"),
     skills: z.array(z.string()).describe("Skills used within the role"),
+    location: z
+      .string()
+      .describe(
+        "Location with format 'City, Country' or could be Hybrid or Remote"
+      ),
+    contract: z
+      .string()
+      .describe("Type of work contract like Full-time, Part-time, Contract"),
     title: z.string().describe("Job title"),
     start: z.string().describe("Start date in format 'YYYY-MM-DD'"),
-    end: z.string().describe("End date in format 'YYYY-MM-DD'"),
+    end: z.string().optional().describe("End date in format 'YYYY-MM-DD'"),
     description: z.string().describe("Job description"),
   })
 );

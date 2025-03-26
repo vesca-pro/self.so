@@ -15,6 +15,7 @@ const config: Config = {
           black: "#1f1f1f",
           white: "#ffffff",
           gray: "#5d5d5d",
+          resume: "#6B7280",
         },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

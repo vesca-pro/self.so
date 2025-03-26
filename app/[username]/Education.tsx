@@ -1,5 +1,4 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { RESUME_DATA } from "./resumeData";
 import { Section } from "@/components/ui/section";
 import { ResumeDataSchemaType } from "@/lib/resume";
 
@@ -41,7 +40,7 @@ function EducationItem({
         </div>
       </CardHeader>
       <CardContent
-        className="mt-2 text-foreground/80 print:text-[12px]"
+        className="mt-2 text-design-resume print:text-[12px]"
         aria-labelledby={`education-${school
           .toLowerCase()
           .replace(/\s+/g, "-")}`}
