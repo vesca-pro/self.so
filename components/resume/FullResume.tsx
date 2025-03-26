@@ -1,5 +1,5 @@
 import LoadingFallback from "../LoadingFallback";
-import { ResumeData } from "../server/resumeActions";
+import { ResumeData } from "../../lib/server/resumeActions";
 import { Education } from "./Education";
 import { Header } from "./Header";
 import { Skills } from "./Skills";

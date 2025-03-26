@@ -1,14 +1,11 @@
 import { auth } from "@clerk/nextjs/server";
 import PreviewClient from "./client";
-import {
-  getResume,
-  storeResume,
-} from "../../../components/server/resumeActions";
-import { generateResumeObject } from "@/components/server/generateResumeObject";
+import { getResume, storeResume } from "../../../lib/server/resumeActions";
+import { generateResumeObject } from "@/lib/server/generateResumeObject";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import LoadingFallback from "../../../components/LoadingFallback";
-import { scrapePdfContent } from "@/components/server/scrapePdfContent";
+import { scrapePdfContent } from "@/lib/server/scrapePdfContent";
 
 async function ResumeIngestion({ userId }: { userId: string }) {
   const resume = await getResume(userId);

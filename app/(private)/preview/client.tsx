@@ -50,7 +50,7 @@ export default function PreviewClient({
         />
       </div>
 
-      <div className="max-w-3xl mx-auto w-full rounded-lg border-[0.5px] border-neutral-300 flex items-center justify-between px-4">
+      <div className="max-w-3xl mx-auto w-full md:rounded-lg border-[0.5px] border-neutral-300 flex items-center justify-between px-4">
         <FullResume
           resume={resume?.resumeData}
           profilePicture={user?.imageUrl}
