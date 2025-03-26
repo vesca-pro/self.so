@@ -29,7 +29,7 @@ function EducationItem({
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center justify-between gap-x-2 text-base">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-base">
           <h3
             className="font-semibold leading-none"
             id={`education-${school.toLowerCase().replace(/\s+/g, "-")}`}

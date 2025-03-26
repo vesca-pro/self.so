@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Resume } from "@/app/components/resumeActions";
+import { Resume } from "@/components/server/resumeActions";
 import { useS3Upload } from "next-s3-upload";
+import { PublishStatuses } from "@/components/PreviewActionbar";
 
 // Fetch resume data
 const fetchResume = async (): Promise<{
@@ -24,16 +25,7 @@ export function useResumeData() {
     queryFn: fetchResume,
   });
 
-  // Update resume data in Upstash
-  const uploadFileResume = async (file: File) => {
-    const { url } = await uploadToS3(file);
-
-    const newResume: Resume = {
-      file: { name: file.name, url: url, size: file.size },
-      resumeData: undefined,
-      status: "draft",
-    };
-
+  const internalResumeUpdate = async (newResume: Resume) => {
     const response = await fetch("/api/resume", {
       method: "POST",
       headers: {
@@ -48,8 +40,35 @@ export function useResumeData() {
     }
   };
 
+  // Update resume data in Upstash
+  const uploadFileResume = async (file: File) => {
+    const { url } = await uploadToS3(file);
+
+    const newResume: Resume = {
+      file: { name: file.name, url: url, size: file.size },
+      resumeData: undefined,
+      status: "draft",
+    };
+
+    internalResumeUpdate(newResume);
+  };
+
+  const toggleStatusMutation = useMutation({
+    mutationFn: async (newPublishStatus: PublishStatuses) => {
+      if (!data?.resume) return;
+      await internalResumeUpdate({
+        ...data?.resume,
+        status: newPublishStatus,
+      });
+    },
+    onSuccess: () => {
+      // Invalidate and refetch resume data
+      queryClient.invalidateQueries({ queryKey: ["resume"] });
+    },
+  });
+
   // Mutation for updating resume
-  const uploadResume = useMutation({
+  const uploadResumeMutation = useMutation({
     mutationFn: uploadFileResume,
     onSuccess: () => {
       // Invalidate and refetch resume data
@@ -57,12 +76,13 @@ export function useResumeData() {
     },
   });
 
+  // Mutation for toggling status of publishment
+
   return {
     resume: data?.resume,
     isLoading,
     error,
-    uploadResume: uploadResume.mutate,
-    isUploading: uploadResume.isPending,
-    uploadError: uploadResume.error,
+    uploadResumeMutation,
+    toggleStatusMutation,
   };
 }

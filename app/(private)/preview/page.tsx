@@ -1,10 +1,13 @@
 import { auth } from "@clerk/nextjs/server";
 import PreviewClient from "./client";
-import { getResume, storeResume } from "../../components/resumeActions";
+import {
+  getResume,
+  storeResume,
+} from "../../../components/server/resumeActions";
 import { generateResumeObject } from "@/components/server/generateResumeObject";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import LoadingFallback from "../../components/LoadingFallback";
+import LoadingFallback from "../../../components/LoadingFallback";
 import { scrapePdfContent } from "@/components/server/scrapePdfContent";
 
 async function ResumeIngestion({ userId }: { userId: string }) {

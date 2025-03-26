@@ -1,6 +1,6 @@
 import type React from "react";
-import { TopMenu } from "../components/TopMenu";
-import { Footer } from "../components/Footer";
+import { TopMenu } from "../../components/TopMenu";
+import { Footer } from "../../components/Footer";
 
 export default function RootLayout({
   children,

@@ -14,7 +14,7 @@ import {
 import { useResumeData } from "@/hooks/useResumeData";
 import { useEffect, useState } from "react";
 import { CustomSpinner } from "@/components/CustomSpinner";
-import LoadingFallback from "@/app/components/LoadingFallback";
+import LoadingFallback from "@/components/LoadingFallback";
 import { DialogHeader } from "@/components/ui/dialog";
 import {
   Dialog,
@@ -31,7 +31,7 @@ type FileState =
 
 export default function UploadPageClient() {
   const router = useRouter();
-  const { resume, isLoading, isUploading, uploadResume } = useResumeData();
+  const { resume, isLoading, uploadResumeMutation } = useResumeData();
   const [fileState, setFileState] = useState<FileState>({ status: "empty" });
 
   // Update fileState whenever resume changes
@@ -49,7 +49,7 @@ export default function UploadPageClient() {
   }, [resume]);
 
   const handleUploadFile = async (file: File) => {
-    uploadResume(file);
+    uploadResumeMutation.mutate(file);
   };
 
   const handleReset = () => {
@@ -107,7 +107,7 @@ export default function UploadPageClient() {
                   : "Resume or LinkedIn"}
               </span>
             }
-            isUploading={isUploading}
+            isUploading={uploadResumeMutation.isPending}
             onDrop={(acceptedFiles) => {
               if (acceptedFiles[0]) handleUploadFile(acceptedFiles[0]);
             }}

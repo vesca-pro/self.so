@@ -1,4 +1,8 @@
-import { getResume, Resume, storeResume } from "@/app/components/resumeActions";
+import {
+  getResume,
+  Resume,
+  storeResume,
+} from "@/components/server/resumeActions";
 import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 

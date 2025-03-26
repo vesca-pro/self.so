@@ -1,4 +1,4 @@
-import { getResume } from "@/app/components/resumeActions";
+import { getResume } from "@/components/server/resumeActions";
 import { clerkClient } from "@clerk/nextjs/server";
 import { unstable_cache } from "next/cache";
 

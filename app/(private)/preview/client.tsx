@@ -1,8 +1,13 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import LoadingFallback from "@/components/LoadingFallback";
+import PreviewActionbar from "@/components/PreviewActionbar";
+import { FullResume } from "@/components/resume/FullResume";
+import { useResumeData } from "@/hooks/useResumeData";
+import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function PreviewClient({
   initialUserName,
@@ -10,6 +15,8 @@ export default function PreviewClient({
   initialUserName: string;
 }) {
   const router = useRouter();
+  const { user } = useUser();
+  const { resume, isLoading, toggleStatusMutation } = useResumeData();
   const [userName, setUserName] = useState(initialUserName);
 
   const handlePublish = () => {
@@ -18,32 +25,37 @@ export default function PreviewClient({
     router.push(`/${userName}`);
   };
 
+  if (isLoading) {
+    return <LoadingFallback message="Loading..." />;
+  }
+
+  console.log("toggleStatusMutation", toggleStatusMutation.isPending);
+
   return (
-    <div className="flex flex-col w-full min-h-screen bg-background">
-      {/* URL Bar */}
-      <div className="border rounded-md flex items-center w-fit mx-auto min-w-[800px] font-mono">
-        <div className="container flex items-center h-14 px-4 max-w-3xl mx-auto">
-          <div className="flex items-center flex-1 gap-2">
-            <div className="flex items-center h-9 bg-muted rounded-md px-3 flex-1 max-w-xl">
-              <span className="text-muted-foreground text-sm">self.so/</span>
-              <input
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-                className="bg-transparent border-0 outline-none focus:outline-none flex-1 px-2 text-sm"
-                placeholder="your-username"
-              />
-            </div>
-            <Button variant="outline" size="sm">
-              Share
-            </Button>
-            <Button variant="default" size="sm" onClick={handlePublish}>
-              Publish »
-            </Button>
-          </div>
-        </div>
+    <div className="w-full min-h-screen bg-background flex flex-col gap-4 pb-8">
+      <div className="max-w-3xl mx-auto w-full md:px-0 px-4">
+        <PreviewActionbar
+          initialUsername={initialUserName}
+          onUsernameChange={(newUsername) => {
+            // setUserName(newUsername);
+          }}
+          status={resume?.status}
+          onStatusChange={async (newStatus) => {
+            await toggleStatusMutation.mutateAsync(newStatus);
+            if (newStatus === "live") {
+              toast.success("Your website has been updated!");
+            }
+          }}
+          isChangingStatus={toggleStatusMutation.isPending}
+        />
       </div>
 
-      <iframe src={`/${userName}`} className="w-full h-full min-h-screen" />
+      <div className="max-w-3xl mx-auto w-full rounded-lg border-[0.5px] border-neutral-300 flex items-center justify-between px-4">
+        <FullResume
+          resume={resume?.resumeData}
+          profilePicture={user?.imageUrl}
+        />
+      </div>
     </div>
   );
 }
