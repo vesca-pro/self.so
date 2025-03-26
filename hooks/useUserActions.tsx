@@ -52,18 +52,23 @@ export function useUserActions() {
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.error || "Failed to update resume");
+      return Promise.reject(new Error(error));
     }
   };
 
   const internalUsernameUpdate = async (newUsername: string) => {
-    return await fetch("/api/username", {
+    const response = await fetch("/api/username", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ username: newUsername }),
     });
+
+    if (!response.ok) {
+      const error = await response.json();
+      return Promise.reject(error);
+    }
   };
 
   // Update resume data in Upstash
@@ -110,6 +115,7 @@ export function useUserActions() {
       // Invalidate and refetch username data
       queryClient.invalidateQueries({ queryKey: ["username"] });
     },
+    throwOnError: false,
   });
 
   return {

@@ -28,7 +28,8 @@ export default function PreviewActionbar({
   const { updateUsernameMutation } = useUserActions();
 
   const isChecking = updateUsernameMutation.isPending;
-  const isValid = updateUsernameMutation.isSuccess;
+  const isValid =
+    username === initialUsername || updateUsernameMutation.isSuccess;
 
   // Check username availability with debounce
   useEffect(() => {
@@ -38,7 +39,7 @@ export default function PreviewActionbar({
 
     const sanitizedUsername = username.trim();
 
-    if (sanitizedUsername === "") {
+    if (sanitizedUsername === "" || sanitizedUsername === initialUsername) {
       return;
     }
 
@@ -50,11 +51,8 @@ export default function PreviewActionbar({
 
     debounceTimerRef.current = setTimeout(async () => {
       try {
-        console.log("saving sanitizedUsername", sanitizedUsername);
         await updateUsernameMutation.mutateAsync(sanitizedUsername);
-      } catch (error) {
-        console.error("Error checking username:", error);
-      }
+      } catch (e) {}
     }, 500); // Check every 500ms at most
 
     return () => {
