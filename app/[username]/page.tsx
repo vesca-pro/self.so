@@ -41,7 +41,7 @@ export default async function ProfilePage({
 
       <div className="text-center mt-8 mb-4">
         <Link
-          href={`?ref=${username}`}
+          href={`/?ref=${username}`}
           className="text-design-gray font-mono text-sm"
         >
           Made by{" "}

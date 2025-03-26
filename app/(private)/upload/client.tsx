@@ -31,8 +31,10 @@ type FileState =
 
 export default function UploadPageClient() {
   const router = useRouter();
-  const { resume, isLoading, uploadResumeMutation } = useUserActions();
+  const { resumeQuery, uploadResumeMutation } = useUserActions();
   const [fileState, setFileState] = useState<FileState>({ status: "empty" });
+
+  const resume = resumeQuery.data?.resume;
 
   // Update fileState whenever resume changes
   useEffect(() => {
@@ -56,7 +58,7 @@ export default function UploadPageClient() {
     setFileState({ status: "empty" });
   };
 
-  if (isLoading) {
+  if (resumeQuery.isLoading) {
     return <LoadingFallback message="Loading..." />;
   }
 
