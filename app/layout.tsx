@@ -28,7 +28,7 @@ export default function RootLayout({
         <html lang="en">
           <body className={`${mono.className} min-h-screen flex flex-col`}>
             <main className="flex-1 flex flex-col">{children}</main>
-            <Toaster richColors />
+            <Toaster richColors position="bottom-center" />
           </body>
         </html>
       </ReactQueryClientProvider>

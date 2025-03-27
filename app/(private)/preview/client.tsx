@@ -1,15 +1,18 @@
 "use client";
 import LoadingFallback from "@/components/LoadingFallback";
+import { PopupSiteLive } from "@/components/PopupSiteLive";
 import PreviewActionbar from "@/components/PreviewActionbar";
 import { FullResume } from "@/components/resume/FullResume";
 import { useUserActions } from "@/hooks/useUserActions";
 import { useUser } from "@clerk/nextjs";
+import { useState } from "react";
 
 import { toast } from "sonner";
 
 export default function PreviewClient() {
   const { user } = useUser();
   const { resumeQuery, toggleStatusMutation, usernameQuery } = useUserActions();
+  const [showModalSiteLive, setModalSiteLive] = useState(false);
 
   if (resumeQuery.isLoading || usernameQuery.isLoading || !usernameQuery.data) {
     return <LoadingFallback message="Loading..." />;
@@ -23,7 +26,12 @@ export default function PreviewClient() {
           status={resumeQuery.data?.resume?.status}
           onStatusChange={async (newStatus) => {
             await toggleStatusMutation.mutateAsync(newStatus);
-            if (newStatus === "live") {
+            const isFirstTime = !localStorage.getItem("publishedSite");
+
+            if (isFirstTime && newStatus === "live") {
+              setModalSiteLive(true);
+              localStorage.setItem("publishedSite", new Date().toDateString());
+            } else {
               toast.success("Your website has been updated!");
             }
           }}
@@ -37,6 +45,14 @@ export default function PreviewClient() {
           profilePicture={user?.imageUrl}
         />
       </div>
+
+      <PopupSiteLive
+        isOpen={showModalSiteLive}
+        websiteUrl=""
+        onClose={() => {
+          setModalSiteLive(false);
+        }}
+      />
     </div>
   );
 }

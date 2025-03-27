@@ -3,10 +3,11 @@
 import type React from "react";
 
 import { useState, useEffect, useRef } from "react";
-import { X } from "lucide-react";
+import { ClipboardCopyIcon, CopyIcon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useUserActions } from "@/hooks/useUserActions";
+import { toast } from "sonner";
 
 export type PublishStatuses = "draft" | "live";
 
@@ -81,8 +82,8 @@ export default function PreviewActionbar({
     <div className="w-full rounded-lg bg-[#fcfcfc] border-[0.5px] border-neutral-300 flex items-center justify-between py-3 px-5  sm:px-4 sm:py-2.5  flex-col sm:flex-row gap-4">
       <div className="flex flex-col sm:flex-row items-center gap-4">
         <div className="flex items-center gap-1 mr-1">
-          <img src="/link-icon.png" className="w-4 h-4 text-[#1f1f1f]" />
-          <p className="text-sm text-[#1f1f1f]">{prefix}</p>
+          <img src="/link-icon.png" className="w-4 h-4 text-design-black" />
+          <p className="text-sm text-design-black">{prefix}</p>
         </div>
 
         <div className="w-full md:max-h-[34px] overflow-hidden rounded bg-white border-[0.5px] border-neutral-300 flex flex-col sm:flex-row">
@@ -126,7 +127,25 @@ export default function PreviewActionbar({
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
+        {status === "live" && (
+          <Button
+            onClick={() => {
+              const domain =
+                process.env.NODE_ENV === "development"
+                  ? "http://localhost:300"
+                  : "https://self-so.vercel.app";
+              const slug = isValid ? username : initialUsername;
+              const portofolioUrl = `${domain}/${slug}`;
+              navigator.clipboard.writeText(portofolioUrl);
+              toast.success("Copied link to your resume");
+            }}
+            className="!size-8 "
+            variant="outline"
+          >
+            <CopyIcon className="size-5" />
+          </Button>
+        )}
         <div className="flex items-center gap-2">
           <div
             className="w-2 h-2 rounded-full"
@@ -146,9 +165,9 @@ export default function PreviewActionbar({
 
         <Button
           variant="default"
-          disabled={!isValid || isChangingStatus}
+          disabled={(!isValid && status === "draft") || isChangingStatus}
           onClick={handleStatusChange}
-          className="flex items-center min-w-[100px] min-h-8 gap-1.5 px-3 py-1.5 h-auto bg-[#1f1f1f] hover:bg-[#333333] text-[#fcfcfc]"
+          className="flex items-center min-w-[100px] min-h-8 gap-1.5 px-3 py-1.5 h-auto bg-design-black hover:bg-[#333333] text-[#fcfcfc]"
         >
           {isChangingStatus ? (
             <>
