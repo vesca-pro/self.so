@@ -20,7 +20,7 @@ export default function PreviewClient() {
   }
 
   const CustomLiveToast = () => (
-    <div className="w-fit h-[44px] items-center justify-center relative rounded-md bg-[#eaffea] border border-[#009505] shadow-md flex flex-row gap-2 px-2">
+    <div className="w-fit min-w-[360px] h-[44px] items-center justify-between relative rounded-md bg-[#eaffea] border border-[#009505] shadow-md flex flex-row gap-2 px-2">
       <svg
         width="24"
         height="24"
