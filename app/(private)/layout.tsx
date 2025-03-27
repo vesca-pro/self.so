@@ -10,7 +10,9 @@ export default function RootLayout({
   return (
     <>
       <TopMenu />
-      <section className="flex-1 flex flex-col">{children}</section>
+      <section className="flex-1 flex flex-col min-h-[90vh]">
+        {children}
+      </section>
       <Footer />
     </>
   );

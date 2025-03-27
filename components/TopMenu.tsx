@@ -5,7 +5,7 @@ import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 export function TopMenu() {
   return (
     <>
-      <header className="w-full py-4 px-6 flex justify-between items-center max-w-4xl mx-auto h-[67px]">
+      <header className="w-full py-4 md:px-0 px-6 flex justify-between items-center max-w-4xl mx-auto h-[67px]">
         <Link href="/" className="flex items-center gap-2">
           <img src="/logo.svg" alt="Self.so Logo" className="h-[30px] w-auto" />
         </Link>
