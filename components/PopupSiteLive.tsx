@@ -3,6 +3,7 @@ import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
 import { Copy, SquareArrowOutUpRight, X } from "lucide-react";
 import { useMemo } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { toast } from "sonner";
 
 export const PopupSiteLive = ({
   isOpen,
@@ -34,7 +35,18 @@ export const PopupSiteLive = ({
             <div className="flex-grow bg-gray-100 rounded-md border border-gray-300 p-2 px-3 text-sm text-gray-700 min-h-10">
               {websiteUrl}
             </div>
-            <div className="grid grid-cols-2 md:flex md:flex-row gap-2.5 md:gap-2">
+            <div className="grid grid-cols-2 md:flex md:flex-row-reverse gap-2.5 md:gap-2">
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(websiteUrl);
+                  toast.success("Url copied to clipboard");
+                }}
+                className="bg-design-black rounded-md hover:bg-gray-800 p-2 text-white flex flex-row gap-2 items-center justify-center"
+                title="Copy URL"
+              >
+                <Copy className="h-5 w-5" />
+                <span className="md:hidden text-white">Copy URL</span>
+              </button>
               <a
                 href={websiteUrl}
                 target="_blank"
@@ -42,18 +54,8 @@ export const PopupSiteLive = ({
                 className="bg-design-black hover:bg-gray-800 p-2 text-white rounded-md flex flex-row gap-2 items-center justify-center"
               >
                 <SquareArrowOutUpRight className="h-5 w-5" />
-                <span className="md:hidden text-white">Copy URL</span>
-              </a>
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(websiteUrl);
-                }}
-                className="bg-design-black rounded-md hover:bg-gray-800 p-2 text-white flex flex-row gap-2 items-center justify-center"
-                title="Copy URL"
-              >
-                <Copy className="h-5 w-5" />
                 <span className="md:hidden text-white">Visit Site</span>
-              </button>
+              </a>
             </div>
           </div>
         </div>

@@ -44,7 +44,7 @@ async function LLMProcessing({ userId }: { userId: string }) {
 
   if (!resume.resumeData) {
     const resumeObject = await generateResumeObject(resume?.fileContent);
-    storeResume(userId, {
+    await storeResume(userId, {
       ...resume,
       resumeData: resumeObject,
     });

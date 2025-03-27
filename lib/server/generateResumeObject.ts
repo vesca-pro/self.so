@@ -12,7 +12,6 @@ export const generateResumeObject = async (resumeText: string) => {
     model: togetherai("meta-llama/Llama-3.3-70B-Instruct-Turbo-Free"),
     schema: ResumeDataSchema,
     prompt: `Generate a resume object from the following resume text:
-
     ${resumeText}
     `,
   });
