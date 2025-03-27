@@ -71,7 +71,7 @@ export default function Home() {
 
               <img
                 src="/cv-home.png"
-                className="relative w-full max-w-[500px] h-[auto] object-fit overflow-hidden animate-in fade-in scale-95 duration-[15s]"
+                className="relative w-full max-w-[500px] h-[auto] object-fit overflow-hidden animate-in fade-in scale-95 duration-1000"
               />
             </div>
           </div>
