@@ -5,7 +5,7 @@ import type React from "react";
 import { useState, useEffect, useRef } from "react";
 import { ClipboardCopyIcon, CopyIcon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn, getSelfSoUrl } from "@/lib/utils";
 import { useUserActions } from "@/hooks/useUserActions";
 import { toast } from "sonner";
 
@@ -131,12 +131,8 @@ export default function PreviewActionbar({
         {status === "live" && (
           <Button
             onClick={() => {
-              const domain =
-                process.env.NODE_ENV === "development"
-                  ? "http://localhost:300"
-                  : "https://self-so.vercel.app";
-              const slug = isValid ? username : initialUsername;
-              const portofolioUrl = `${domain}/${slug}`;
+              const usernameCorrect = isValid ? username : initialUsername;
+              const portofolioUrl = getSelfSoUrl(usernameCorrect);
               navigator.clipboard.writeText(portofolioUrl);
               toast.success("Copied link to your resume");
             }}

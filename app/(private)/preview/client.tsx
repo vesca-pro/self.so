@@ -4,6 +4,7 @@ import { PopupSiteLive } from "@/components/PopupSiteLive";
 import PreviewActionbar from "@/components/PreviewActionbar";
 import { FullResume } from "@/components/resume/FullResume";
 import { useUserActions } from "@/hooks/useUserActions";
+import { getSelfSoUrl } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
 
@@ -91,7 +92,7 @@ export default function PreviewClient() {
 
       <PopupSiteLive
         isOpen={showModalSiteLive}
-        websiteUrl=""
+        websiteUrl={getSelfSoUrl(usernameQuery.data.username)}
         onClose={() => {
           setModalSiteLive(false);
         }}
