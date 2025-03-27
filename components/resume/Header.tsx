@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ResumeDataSchemaType } from "@/lib/resume";
+import { useMemo } from "react";
 
 interface SocialButtonProps {
   href: string;
@@ -20,7 +21,11 @@ function SocialButton({ href, icon: Icon, label }: SocialButtonProps) {
   return (
     <Button className="size-8" variant="outline" size="icon" asChild>
       <a
-        href={href}
+        href={
+          href.startsWith("mailto:") || href.startsWith("tel:")
+            ? href
+            : `${href}${href.includes("?") ? "&" : "?"}ref=selfso`
+        }
         aria-label={label}
         target="_blank"
         rel="noopener noreferrer"
@@ -41,6 +46,26 @@ export function Header({
   header: ResumeDataSchemaType["header"];
   picture?: string;
 }) {
+  const prefixUrl = (stringToFix?: string) => {
+    if (!stringToFix) return undefined;
+    const url = stringToFix.trim();
+    return url.startsWith("http") ? url : `https://${url}`;
+  };
+
+  const website = useMemo(() => {
+    return prefixUrl(header.contacts.website);
+  }, [header.contacts.website]);
+
+  const github = useMemo(() => {
+    return prefixUrl(header.contacts.github);
+  }, [header.contacts.github]);
+  const twitter = useMemo(() => {
+    return prefixUrl(header.contacts.twitter);
+  }, [header.contacts.twitter]);
+  const linkedin = useMemo(() => {
+    return prefixUrl(header.contacts.linkedin);
+  }, [header.contacts.linkedin]);
+
   return (
     <header className="flex items-center justify-between">
       <div className="flex-1 space-y-1.5">
@@ -73,9 +98,9 @@ export function Header({
           role="list"
           aria-label="Contact links"
         >
-          {header.contacts.website && (
+          {website && (
             <SocialButton
-              href={header.contacts.website}
+              href={website}
               icon={GlobeIcon}
               label="Personal website"
             />
@@ -94,23 +119,15 @@ export function Header({
               label="Phone"
             />
           )}
-          {header.contacts.github && (
-            <SocialButton
-              href={`${header.contacts.github}`}
-              icon={Github}
-              label="GitHub"
-            />
+          {github && (
+            <SocialButton href={`${github}`} icon={Github} label="GitHub" />
           )}
-          {header.contacts.twitter && (
-            <SocialButton
-              href={`${header.contacts.twitter}`}
-              icon={Twitter}
-              label="Twitter"
-            />
+          {twitter && (
+            <SocialButton href={`${twitter}`} icon={Twitter} label="Twitter" />
           )}
-          {header.contacts.linkedin && (
+          {linkedin && (
             <SocialButton
-              href={`${header.contacts.linkedin}`}
+              href={`${linkedin}`}
               icon={Linkedin}
               label="LinkedIn"
             />
@@ -121,13 +138,10 @@ export function Header({
           className="hidden gap-x-2 font-mono text-sm text-design-resume print:flex print:text-[12px]"
           aria-label="Print contact information"
         >
-          {header.contacts.website && (
+          {website && (
             <>
-              <a
-                className="underline hover:text-foreground/70"
-                href={header.contacts.website}
-              >
-                {new URL(header.contacts.website).hostname}
+              <a className="underline hover:text-foreground/70" href={website}>
+                {new URL(website).hostname}
               </a>
               <span aria-hidden="true">/</span>
             </>

@@ -69,6 +69,10 @@ export function useUserActions() {
       const error = await response.json();
       return Promise.reject(error);
     }
+
+    return {
+      success: true,
+    };
   };
 
   // Update resume data in Upstash
