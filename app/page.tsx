@@ -42,19 +42,21 @@ export default function Home() {
                   />
                 </h1>
 
-                <p className="text-xl text-gray-600 mb-[30px] font-mono text-center md:text-left">
-                  Turn your resume/LinkedIn into a professional website.
+                <p className="text-base text-gray-600 mb-[30px] font-mono text-center md:text-left">
+                  Turn your resume/LinkedIn
+                  <br /> into a professional website.
                 </p>
 
                 <div className="relative flex flex-col items-center font-mono w-full md:w-fit">
                   <Link href="/upload">
-                    <Button className="bg-design-black hover:bg-design-black/95 text-white px-6 py-3 h-auto text-lg">
+                    <Button className="relative group flex items-center bg-design-black hover:bg-design-black/95 text-white px-6 py-3 h-auto text-base overflow-hidden">
+                      <div className="h-[120px] w-10 bg-gradient-to-r from-white/10 via-white/50 to-white/10 absolute blur-sm -rotate-45 -left-16 group-hover:left-[150%] duration-500 delay-200" />
                       <img
                         src="/sparkle.png"
                         alt="Sparkle Icon"
-                        className="h-5 w-5 mr-2"
+                        className="h-5 w-5 mr-2 relative"
                       />
-                      Upload Resume
+                      <span className="relative">Upload Resume</span>
                     </Button>
                   </Link>
 
@@ -68,7 +70,6 @@ export default function Home() {
             {/* Right side - Preview */}
             <div className="w-full md:w-1/2 flex justify-center items-center flex-1 relative max-h-[700px]  min-w-[50%]">
               <div className="absolute inset-0 -bottom-4 rounded-3xl bg-black/5 blur-xl h-full"></div>
-
               <img
                 src="/cv-home.png"
                 className="relative w-full max-w-[500px] h-[auto] object-fit overflow-hidden animate-in fade-in scale-95 duration-1000"
