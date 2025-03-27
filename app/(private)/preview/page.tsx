@@ -11,6 +11,7 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import LoadingFallback from "../../../components/LoadingFallback";
 import { scrapePdfContent } from "@/lib/server/scrapePdfContent";
+import { MAX_USERNAME_LENGTH } from "@/lib/config";
 
 async function ResumeIngestion({ userId }: { userId: string }) {
   const resume = await getResume(userId);
@@ -54,15 +55,19 @@ async function LLMProcessing({ userId }: { userId: string }) {
   // we set the username only if it wasn't already set for this user meaning it's new user
   const foundUsername = await getUsernameById(userId);
 
+  const hashLength = 6;
+
   if (!foundUsername) {
     const username =
-      resume.resumeData.header.name ||
-      "user"
-        .toLowerCase()
-        .replace(/[^a-z0-9\s]/g, "")
-        .replace(/\s+/g, "-") +
-        "-" +
-        Math.random().toString(36).substring(2, 8);
+      (
+        (resume.resumeData.header.name || "user")
+          .toLowerCase()
+          .replace(/[^a-z0-9\s]/g, "")
+          .replace(/\s+/g, "-") + "-"
+      ).slice(0, MAX_USERNAME_LENGTH - hashLength) +
+      Math.random()
+        .toString(36)
+        .substring(2, 2 + hashLength);
 
     const creation = await createUsernameLookup({
       userId,

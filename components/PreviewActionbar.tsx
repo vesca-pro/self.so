@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { cn, getSelfSoUrl } from "@/lib/utils";
 import { useUserActions } from "@/hooks/useUserActions";
 import { toast } from "sonner";
+import { MAX_USERNAME_LENGTH } from "@/lib/config";
 
 export type PublishStatuses = "draft" | "live";
 
@@ -38,6 +39,8 @@ export default function PreviewActionbar({
       clearTimeout(debounceTimerRef.current);
     }
 
+    if (!username) return;
+
     const sanitizedUsername = username.trim();
 
     if (sanitizedUsername === "" || sanitizedUsername === initialUsername) {
@@ -66,7 +69,7 @@ export default function PreviewActionbar({
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newUsername = e.target.value
       .replace(/[^a-zA-Z0-9-]/g, "")
-      .slice(0, 20);
+      .slice(0, MAX_USERNAME_LENGTH);
     setUsername(newUsername);
   };
 
@@ -89,9 +92,9 @@ export default function PreviewActionbar({
         <div className="w-full md:max-h-[34px] overflow-hidden rounded bg-white border-[0.5px] border-neutral-300 flex flex-col sm:flex-row">
           <input
             type="text"
-            value={username}
+            value={username || ""}
             onChange={handleUsernameChange}
-            maxLength={20}
+            maxLength={MAX_USERNAME_LENGTH}
             placeholder="Only letters, numbers and hyphens allowed"
             className="flex-1 p-3 text-sm text-[#5d5d5d] border-none outline-none focus:ring-0 bg-transparent"
           />

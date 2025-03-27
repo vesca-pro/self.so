@@ -24,7 +24,6 @@ import {
 
 type FileState =
   | { status: "empty" }
-  | { status: "uploading"; file: File }
   | { status: "saved"; file: { name: string; url: string; size: number } };
 
 export default function UploadPageClient() {
@@ -61,6 +60,8 @@ export default function UploadPageClient() {
     return <LoadingFallback message="Loading..." />;
   }
 
+  const isUpdating = resumeQuery.isPending || uploadResumeMutation.isPending;
+
   return (
     <div className="flex flex-col items-center flex-1 px-4 py-12 gap-6">
       <div className="w-full max-w-[438px] text-center font-mono">
@@ -74,7 +75,7 @@ export default function UploadPageClient() {
             <button
               onClick={handleReset}
               className="absolute top-2 right-2 p-1 hover:bg-gray-100 rounded-full z-10"
-              disabled={fileState.status === "uploading"}
+              disabled={isUpdating}
             >
               <X className="h-4 w-4 text-gray-500" />
             </button>
@@ -85,11 +86,7 @@ export default function UploadPageClient() {
             maxFiles={1}
             icon={
               fileState.status !== "empty" ? (
-                fileState.status === "uploading" ? (
-                  <CustomSpinner className="size-7" />
-                ) : (
-                  <img src="/uploaded-pdf.svg" className="h-6 w-6" />
-                )
+                <img src="/uploaded-pdf.svg" className="h-6 w-6" />
               ) : (
                 <Linkedin className="h-6 w-6 text-gray-600" />
               )
@@ -141,13 +138,11 @@ export default function UploadPageClient() {
       <div className="font-mono">
         <div className="relative">
           <Button
-            className="px-4 py-4 h-auto bg-design-black hover:bg-design-black/95"
-            disabled={
-              fileState.status === "empty" || fileState.status === "uploading"
-            }
+            className="px-4 py-3 h-auto bg-design-black hover:bg-design-black/95"
+            disabled={fileState.status === "empty" || isUpdating}
             onClick={() => router.push("/preview")}
           >
-            {fileState.status === "uploading" ? (
+            {isUpdating ? (
               <>
                 <CustomSpinner className="h-5 w-5 mr-2" />
                 Processing...
