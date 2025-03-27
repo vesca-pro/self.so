@@ -47,9 +47,9 @@ export default function PreviewClient() {
                     <path
                       d="M16.6668 8.5L10.2502 14.9167L7.3335 12"
                       stroke="#009505"
-                      stroke-width="1.3"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeWidth="1.3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     ></path>
                   </svg>
                   <p className="absolute left-11 top-[13px] text-sm text-left text-[#003c02]">
