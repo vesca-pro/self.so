@@ -1,16 +1,5 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import {
-  Sparkles,
-  ArrowRight,
-  Play,
-  Mail,
-  Phone,
-  Github,
-  Linkedin,
-  ExternalLink,
-} from "lucide-react";
-import Image from "next/image";
 import { TopMenu } from "../components/TopMenu";
 import { Footer } from "../components/Footer";
 

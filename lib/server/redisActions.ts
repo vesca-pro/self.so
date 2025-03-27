@@ -1,6 +1,7 @@
 import { upstashRedis } from "@/lib/server/redis";
 import { ResumeDataSchema } from "@/lib/resume";
 import { z } from "zod";
+import { PRIVATE_ROUTES } from "../routes";
 
 // Key prefixes for different types of data
 const REDIS_KEYS = {
@@ -16,7 +17,7 @@ const FileSchema = z.object({
   size: z.number(),
 });
 
-const FORBIDDEN_USERNAMES = ["preview", "api", "upload"];
+const FORBIDDEN_USERNAMES = PRIVATE_ROUTES;
 
 // Define the complete resume schema
 const ResumeSchema = z.object({
