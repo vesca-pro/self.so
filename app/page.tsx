@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { TopMenu } from "../components/TopMenu";
 import { Footer } from "../components/Footer";
+import { BorderBeam } from "@/components/ui/BorderBeam";
+import { BlurFade } from "@/components/ui/BlurFade";
 
 export default function Home() {
   return (
@@ -57,6 +59,7 @@ export default function Home() {
                         className="h-5 w-5 mr-2 relative"
                       />
                       <span className="relative">Upload Resume</span>
+                      <BorderBeam colorFrom="#5d5d5d" colorTo="#ffffff" />
                     </Button>
                   </Link>
 
@@ -70,10 +73,12 @@ export default function Home() {
             {/* Right side - Preview */}
             <div className="w-full md:w-1/2 flex justify-center items-center flex-1 relative max-h-[700px]  min-w-[50%]">
               <div className="absolute inset-0 -bottom-4 rounded-3xl bg-black/5 blur-xl h-full"></div>
-              <img
-                src="/cv-home.png"
-                className="relative w-full max-w-[500px] h-[auto] object-fit overflow-hidden animate-in fade-in scale-95 duration-1000"
-              />
+              <BlurFade delay={0.25} inView>
+                <img
+                  src="/cv-home.png"
+                  className="relative w-full max-w-[500px] h-[auto] object-fit overflow-hidden"
+                />
+              </BlurFade>
             </div>
           </div>
         </div>
