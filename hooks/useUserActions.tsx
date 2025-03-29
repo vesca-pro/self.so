@@ -77,10 +77,16 @@ export function useUserActions() {
 
   // Update resume data in Upstash
   const uploadFileResume = async (file: File) => {
-    const { url } = await uploadToS3(file);
+    const fileOnS3 = await uploadToS3(file);
 
     const newResume: Resume = {
-      file: { name: file.name, url: url, size: file.size },
+      file: {
+        name: file.name,
+        url: fileOnS3.url,
+        size: file.size,
+        bucket: fileOnS3.bucket,
+        key: fileOnS3.key,
+      },
       resumeData: undefined,
       status: "draft",
     };

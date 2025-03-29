@@ -15,6 +15,8 @@ const FileSchema = z.object({
   name: z.string(),
   url: z.string().nullish(),
   size: z.number(),
+  bucket: z.string(),
+  key: z.string(),
 });
 
 const FORBIDDEN_USERNAMES = PRIVATE_ROUTES;
@@ -22,7 +24,7 @@ const FORBIDDEN_USERNAMES = PRIVATE_ROUTES;
 // Define the complete resume schema
 const ResumeSchema = z.object({
   status: z.enum(["live", "draft"]).default("draft"),
-  file: FileSchema,
+  file: FileSchema.nullish(),
   fileContent: z.string().nullish(),
   resumeData: ResumeDataSchema.nullish(),
 });

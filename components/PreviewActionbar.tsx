@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, use } from "react";
 import { ClipboardCopyIcon, CopyIcon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn, getSelfSoUrl } from "@/lib/utils";
@@ -25,7 +25,10 @@ export default function PreviewActionbar({
   onStatusChange?: (newStatus: PublishStatuses) => Promise<void>;
   isChangingStatus?: boolean;
 }) {
-  const [username, setUsername] = useState(initialUsername);
+  const [username, setUsername] = useState<string>();
+  useEffect(() => {
+    setUsername(initialUsername);
+  }, [initialUsername]);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const { updateUsernameMutation } = useUserActions();
 
@@ -135,6 +138,7 @@ export default function PreviewActionbar({
           <Button
             onClick={() => {
               const usernameCorrect = isValid ? username : initialUsername;
+              if (!usernameCorrect) return;
               const portofolioUrl = getSelfSoUrl(usernameCorrect);
               navigator.clipboard.writeText(portofolioUrl);
               toast.success("Copied link to your resume");
