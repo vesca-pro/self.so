@@ -11,7 +11,8 @@ const mono = JetBrains_Mono({ subsets: ["latin"] });
 export const metadata: Metadata = {
   metadataBase: new URL("https://self-so.vercel.app"),
   title: "Self.so - Resume to Website",
-  description: "LinkedIn to Website in one click!",
+  description:
+    "LinkedIn to Website in one click! Powered by Together AI and Llama 3.1",
   openGraph: {
     images: "/og.png",
   },
