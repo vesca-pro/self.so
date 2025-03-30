@@ -39,7 +39,7 @@ export const PopupSiteLive = ({
               <button
                 onClick={() => {
                   navigator.clipboard.writeText(websiteUrl);
-                  toast.success("Url copied to clipboard");
+                  toast.success("Copied link to your website");
                 }}
                 className="bg-design-black rounded-md hover:bg-gray-800 p-2 text-white flex flex-row gap-2 items-center justify-center"
                 title="Copy URL"

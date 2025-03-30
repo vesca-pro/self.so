@@ -141,7 +141,7 @@ export default function PreviewActionbar({
               if (!usernameCorrect) return;
               const portofolioUrl = getSelfSoUrl(usernameCorrect);
               navigator.clipboard.writeText(portofolioUrl);
-              toast.success("Copied link to your resume");
+              toast.success("Copied link to your website");
             }}
             className="!size-8 "
             variant="outline"
