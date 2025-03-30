@@ -67,7 +67,7 @@ export function Header({
   }, [header.contacts.linkedin]);
 
   return (
-    <header className="flex items-center justify-between">
+    <header className="flex items-start md:items-center justify-between gap-4 ">
       <div className="flex-1 space-y-1.5">
         <h1 className="text-2xl font-bold" id="resume-name">
           {header.name}
@@ -168,7 +168,7 @@ export function Header({
         </div>
       </div>
 
-      <Avatar className="size-28" aria-hidden="true">
+      <Avatar className="size-20 md:size-28" aria-hidden="true">
         <AvatarImage src={picture} alt={`${header.name}'s profile picture`} />
         <AvatarFallback>
           {header.name
