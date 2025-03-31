@@ -8,11 +8,11 @@ const HeaderSection = z.object({
     .describe("Location with format 'City, Country, Timezone'"),
   contacts: z.object({
     website: z.string().describe("Personal website or portfolio URL"),
-    email: z.string().describe("Email address"),
-    phone: z.string().describe("Phone number"),
-    twitter: z.string().describe("Twitter/X username"),
-    linkedin: z.string().describe("LinkedIn username"),
-    github: z.string().describe("GitHub username"),
+    email: z.string().describe("Email address").optional(),
+    phone: z.string().describe("Phone number").optional(),
+    twitter: z.string().describe("Twitter/X username").optional(),
+    linkedin: z.string().describe("LinkedIn username").optional(),
+    github: z.string().describe("GitHub username").optional(),
   }),
 });
 

@@ -9,14 +9,12 @@ import { WorkExperience } from "./WorkExperience";
 export const FullResume = ({
   resume,
   profilePicture,
+  allSkills,
 }: {
   resume?: ResumeData | null;
   profilePicture?: string;
+  allSkills: string[];
 }) => {
-  const allSkills = [
-    ...new Set(resume?.workExperience.flatMap((work) => work.skills)),
-  ];
-
   if (!resume) {
     return <LoadingFallback message="Loading Resume..." />;
   }
