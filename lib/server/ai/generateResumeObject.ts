@@ -13,11 +13,11 @@ export const generateResumeObject = async (resumeText: string) => {
     schema: ResumeDataSchema,
 
     prompt: `Generate a resume object from the following resume text,
-Generate a resume object from the following resume text. If the resume text does not include an 'about' section or any job with skills mentioned, please generate appropriate content for these sections based on the context of the resume:
+Generate a resume object from the following resume text. If the resume text does not include an 'about' section or specfic skills mentioned, please generate appropriate content for these sections based on the context of the resume and based on the job role:
 
 For the about section: Create a professional summary that highlights the candidate's experience, expertise, and career objectives.
 
-For the skills on each job: Extract and infer relevant technical and soft skills from the experience and education sections while keeping a max of 4 skills per job.
+For the skills generate a maximum of 15 skills taken from the ones mentioned in the resume text or based on the job role / job title infer some if not present.
     ${resumeText}
     `,
   });

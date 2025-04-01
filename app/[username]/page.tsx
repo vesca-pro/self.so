@@ -70,12 +70,6 @@ export default async function ProfilePage({
 
   const profilePicture = clerkUser?.imageUrl;
 
-  const allSkills = [
-    ...new Set(
-      resume?.resumeData.workExperience.flatMap((work) => work.skills)
-    ),
-  ];
-
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -87,7 +81,7 @@ export default async function ProfilePage({
       resume.resumeData.header.contacts.email &&
       `mailto:${resume.resumeData.header.contacts.email}`,
     url: `https://self.so/${username}`,
-    skills: allSkills,
+    skills: resume.resumeData.header.skills,
   };
 
   return (
@@ -100,7 +94,7 @@ export default async function ProfilePage({
       <FullResume
         resume={resume?.resumeData}
         profilePicture={profilePicture}
-        allSkills={allSkills}
+        allSkills={resume?.resumeData?.header.skills || []}
       />
 
       <div className="text-center mt-8 mb-4">

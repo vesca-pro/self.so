@@ -14,6 +14,10 @@ const HeaderSection = z.object({
     linkedin: z.string().describe("LinkedIn username").optional(),
     github: z.string().describe("GitHub username").optional(),
   }),
+  skills: z
+    .array(z.string())
+    .max(15)
+    .describe("Skills used within the different jobs the user has had."),
 });
 
 const SummarySection = z.string().describe("Summary of your profile");
@@ -22,7 +26,6 @@ const WorkExperienceSection = z.array(
   z.object({
     company: z.string().describe("Company name"),
     link: z.string().describe("Company website URL"),
-    skills: z.array(z.string()).describe("Skills used within the role"),
     location: z
       .string()
       .describe(

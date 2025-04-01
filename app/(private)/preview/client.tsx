@@ -19,14 +19,6 @@ export default function PreviewClient() {
     return <LoadingFallback message="Loading..." />;
   }
 
-  const allSkills = [
-    ...new Set(
-      resumeQuery.data?.resume?.resumeData?.workExperience.flatMap(
-        (work) => work.skills
-      )
-    ),
-  ];
-
   const CustomLiveToast = () => (
     <div className="w-fit min-w-[360px] h-[44px] items-center justify-between relative rounded-md bg-[#eaffea] border border-[#009505] shadow-md flex flex-row gap-2 px-2">
       <svg
@@ -106,7 +98,7 @@ export default function PreviewClient() {
         <FullResume
           resume={resumeQuery.data?.resume?.resumeData}
           profilePicture={user?.imageUrl}
-          allSkills={allSkills}
+          allSkills={resumeQuery.data?.resume?.resumeData?.header.skills || []}
         />
       </div>
 

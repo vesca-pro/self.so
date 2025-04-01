@@ -1,4 +1,3 @@
-[] Fixing the timeout issue by splitting PDF / AI into two steps?
+# TODO
 
-After these as extra:
-[] allow editing of the resume inline directly as input fields
+[] Delete previously uploaded resume when we upload a new one?
