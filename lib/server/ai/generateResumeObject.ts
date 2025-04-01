@@ -9,7 +9,7 @@ const togetherai = createTogetherAI({
 export const generateResumeObject = async (resumeText: string) => {
   // we can for now do the AI parsing here?
   const { object } = await generateObject({
-    model: togetherai("meta-llama/Llama-3.3-70B-Instruct-Turbo-Free"),
+    model: togetherai("meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo"),
     schema: ResumeDataSchema,
 
     prompt: `Generate a resume object from the following resume text,
