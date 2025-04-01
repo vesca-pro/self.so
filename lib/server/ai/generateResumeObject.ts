@@ -7,9 +7,10 @@ const togetherai = createTogetherAI({
 });
 
 export const generateResumeObject = async (resumeText: string) => {
+  const startTime = Date.now();
   // we can for now do the AI parsing here?
   const { object } = await generateObject({
-    model: togetherai("meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo"),
+    model: togetherai("meta-llama/Llama-3.3-70B-Instruct-Turbo"),
     schema: ResumeDataSchema,
 
     prompt: `Generate a resume object from the following resume text,
@@ -21,6 +22,11 @@ For the skills generate a maximum of 15 skills taken from the ones mentioned in 
     ${resumeText}
     `,
   });
+
+  const endTime = Date.now();
+  console.log(
+    `Generating resume object took ${(endTime - startTime) / 1000} seconds`
+  );
 
   return object;
 };

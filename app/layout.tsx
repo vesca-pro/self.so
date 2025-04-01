@@ -27,6 +27,15 @@ export default function RootLayout({
     <ClerkProvider>
       <ReactQueryClientProvider>
         <html lang="en">
+          <head>
+            {process.env.NODE_ENV === "development" && (
+              <script
+                crossOrigin="anonymous"
+                src="//unpkg.com/react-scan/dist/auto.global.js"
+              />
+            )}
+            {/* rest of your scripts go under */}
+          </head>
           <body className={`${mono.className} min-h-screen flex flex-col`}>
             <main className="flex-1 flex flex-col">{children}</main>
             <Toaster richColors position="bottom-center" />
