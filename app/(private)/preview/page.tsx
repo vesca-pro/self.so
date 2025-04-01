@@ -15,7 +15,7 @@ import { MAX_USERNAME_LENGTH } from "@/lib/config";
 async function LLMProcessing({ userId }: { userId: string }) {
   let resume = await getResume(userId);
 
-  if (!resume?.fileContent) redirect("/pdf");
+  if (!resume?.fileContent) redirect("/upload");
 
   if (!resume.resumeData) {
     const resumeObject = await generateResumeObject(resume?.fileContent);
