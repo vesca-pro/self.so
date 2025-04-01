@@ -140,7 +140,7 @@ export default function UploadPageClient() {
           <Button
             className="px-4 py-3 h-auto bg-design-black hover:bg-design-black/95"
             disabled={fileState.status === "empty" || isUpdating}
-            onClick={() => router.push("/preview")}
+            onClick={() => router.push("/pdf")}
           >
             {isUpdating ? (
               <>
