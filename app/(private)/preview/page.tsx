@@ -95,7 +95,7 @@ async function LLMProcessing({ userId }: { userId: string }) {
       username,
     });
 
-    if (!creation) redirect("/resume?error=usernameCreationFailed");
+    if (!creation) redirect("/upload?error=usernameCreationFailed");
   }
 
   return <PreviewClient />;

@@ -26,6 +26,24 @@ const fetchUsername = async (): Promise<{
   return await response.json();
 };
 
+const checkUsernameAvailability = async (
+  username: string
+): Promise<{
+  available: boolean;
+}> => {
+  const response = await fetch(
+    `/api/check-username?username=${encodeURIComponent(username)}`,
+    {
+      method: "POST",
+    }
+  );
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || "Failed to check username availability");
+  }
+  return await response.json();
+};
+
 export function useUserActions() {
   const queryClient = useQueryClient();
   const { uploadToS3 } = useS3Upload();
@@ -91,7 +109,12 @@ export function useUserActions() {
       status: "draft",
     };
 
-    internalResumeUpdate(newResume);
+    queryClient.setQueryData(["resume"], (oldData: any) => ({
+      ...oldData,
+      ...newResume,
+    }));
+
+    await internalResumeUpdate(newResume);
   };
 
   // Mutation for updating resume
@@ -128,11 +151,21 @@ export function useUserActions() {
     throwOnError: false,
   });
 
+  // Mutation for checking username availability
+  const checkUsernameMutation = useMutation({
+    mutationFn: checkUsernameAvailability,
+    onSuccess: () => {
+      // Invalidate and refetch username availability data
+      queryClient.invalidateQueries({ queryKey: ["username-availability"] });
+    },
+  });
+
   return {
     resumeQuery,
     uploadResumeMutation,
     toggleStatusMutation,
     usernameQuery,
     updateUsernameMutation,
+    checkUsernameMutation,
   };
 }

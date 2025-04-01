@@ -130,6 +130,18 @@ export const getUserIdByUsername = async (
   return await upstashRedis.get(`${REDIS_KEYS.USER_NAME_PREFIX}${username}`);
 };
 
+export const checkUsernameAvailability = async (
+  username: string
+): Promise<{
+  available: boolean;
+}> => {
+  if (FORBIDDEN_USERNAMES.includes(username.toLowerCase())) {
+    return { available: false };
+  }
+  const userId = await getUserIdByUsername(username);
+  return { available: !userId };
+};
+
 /**
  * Delete a user by either user ID or username
  * @param opts Object containing either userId or username
