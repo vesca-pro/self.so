@@ -95,7 +95,7 @@ export default function PreviewActionbar({
 
           <Button
             variant="default"
-            disabled={status === "draft" || isChangingStatus}
+            disabled={isChangingStatus}
             onClick={handleStatusChange}
             className="flex items-center min-w-[100px] min-h-8 gap-1.5 px-3 py-1.5 h-auto bg-design-black hover:bg-[#333333] text-[#fcfcfc]"
           >
