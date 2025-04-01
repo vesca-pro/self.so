@@ -41,7 +41,7 @@ async function PdfProcessing({ userId }: { userId: string }) {
   }
 
   redirect("/preview");
-  return null; // This line will never be reached due to the redirect
+  return <></>; // This line will never be reached due to the redirect
 }
 
 export default async function Pdf() {
@@ -53,7 +53,7 @@ export default async function Pdf() {
     <>
       <Suspense
         fallback={
-          <LoadingFallback message="Scraping and reading your resume carefully..." />
+          <LoadingFallback message="Reading your resume carefully..." />
         }
       >
         <PdfProcessing userId={userId} />
