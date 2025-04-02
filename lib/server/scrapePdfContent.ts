@@ -1,4 +1,4 @@
-import { pdfToText } from "pdf-ts";
+import { pdfToText } from 'pdf-ts';
 
 export async function scrapePdfContent(pdfUrl: string) {
   const pdfFetch = await fetch(pdfUrl);

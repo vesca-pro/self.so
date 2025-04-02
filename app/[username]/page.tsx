@@ -1,10 +1,10 @@
-import { redirect } from "next/navigation";
-import { getResume, getUserIdByUsername } from "../../lib/server/redisActions";
-import { clerkClient } from "@clerk/nextjs/server";
-import { unstable_cache } from "next/cache";
-import Link from "next/link";
-import { FullResume } from "@/components/resume/FullResume";
-import { Metadata } from "next";
+import { redirect } from 'next/navigation';
+import { getResume, getUserIdByUsername } from '../../lib/server/redisActions';
+import { clerkClient } from '@clerk/nextjs/server';
+import { unstable_cache } from 'next/cache';
+import Link from 'next/link';
+import { FullResume } from '@/components/resume/FullResume';
+import { Metadata } from 'next';
 
 export async function generateMetadata({
   params,
@@ -16,17 +16,17 @@ export async function generateMetadata({
 
   if (!user_id) {
     return {
-      title: "User Not Found | Self.so",
-      description: "This user profile could not be found on Self.so",
+      title: 'User Not Found | Self.so',
+      description: 'This user profile could not be found on Self.so',
     };
   }
 
   const resume = await getResume(user_id);
 
-  if (!resume?.resumeData || resume.status !== "live") {
+  if (!resume?.resumeData || resume.status !== 'live') {
     return {
-      title: "Resume Not Found | Self.so",
-      description: "This resume could not be found on Self.so",
+      title: 'Resume Not Found | Self.so',
+      description: 'This resume could not be found on Self.so',
     };
   }
 
@@ -53,7 +53,7 @@ export default async function ProfilePage({
 
   const resume = await getResume(user_id);
 
-  if (!resume?.resumeData || resume.status !== "live")
+  if (!resume?.resumeData || resume.status !== 'live')
     redirect(`/?idNotFound=${user_id}`);
 
   const getCachedUser = unstable_cache(
@@ -62,7 +62,7 @@ export default async function ProfilePage({
     },
     [user_id],
     {
-      tags: ["users"],
+      tags: ['users'],
       revalidate: 86400, // 1 day in seconds
     }
   );
@@ -71,8 +71,8 @@ export default async function ProfilePage({
   const profilePicture = clerkUser?.imageUrl;
 
   const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Person",
+    '@context': 'https://schema.org',
+    '@type': 'Person',
     name: resume.resumeData.header.name,
     image: profilePicture,
     jobTitle: resume.resumeData.header.shortAbout,
@@ -87,7 +87,7 @@ export default async function ProfilePage({
   return (
     <>
       <script
-        type="application/ld+json"
+        type='application/ld+json'
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
@@ -97,13 +97,13 @@ export default async function ProfilePage({
         allSkills={resume?.resumeData?.header.skills || []}
       />
 
-      <div className="text-center mt-8 mb-4">
+      <div className='text-center mt-8 mb-4'>
         <Link
           href={`/?ref=${username}`}
-          className="text-design-gray font-mono text-sm"
+          className='text-design-gray font-mono text-sm'
         >
-          Made by{" "}
-          <span className="text-design-black underline underline-offset-2">
+          Made by{' '}
+          <span className='text-design-black underline underline-offset-2'>
             Self.so
           </span>
         </Link>

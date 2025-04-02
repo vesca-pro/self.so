@@ -1,6 +1,6 @@
-import { getResume } from "@/lib/server/redisActions";
-import { clerkClient } from "@clerk/nextjs/server";
-import { unstable_cache } from "next/cache";
+import { getResume } from '@/lib/server/redisActions';
+import { clerkClient } from '@clerk/nextjs/server';
+import { unstable_cache } from 'next/cache';
 
 export const getCachedUser = async (userId: string) => {
   return unstable_cache(
@@ -9,7 +9,7 @@ export const getCachedUser = async (userId: string) => {
     },
     [userId],
     {
-      tags: ["users"],
+      tags: ['users'],
       revalidate: 86400, // 1 day in seconds
     }
   )();
@@ -22,7 +22,7 @@ export const getCachedResume = async (userId: string) => {
     },
     [userId],
     {
-      tags: ["resumes"],
+      tags: ['resumes'],
       revalidate: 86400, // 1 day in seconds
     }
   );

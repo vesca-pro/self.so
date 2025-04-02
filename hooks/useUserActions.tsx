@@ -1,16 +1,16 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Resume } from "@/lib/server/redisActions";
-import { useS3Upload } from "next-s3-upload";
-import { PublishStatuses } from "@/components/PreviewActionbar";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Resume } from '@/lib/server/redisActions';
+import { useS3Upload } from 'next-s3-upload';
+import { PublishStatuses } from '@/components/PreviewActionbar';
 
 // Fetch resume data
 const fetchResume = async (): Promise<{
   resume: Resume | undefined;
 }> => {
-  const response = await fetch("/api/resume");
+  const response = await fetch('/api/resume');
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.error || "Failed to fetch resume");
+    throw new Error(error.error || 'Failed to fetch resume');
   }
   return await response.json();
 };
@@ -18,10 +18,10 @@ const fetchResume = async (): Promise<{
 const fetchUsername = async (): Promise<{
   username: string;
 }> => {
-  const response = await fetch("/api/username");
+  const response = await fetch('/api/username');
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.error || "Failed to fetch username");
+    throw new Error(error.error || 'Failed to fetch username');
   }
   return await response.json();
 };
@@ -34,12 +34,12 @@ const checkUsernameAvailability = async (
   const response = await fetch(
     `/api/check-username?username=${encodeURIComponent(username)}`,
     {
-      method: "POST",
+      method: 'POST',
     }
   );
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.error || "Failed to check username availability");
+    throw new Error(error.error || 'Failed to check username availability');
   }
   return await response.json();
 };
@@ -50,20 +50,20 @@ export function useUserActions() {
 
   // Query for fetching resume data
   const resumeQuery = useQuery({
-    queryKey: ["resume"],
+    queryKey: ['resume'],
     queryFn: fetchResume,
   });
 
   const usernameQuery = useQuery({
-    queryKey: ["username"],
+    queryKey: ['username'],
     queryFn: fetchUsername,
   });
 
   const internalResumeUpdate = async (newResume: Resume) => {
-    const response = await fetch("/api/resume", {
-      method: "POST",
+    const response = await fetch('/api/resume', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(newResume),
     });
@@ -75,10 +75,10 @@ export function useUserActions() {
   };
 
   const internalUsernameUpdate = async (newUsername: string) => {
-    const response = await fetch("/api/username", {
-      method: "POST",
+    const response = await fetch('/api/username', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ username: newUsername }),
     });
@@ -106,10 +106,10 @@ export function useUserActions() {
         key: fileOnS3.key,
       },
       resumeData: undefined,
-      status: "draft",
+      status: 'draft',
     };
 
-    queryClient.setQueryData(["resume"], (oldData: any) => ({
+    queryClient.setQueryData(['resume'], (oldData: any) => ({
       ...oldData,
       ...newResume,
     }));
@@ -122,7 +122,7 @@ export function useUserActions() {
     mutationFn: uploadFileResume,
     onSuccess: () => {
       // Invalidate and refetch resume data
-      queryClient.invalidateQueries({ queryKey: ["resume"] });
+      queryClient.invalidateQueries({ queryKey: ['resume'] });
     },
   });
 
@@ -137,7 +137,7 @@ export function useUserActions() {
     },
     onSuccess: () => {
       // Invalidate and refetch resume data
-      queryClient.invalidateQueries({ queryKey: ["resume"] });
+      queryClient.invalidateQueries({ queryKey: ['resume'] });
     },
   });
 
@@ -146,7 +146,7 @@ export function useUserActions() {
     mutationFn: internalUsernameUpdate,
     onSuccess: () => {
       // Invalidate and refetch username data
-      queryClient.invalidateQueries({ queryKey: ["username"] });
+      queryClient.invalidateQueries({ queryKey: ['username'] });
     },
     throwOnError: false,
   });
@@ -156,7 +156,7 @@ export function useUserActions() {
     mutationFn: checkUsernameAvailability,
     onSuccess: () => {
       // Invalidate and refetch username availability data
-      queryClient.invalidateQueries({ queryKey: ["username-availability"] });
+      queryClient.invalidateQueries({ queryKey: ['username-availability'] });
     },
   });
 

@@ -9,7 +9,7 @@ import { Metadata } from 'next';
 const mono = JetBrains_Mono({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://self-so.vercel.app'),
+  metadataBase: new URL('https://self.so'),
   title: 'Self.so - Resume to Website',
   description:
     'LinkedIn to Website in one click! Powered by Together AI and Llama 3.1',

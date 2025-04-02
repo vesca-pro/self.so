@@ -1,13 +1,13 @@
-import { upstashRedis } from "@/lib/server/redis";
-import { ResumeDataSchema } from "@/lib/resume";
-import { z } from "zod";
-import { PRIVATE_ROUTES } from "../routes";
+import { upstashRedis } from '@/lib/server/redis';
+import { ResumeDataSchema } from '@/lib/resume';
+import { z } from 'zod';
+import { PRIVATE_ROUTES } from '../routes';
 
 // Key prefixes for different types of data
 const REDIS_KEYS = {
-  RESUME_PREFIX: "resume:", // Using colon is a Redis convention for namespacing
-  USER_ID_PREFIX: "user:id:",
-  USER_NAME_PREFIX: "user:name:",
+  RESUME_PREFIX: 'resume:', // Using colon is a Redis convention for namespacing
+  USER_ID_PREFIX: 'user:id:',
+  USER_NAME_PREFIX: 'user:name:',
 } as const;
 
 // Define the file schema
@@ -23,7 +23,7 @@ const FORBIDDEN_USERNAMES = PRIVATE_ROUTES;
 
 // Define the complete resume schema
 const ResumeSchema = z.object({
-  status: z.enum(["live", "draft"]).default("draft"),
+  status: z.enum(['live', 'draft']).default('draft'),
   file: FileSchema.nullish(),
   fileContent: z.string().nullish(),
   resumeData: ResumeDataSchema.nullish(),
@@ -41,8 +41,8 @@ export async function getResume(userId: string): Promise<Resume | undefined> {
     );
     return resume || undefined;
   } catch (error) {
-    console.error("Error retrieving resume:", error);
-    throw new Error("Failed to retrieve resume");
+    console.error('Error retrieving resume:', error);
+    throw new Error('Failed to retrieve resume');
   }
 }
 
@@ -61,8 +61,8 @@ export async function storeResume(
     if (error instanceof z.ZodError) {
       throw error;
     }
-    console.error("Error storing resume:", error);
-    throw new Error("Failed to store resume");
+    console.error('Error storing resume:', error);
+    throw new Error('Failed to store resume');
   }
 }
 
@@ -101,9 +101,9 @@ export const createUsernameLookup = async ({
 
   try {
     const results = await transaction.exec();
-    return results.every((result) => result === "OK");
+    return results.every((result) => result === 'OK');
   } catch (error) {
-    console.error("User creation failed:", error);
+    console.error('User creation failed:', error);
     return false;
   }
 };
@@ -178,7 +178,7 @@ export const deleteUser = async (opts: {
     const results = await transaction.exec();
     return results.every((result) => result === 1);
   } catch (error) {
-    console.error("User deletion failed:", error);
+    console.error('User deletion failed:', error);
     return false;
   }
 };
@@ -216,9 +216,9 @@ export const updateUsername = async (
 
   try {
     const results = await transaction.exec();
-    return results.every((result) => result === "OK" || result === 1);
+    return results.every((result) => result === 'OK' || result === 1);
   } catch (error) {
-    console.error("Username update failed:", error);
+    console.error('Username update failed:', error);
     return false;
   }
 };

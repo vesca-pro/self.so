@@ -1,4 +1,4 @@
-import { Redis } from "@upstash/redis";
+import { Redis } from '@upstash/redis';
 
 // Initialize Redis client
 export const upstashRedis = new Redis({

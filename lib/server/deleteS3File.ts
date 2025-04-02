@@ -1,4 +1,4 @@
-import AWS from "aws-sdk";
+import AWS from 'aws-sdk';
 
 AWS.config.update({
   region: process.env.S3_UPLOAD_REGION!!,
