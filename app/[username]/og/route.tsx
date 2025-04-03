@@ -1,10 +1,10 @@
-import { ImageResponse } from "@vercel/og";
-import { NextRequest } from "next/server";
-import { getUserData } from "../utils";
+import { ImageResponse } from '@vercel/og';
+import { NextRequest } from 'next/server';
+import { getUserData } from '../utils';
 
 export async function GET(request: NextRequest) {
   try {
-    const username = request.nextUrl.pathname.split("/")[1];
+    const username = request.nextUrl.pathname.split('/')[1];
 
     const { user_id, resume, clerkUser } = await getUserData(username);
 
@@ -23,46 +23,46 @@ export async function GET(request: NextRequest) {
       (
         <div
           style={{
-            height: "100%",
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "white",
-            padding: "80px",
-            position: "relative",
+            height: '100%',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'white',
+            padding: '80px',
+            position: 'relative',
           }}
         >
           {/* Logo and Location */}
           <div
             style={{
-              display: "flex",
-              width: "100%",
-              justifyContent: "space-between",
-              alignItems: "center",
-              position: "absolute",
+              display: 'flex',
+              width: '100%',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              position: 'absolute',
               top: 60,
               left: 80,
               right: 0,
               paddingRight: 40,
             }}
           >
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               <img
                 src="https://self.so/logo.svg"
                 alt="Self.so Logo"
                 style={{
-                  width: "144px",
-                  height: "46px",
+                  width: '144px',
+                  height: '46px',
                 }}
               />
             </div>
             <div
               style={{
-                fontSize: "24px",
-                color: "#666",
-                textAlign: "right",
+                fontSize: '24px',
+                color: '#666',
+                textAlign: 'right',
               }}
             >
               {location}
@@ -72,28 +72,28 @@ export async function GET(request: NextRequest) {
           {/* Main Content */}
           <div
             style={{
-              display: "flex",
-              width: "100%",
-              marginTop: "40px",
-              height: "480px",
+              display: 'flex',
+              width: '100%',
+              marginTop: '40px',
+              height: '480px',
             }}
           >
             {/* Left side - Text content */}
             <div
               style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                width: "60%",
-                paddingRight: "40px",
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                width: '60%',
+                paddingRight: '40px',
               }}
             >
               <h1
                 style={{
-                  fontSize: "72px",
-                  fontWeight: "semibold",
-                  margin: "0 0 20px 0",
-                  color: "#222",
+                  fontSize: '72px',
+                  fontWeight: 'semibold',
+                  margin: '0 0 20px 0',
+                  color: '#222',
                   lineHeight: 1.1,
                 }}
               >
@@ -101,8 +101,8 @@ export async function GET(request: NextRequest) {
               </h1>
               <p
                 style={{
-                  fontSize: "32px",
-                  color: "#444",
+                  fontSize: '32px',
+                  color: '#444',
                   margin: 0,
                   lineHeight: 1.4,
                 }}
@@ -116,20 +116,20 @@ export async function GET(request: NextRequest) {
             {/* Right side - Profile image */}
             <div
               style={{
-                width: "40%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                width: '40%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
               <img
-                src={profileImageUrl || "/placeholder.svg"}
+                src={profileImageUrl || '/placeholder.svg'}
                 alt="Profile"
                 style={{
-                  width: "360px",
-                  height: "360px",
-                  borderRadius: "16px",
-                  objectFit: "cover",
+                  width: '360px',
+                  height: '360px',
+                  borderRadius: '16px',
+                  objectFit: 'cover',
                 }}
               />
             </div>
@@ -138,10 +138,10 @@ export async function GET(request: NextRequest) {
           {/* Website URL at bottom */}
           <div
             style={{
-              position: "absolute",
+              position: 'absolute',
               bottom: 20,
-              fontSize: "24px",
-              color: "#666",
+              fontSize: '24px',
+              color: '#666',
             }}
           >
             {website}
@@ -151,7 +151,7 @@ export async function GET(request: NextRequest) {
       {
         width: 1200,
         height: 630,
-      }
+      },
     );
   } catch (e: any) {
     console.log(`${e.message}`);

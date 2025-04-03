@@ -26,9 +26,9 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <PlausibleProvider domain='self.so'>
+      <PlausibleProvider domain="self.so">
         <ReactQueryClientProvider>
-          <html lang='en'>
+          <html lang="en">
             <head>
               {/* {process.env.NODE_ENV === "development" && (
               <script
@@ -39,8 +39,8 @@ export default function RootLayout({
               {/* rest of your scripts go under */}
             </head>
             <body className={`${mono.className} min-h-screen flex flex-col`}>
-              <main className='flex-1 flex flex-col'>{children}</main>
-              <Toaster richColors position='bottom-center' />
+              <main className="flex-1 flex flex-col">{children}</main>
+              <Toaster richColors position="bottom-center" />
             </body>
           </html>
         </ReactQueryClientProvider>

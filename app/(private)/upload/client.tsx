@@ -1,36 +1,36 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Dropzone } from "@/components/ui/dropzone";
-import { Linkedin, X } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { Button } from '@/components/ui/button';
+import { Dropzone } from '@/components/ui/dropzone';
+import { Linkedin, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useUserActions } from "@/hooks/useUserActions";
-import { useEffect, useState } from "react";
-import { CustomSpinner } from "@/components/CustomSpinner";
-import LoadingFallback from "@/components/LoadingFallback";
+} from '@/components/ui/tooltip';
+import { useUserActions } from '@/hooks/useUserActions';
+import { useEffect, useState } from 'react';
+import { CustomSpinner } from '@/components/CustomSpinner';
+import LoadingFallback from '@/components/LoadingFallback';
 import {
   Dialog,
   DialogTrigger,
   DialogContent,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 
 type FileState =
-  | { status: "empty" }
-  | { status: "saved"; file: { name: string; url: string; size: number } };
+  | { status: 'empty' }
+  | { status: 'saved'; file: { name: string; url: string; size: number } };
 
 export default function UploadPageClient() {
   const router = useRouter();
 
   const { resumeQuery, uploadResumeMutation } = useUserActions();
-  const [fileState, setFileState] = useState<FileState>({ status: "empty" });
+  const [fileState, setFileState] = useState<FileState>({ status: 'empty' });
 
   const resume = resumeQuery.data?.resume;
 
@@ -38,7 +38,7 @@ export default function UploadPageClient() {
   useEffect(() => {
     if (resume?.file?.url && resume.file.name && resume.file.size) {
       setFileState({
-        status: "saved",
+        status: 'saved',
         file: {
           name: resume.file.name,
           url: resume.file.url,
@@ -53,7 +53,7 @@ export default function UploadPageClient() {
   };
 
   const handleReset = () => {
-    setFileState({ status: "empty" });
+    setFileState({ status: 'empty' });
   };
 
   if (resumeQuery.isLoading) {
@@ -71,7 +71,7 @@ export default function UploadPageClient() {
         </h1>
 
         <div className="relative mx-2.5">
-          {fileState.status !== "empty" && (
+          {fileState.status !== 'empty' && (
             <button
               onClick={handleReset}
               className="absolute top-2 right-2 p-1 hover:bg-gray-100 rounded-full z-10"
@@ -82,10 +82,10 @@ export default function UploadPageClient() {
           )}
 
           <Dropzone
-            accept={{ "application/pdf": [".pdf"] }}
+            accept={{ 'application/pdf': ['.pdf'] }}
             maxFiles={1}
             icon={
-              fileState.status !== "empty" ? (
+              fileState.status !== 'empty' ? (
                 <img src="/uploaded-pdf.svg" className="h-6 w-6" />
               ) : (
                 <Linkedin className="h-6 w-6 text-gray-600" />
@@ -93,23 +93,23 @@ export default function UploadPageClient() {
             }
             title={
               <span className="text-base font-bold text-center text-design-black">
-                {fileState.status !== "empty"
+                {fileState.status !== 'empty'
                   ? fileState.file.name
-                  : "Upload PDF"}
+                  : 'Upload PDF'}
               </span>
             }
             description={
               <span className="text-xs font-light text-center text-design-gray">
-                {fileState.status !== "empty"
+                {fileState.status !== 'empty'
                   ? `${(fileState.file.size / 1024 / 1024).toFixed(2)} MB`
-                  : "Resume or LinkedIn"}
+                  : 'Resume or LinkedIn'}
               </span>
             }
             isUploading={uploadResumeMutation.isPending}
             onDrop={(acceptedFiles) => {
               if (acceptedFiles[0]) handleUploadFile(acceptedFiles[0]);
             }}
-            onDropRejected={() => toast.error("Only PDF files are supported")}
+            onDropRejected={() => toast.error('Only PDF files are supported')}
           />
         </div>
 
@@ -139,8 +139,8 @@ export default function UploadPageClient() {
         <div className="relative">
           <Button
             className="px-4 py-3 h-auto bg-design-black hover:bg-design-black/95"
-            disabled={fileState.status === "empty" || isUpdating}
-            onClick={() => router.push("/pdf")}
+            disabled={fileState.status === 'empty' || isUpdating}
+            onClick={() => router.push('/pdf')}
           >
             {isUpdating ? (
               <>
@@ -158,7 +158,7 @@ export default function UploadPageClient() {
               </>
             )}
           </Button>
-          {fileState.status === "empty" && (
+          {fileState.status === 'empty' && (
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>

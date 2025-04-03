@@ -1,14 +1,14 @@
-"use client";
-import LoadingFallback from "@/components/LoadingFallback";
-import { PopupSiteLive } from "@/components/PopupSiteLive";
-import PreviewActionbar from "@/components/PreviewActionbar";
-import { FullResume } from "@/components/resume/FullResume";
-import { useUserActions } from "@/hooks/useUserActions";
-import { getSelfSoUrl } from "@/lib/utils";
-import { useUser } from "@clerk/nextjs";
-import { useState } from "react";
+'use client';
+import LoadingFallback from '@/components/LoadingFallback';
+import { PopupSiteLive } from '@/components/PopupSiteLive';
+import PreviewActionbar from '@/components/PreviewActionbar';
+import { FullResume } from '@/components/resume/FullResume';
+import { useUserActions } from '@/hooks/useUserActions';
+import { getSelfSoUrl } from '@/lib/utils';
+import { useUser } from '@clerk/nextjs';
+import { useState } from 'react';
 
-import { toast } from "sonner";
+import { toast } from 'sonner';
 
 export default function PreviewClient() {
   const { user } = useUser();
@@ -77,14 +77,14 @@ export default function PreviewClient() {
           status={resumeQuery.data?.resume?.status}
           onStatusChange={async (newStatus) => {
             await toggleStatusMutation.mutateAsync(newStatus);
-            const isFirstTime = !localStorage.getItem("publishedSite");
+            const isFirstTime = !localStorage.getItem('publishedSite');
 
-            if (isFirstTime && newStatus === "live") {
+            if (isFirstTime && newStatus === 'live') {
               setModalSiteLive(true);
-              localStorage.setItem("publishedSite", new Date().toDateString());
+              localStorage.setItem('publishedSite', new Date().toDateString());
             } else {
-              if (newStatus === "draft") {
-                toast.warning("Your website has been unpublished");
+              if (newStatus === 'draft') {
+                toast.warning('Your website has been unpublished');
               } else {
                 toast.custom((t) => <CustomLiveToast />);
               }

@@ -1,17 +1,17 @@
-"use client"
+'use client';
 
-import * as React from "react"
-import { useDropzone, type DropzoneOptions } from "react-dropzone"
-import { cn } from "@/lib/utils"
-import { FileUp, Loader2 } from "lucide-react"
+import * as React from 'react';
+import { useDropzone, type DropzoneOptions } from 'react-dropzone';
+import { cn } from '@/lib/utils';
+import { FileUp, Loader2 } from 'lucide-react';
 
-interface DropzoneProps extends Omit<DropzoneOptions, "disabled"> {
-  className?: string
-  disabled?: boolean
-  icon?: React.ReactNode
-  title?: React.ReactNode
-  description?: React.ReactNode
-  isUploading?: boolean
+interface DropzoneProps extends Omit<DropzoneOptions, 'disabled'> {
+  className?: string;
+  disabled?: boolean;
+  icon?: React.ReactNode;
+  title?: React.ReactNode;
+  description?: React.ReactNode;
+  isUploading?: boolean;
 }
 
 export function Dropzone({
@@ -23,23 +23,23 @@ export function Dropzone({
   isUploading = false,
   ...props
 }: DropzoneProps) {
-  const [files, setFiles] = React.useState<File[]>([])
+  const [files, setFiles] = React.useState<File[]>([]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     disabled: disabled || isUploading,
     onDrop: (acceptedFiles) => {
-      setFiles(acceptedFiles)
+      setFiles(acceptedFiles);
     },
     ...props,
-  })
+  });
 
   return (
     <div
       {...getRootProps()}
       className={cn(
-        "border-2 border-dashed border-gray-300 rounded-lg p-16 text-center flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors relative",
-        isDragActive && "border-primary bg-primary/5",
-        (disabled || isUploading) && "cursor-not-allowed opacity-60",
+        'border-2 border-dashed border-gray-300 rounded-lg p-16 text-center flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors relative',
+        isDragActive && 'border-primary bg-primary/5',
+        (disabled || isUploading) && 'cursor-not-allowed opacity-60',
         className,
       )}
     >
@@ -65,7 +65,9 @@ export function Dropzone({
         <div className="flex flex-col items-center gap-2">
           <div className="bg-gray-100 p-3 rounded-md">{icon}</div>
           <div className="text-lg font-medium mt-2">{files[0].name}</div>
-          <p className="text-sm text-gray-500">{(files[0].size / 1024 / 1024).toFixed(2)} MB</p>
+          <p className="text-sm text-gray-500">
+            {(files[0].size / 1024 / 1024).toFixed(2)} MB
+          </p>
         </div>
       ) : (
         <>
@@ -75,6 +77,5 @@ export function Dropzone({
         </>
       )}
     </div>
-  )
+  );
 }
-

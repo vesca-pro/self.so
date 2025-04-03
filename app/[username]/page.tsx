@@ -1,11 +1,11 @@
-import { redirect } from "next/navigation";
-import { getResume, getUserIdByUsername } from "../../lib/server/redisActions";
-import { clerkClient } from "@clerk/nextjs/server";
-import { unstable_cache } from "next/cache";
-import Link from "next/link";
-import { FullResume } from "@/components/resume/FullResume";
-import { Metadata } from "next";
-import { getUserData } from "./utils";
+import { redirect } from 'next/navigation';
+import { getResume, getUserIdByUsername } from '../../lib/server/redisActions';
+import { clerkClient } from '@clerk/nextjs/server';
+import { unstable_cache } from 'next/cache';
+import Link from 'next/link';
+import { FullResume } from '@/components/resume/FullResume';
+import { Metadata } from 'next';
+import { getUserData } from './utils';
 
 export async function generateMetadata({
   params,
@@ -17,15 +17,15 @@ export async function generateMetadata({
 
   if (!user_id) {
     return {
-      title: "User Not Found | Self.so",
-      description: "This user profile could not be found on Self.so",
+      title: 'User Not Found | Self.so',
+      description: 'This user profile could not be found on Self.so',
     };
   }
 
-  if (!resume?.resumeData || resume.status !== "live") {
+  if (!resume?.resumeData || resume.status !== 'live') {
     return {
-      title: "Resume Not Found | Self.so",
-      description: "This resume could not be found on Self.so",
+      title: 'Resume Not Found | Self.so',
+      description: 'This resume could not be found on Self.so',
     };
   }
 
@@ -40,7 +40,7 @@ export async function generateMetadata({
           url: `https://self.so/${username}/og`,
           width: 1200,
           height: 630,
-          alt: "Self.so Profile",
+          alt: 'Self.so Profile',
         },
       ],
     },
@@ -57,14 +57,14 @@ export default async function ProfilePage({
   const { user_id, resume, clerkUser } = await getUserData(username);
 
   if (!user_id) redirect(`/?usernameNotFound=${username}`);
-  if (!resume?.resumeData || resume.status !== "live")
+  if (!resume?.resumeData || resume.status !== 'live')
     redirect(`/?idNotFound=${user_id}`);
 
   const profilePicture = clerkUser?.imageUrl;
 
   const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Person",
+    '@context': 'https://schema.org',
+    '@type': 'Person',
     name: resume.resumeData.header.name,
     image: profilePicture,
     jobTitle: resume.resumeData.header.shortAbout,
@@ -94,7 +94,7 @@ export default async function ProfilePage({
           href={`/?ref=${username}`}
           className="text-design-gray font-mono text-sm"
         >
-          Made by{" "}
+          Made by{' '}
           <span className="text-design-black underline underline-offset-2">
             Self.so
           </span>

@@ -5,11 +5,11 @@ import {
   Github,
   Twitter,
   Linkedin,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ResumeDataSchemaType } from "@/lib/resume";
-import { useMemo } from "react";
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ResumeDataSchemaType } from '@/lib/resume';
+import { useMemo } from 'react';
 
 interface SocialButtonProps {
   href: string;
@@ -22,9 +22,9 @@ function SocialButton({ href, icon: Icon, label }: SocialButtonProps) {
     <Button className="size-8" variant="outline" size="icon" asChild>
       <a
         href={
-          href.startsWith("mailto:") || href.startsWith("tel:")
+          href.startsWith('mailto:') || href.startsWith('tel:')
             ? href
-            : `${href}${href.includes("?") ? "&" : "?"}ref=selfso`
+            : `${href}${href.includes('?') ? '&' : '?'}ref=selfso`
         }
         aria-label={label}
         target="_blank"
@@ -43,13 +43,13 @@ export function Header({
   header,
   picture,
 }: {
-  header: ResumeDataSchemaType["header"];
+  header: ResumeDataSchemaType['header'];
   picture?: string;
 }) {
   const prefixUrl = (stringToFix?: string) => {
     if (!stringToFix) return undefined;
     const url = stringToFix.trim();
-    return url.startsWith("http") ? url : `https://${url}`;
+    return url.startsWith('http') ? url : `https://${url}`;
   };
 
   const website = useMemo(() => {
@@ -83,7 +83,7 @@ export function Header({
           <a
             className="inline-flex gap-x-1.5 align-baseline leading-none hover:underline text-[#9CA0A8]"
             href={`https://www.google.com/maps/search/${encodeURIComponent(
-              header.location
+              header.location,
             )}`}
             target="_blank"
             rel="noopener noreferrer"
@@ -172,9 +172,9 @@ export function Header({
         <AvatarImage src={picture} alt={`${header.name}'s profile picture`} />
         <AvatarFallback>
           {header.name
-            .split(" ")
+            .split(' ')
             .map((n) => n[0])
-            .join("")}
+            .join('')}
         </AvatarFallback>
       </Avatar>
     </header>

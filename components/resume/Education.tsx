@@ -1,6 +1,6 @@
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Section } from "@/components/ui/section";
-import { ResumeDataSchemaType } from "@/lib/resume";
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import { Section } from '@/components/ui/section';
+import { ResumeDataSchemaType } from '@/lib/resume';
 
 /**
  * Displays the education period in a consistent format
@@ -22,7 +22,7 @@ function EducationPeriod({ start, end }: { start: string; end: string }) {
 function EducationItem({
   education,
 }: {
-  education: ResumeDataSchemaType["education"][0];
+  education: ResumeDataSchemaType['education'][0];
 }) {
   const { school, start, end, degree } = education;
 
@@ -32,7 +32,7 @@ function EducationItem({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-base">
           <h3
             className="font-semibold leading-none"
-            id={`education-${school.toLowerCase().replace(/\s+/g, "-")}`}
+            id={`education-${school.toLowerCase().replace(/\s+/g, '-')}`}
           >
             {school}
           </h3>
@@ -43,7 +43,7 @@ function EducationItem({
         className="mt-2 text-design-resume print:text-[12px]"
         aria-labelledby={`education-${school
           .toLowerCase()
-          .replace(/\s+/g, "-")}`}
+          .replace(/\s+/g, '-')}`}
       >
         {degree}
       </CardContent>
@@ -58,7 +58,7 @@ function EducationItem({
 export function Education({
   educations,
 }: {
-  educations: ResumeDataSchemaType["education"];
+  educations: ResumeDataSchemaType['education'];
 }) {
   return (
     <Section>

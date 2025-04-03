@@ -1,6 +1,6 @@
-import { Badge } from "@/components/ui/badge";
-import { Section } from "@/components/ui/section";
-import { cn } from "@/lib/utils";
+import { Badge } from '@/components/ui/badge';
+import { Section } from '@/components/ui/section';
+import { cn } from '@/lib/utils';
 
 type Skills = readonly string[];
 
@@ -20,7 +20,7 @@ export function Skills({ skills, className }: SkillsProps) {
         Skills
       </h2>
       <ul
-        className={cn("flex list-none flex-wrap gap-1 p-0")}
+        className={cn('flex list-none flex-wrap gap-1 p-0')}
         aria-label="List of skills"
         aria-labelledby="skills-section"
       >

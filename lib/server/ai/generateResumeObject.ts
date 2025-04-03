@@ -29,7 +29,7 @@ export const generateResumeObject = async (resumeText: string) => {
 
   const endTime = Date.now();
   console.log(
-    `Generating resume object took ${(endTime - startTime) / 1000} seconds`
+    `Generating resume object took ${(endTime - startTime) / 1000} seconds`,
   );
 
   return object;

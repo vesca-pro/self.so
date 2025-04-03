@@ -63,7 +63,7 @@ export default async function Preview() {
     <>
       <Suspense
         fallback={
-          <LoadingFallback message='Creating your personal website...' />
+          <LoadingFallback message="Creating your personal website..." />
         }
       >
         <LLMProcessing userId={userId} />

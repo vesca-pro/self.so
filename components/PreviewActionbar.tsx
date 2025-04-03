@@ -34,14 +34,14 @@ export default function PreviewActionbar({
 
   return (
     <>
-      <div className='w-full rounded-lg bg-[#fcfcfc] border-[0.5px] border-neutral-300 flex items-center justify-between py-3 px-5  sm:px-4 sm:py-2.5  flex-col sm:flex-row gap-4'>
-        <div className='flex flex-col sm:flex-row items-center gap-4 w-full'>
-          <div className='flex items-center gap-1 mr-1'>
+      <div className="w-full rounded-lg bg-[#fcfcfc] border-[0.5px] border-neutral-300 flex items-center justify-between py-3 px-5  sm:px-4 sm:py-2.5  flex-col sm:flex-row gap-4">
+        <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
+          <div className="flex items-center gap-1 mr-1">
             <img
-              src='/link-icon.png'
+              src="/link-icon.png"
               className={cn(
                 'w-4 h-4 text-design-black ',
-                status === 'live' && 'cursor-pointer'
+                status === 'live' && 'cursor-pointer',
               )}
               onClick={() => {
                 if (!initialUsername || status !== 'live') return;
@@ -50,30 +50,30 @@ export default function PreviewActionbar({
                 toast.success('Copied link to your website');
               }}
             />
-            <p className='text-sm text-design-black'>{prefix}</p>
+            <p className="text-sm text-design-black">{prefix}</p>
           </div>
 
-          <div className='overflow-hidden rounded bg-white border-[0.5px] border-neutral-300 flex flex-row w-full'>
-            <span className='flex-1 p-3 text-sm text-[#5d5d5d] border-none outline-none focus:ring-0 bg-transparent w-fit'>
+          <div className="overflow-hidden rounded bg-white border-[0.5px] border-neutral-300 flex flex-row w-full">
+            <span className="flex-1 p-3 text-sm text-[#5d5d5d] border-none outline-none focus:ring-0 bg-transparent w-fit">
               {initialUsername}
             </span>
 
             <Button
-              variant='ghost'
-              size='icon'
-              className='size-[44px] flex items-center justify-center border-l-[0.5px]'
+              variant="ghost"
+              size="icon"
+              className="size-[44px] flex items-center justify-center border-l-[0.5px]"
               onClick={() => setIsEditorOpen(true)}
             >
-              <Pencil className='w-4 h-4' />
+              <Pencil className="w-4 h-4" />
             </Button>
           </div>
         </div>
 
-        <div className='flex items-center gap-4'>
-          <div className='flex items-center gap-2'>
-            <div className='flex items-center gap-1'>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               <div
-                className='size-1.5 rounded-full'
+                className="size-1.5 rounded-full"
                 style={{
                   backgroundColor: status === 'draft' ? '#B98900' : '#009505',
                 }}
@@ -81,7 +81,7 @@ export default function PreviewActionbar({
               <p
                 className={cn(
                   'text-[10px] font-bold uppercase',
-                  status === 'draft' ? 'text-[#B98900]' : 'text-[#009505]'
+                  status === 'draft' ? 'text-[#B98900]' : 'text-[#009505]',
                 )}
               >
                 {status}
@@ -89,17 +89,17 @@ export default function PreviewActionbar({
             </div>
 
             <Button
-              variant='default'
+              variant="default"
               disabled={isChangingStatus}
               onClick={handleStatusChange}
-              className='flex items-center min-w-[100px] min-h-8 gap-1.5 px-3 py-1.5 h-auto bg-design-black hover:bg-[#333333] text-[#fcfcfc]'
+              className="flex items-center min-w-[100px] min-h-8 gap-1.5 px-3 py-1.5 h-auto bg-design-black hover:bg-[#333333] text-[#fcfcfc]"
             >
               {isChangingStatus ? (
                 <>
-                  <span className='mr-2 h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent'></span>
+                  <span className="mr-2 h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
                 </>
               ) : (
-                <span className='text-sm'>
+                <span className="text-sm">
                   {status === 'draft' ? 'Publish' : 'Unpublish'}
                 </span>
               )}

@@ -20,14 +20,14 @@ export async function GET(): Promise<NextResponse<GetResponse>> {
     console.error('Error retrieving username:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 // POST endpoint to update username
 export async function POST(
-  request: Request
+  request: Request,
 ): Promise<NextResponse<PostResponse>> {
   try {
     const user = await currentUser();
@@ -40,7 +40,7 @@ export async function POST(
     if (!username || typeof username !== 'string') {
       return NextResponse.json(
         { error: 'Username is required' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -49,7 +49,7 @@ export async function POST(
     if (!success) {
       return NextResponse.json(
         { error: 'Username already taken' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -58,7 +58,7 @@ export async function POST(
     console.error('Error updating username:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

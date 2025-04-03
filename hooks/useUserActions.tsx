@@ -27,7 +27,7 @@ const fetchUsername = async (): Promise<{
 };
 
 const checkUsernameAvailability = async (
-  username: string
+  username: string,
 ): Promise<{
   available: boolean;
 }> => {
@@ -35,7 +35,7 @@ const checkUsernameAvailability = async (
     `/api/check-username?username=${encodeURIComponent(username)}`,
     {
       method: 'POST',
-    }
+    },
   );
   if (!response.ok) {
     const error = await response.json();

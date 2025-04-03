@@ -1,10 +1,10 @@
-import LoadingFallback from "../LoadingFallback";
-import { ResumeData } from "../../lib/server/redisActions";
-import { Education } from "./Education";
-import { Header } from "./Header";
-import { Skills } from "./Skills";
-import { Summary } from "./Summary";
-import { WorkExperience } from "./WorkExperience";
+import LoadingFallback from '../LoadingFallback';
+import { ResumeData } from '../../lib/server/redisActions';
+import { Education } from './Education';
+import { Header } from './Header';
+import { Skills } from './Skills';
+import { Summary } from './Summary';
+import { WorkExperience } from './WorkExperience';
 
 export const FullResume = ({
   resume,

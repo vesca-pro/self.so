@@ -1,5 +1,5 @@
-import { Section } from "@/components/ui/section";
-import { ResumeDataSchemaType } from "@/lib/resume";
+import { Section } from '@/components/ui/section';
+import { ResumeDataSchemaType } from '@/lib/resume';
 
 const getYear = (date: string) => {
   const dateObject = new Date(date);
@@ -9,7 +9,7 @@ const getYear = (date: string) => {
 export function WorkExperience({
   work,
 }: {
-  work: ResumeDataSchemaType["workExperience"];
+  work: ResumeDataSchemaType['workExperience'];
 }) {
   return (
     <Section>
@@ -39,8 +39,8 @@ export function WorkExperience({
                   </div>
                 </div>
                 <p className="text-sm text-right text-[#54575e]">
-                  {getYear(item.start)} -{" "}
-                  {!!item.end ? getYear(item.end) : "Present"}
+                  {getYear(item.start)} -{' '}
+                  {!!item.end ? getYear(item.end) : 'Present'}
                 </p>
               </div>
               <div className="flex flex-col justify-start items-start relative gap-1.5">

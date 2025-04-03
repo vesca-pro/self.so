@@ -1,9 +1,9 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { TopMenu } from "../components/TopMenu";
-import { Footer } from "../components/Footer";
-import { BorderBeam } from "@/components/ui/BorderBeam";
-import { BlurFade } from "@/components/ui/BlurFade";
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { TopMenu } from '../components/TopMenu';
+import { Footer } from '../components/Footer';
+import { BorderBeam } from '@/components/ui/BorderBeam';
+import { BlurFade } from '@/components/ui/BlurFade';
 
 export default function Home() {
   return (
