@@ -17,7 +17,11 @@ export function TopMenu() {
           </SignedIn>
           <SignedOut>
             <div className="flex flex-row gap-3 font-mono ">
-              <a href="https://github.com" target="_blank" rel="noreferrer">
+              <a
+                href="https://github.com/nutlope/self.so"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <Button
                   variant="outline"
                   className=" flex flex-row gap-1.5 py-2 px-4 border-gray-300 text-design-gray text-sm font-medium"
