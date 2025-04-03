@@ -1,21 +1,21 @@
-import { auth } from "@clerk/nextjs/server";
-import PreviewClient from "./client";
+import { auth } from '@clerk/nextjs/server';
+import PreviewClient from './client';
 import {
   createUsernameLookup,
   getResume,
   getUsernameById,
   storeResume,
-} from "../../../lib/server/redisActions";
-import { generateResumeObject } from "@/lib/server/ai/generateResumeObject";
-import { redirect } from "next/navigation";
-import { Suspense } from "react";
-import LoadingFallback from "../../../components/LoadingFallback";
-import { MAX_USERNAME_LENGTH } from "@/lib/config";
+} from '../../../lib/server/redisActions';
+import { generateResumeObject } from '@/lib/server/ai/generateResumeObject';
+import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
+import LoadingFallback from '../../../components/LoadingFallback';
+import { MAX_USERNAME_LENGTH } from '@/lib/config';
 
 async function LLMProcessing({ userId }: { userId: string }) {
   let resume = await getResume(userId);
 
-  if (!resume?.fileContent) redirect("/upload");
+  if (!resume?.fileContent) redirect('/upload');
 
   if (!resume.resumeData) {
     const resumeObject = await generateResumeObject(resume?.fileContent);
@@ -34,10 +34,10 @@ async function LLMProcessing({ userId }: { userId: string }) {
   if (!foundUsername) {
     const username =
       (
-        (resume.resumeData.header.name || "user")
+        (resume.resumeData.header.name || 'user')
           .toLowerCase()
-          .replace(/[^a-z0-9\s]/g, "")
-          .replace(/\s+/g, "-") + "-"
+          .replace(/[^a-z0-9\s]/g, '')
+          .replace(/\s+/g, '-') + '-'
       ).slice(0, MAX_USERNAME_LENGTH - hashLength) +
       Math.random()
         .toString(36)
@@ -48,7 +48,7 @@ async function LLMProcessing({ userId }: { userId: string }) {
       username,
     });
 
-    if (!creation) redirect("/upload?error=usernameCreationFailed");
+    if (!creation) redirect('/upload?error=usernameCreationFailed');
   }
 
   return <PreviewClient />;
@@ -63,7 +63,7 @@ export default async function Preview() {
     <>
       <Suspense
         fallback={
-          <LoadingFallback message="Processing content with AI to tailor your profile..." />
+          <LoadingFallback message='Creating your personal website...' />
         }
       >
         <LLMProcessing userId={userId} />
