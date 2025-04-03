@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { cn, getSelfSoUrl } from '@/lib/utils';
-import { Pencil } from 'lucide-react';
+import { ExternalLink, Pencil } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import UsernameEditorView from './UsernameEditorView';
@@ -41,7 +41,7 @@ export default function PreviewActionbar({
               src="/link-icon.png"
               className={cn(
                 'w-4 h-4 text-design-black ',
-                status === 'live' && 'cursor-pointer',
+                status === 'live' && 'cursor-pointer'
               )}
               onClick={() => {
                 if (!initialUsername || status !== 'live') return;
@@ -53,8 +53,8 @@ export default function PreviewActionbar({
             <p className="text-sm text-design-black">{prefix}</p>
           </div>
 
-          <div className="overflow-hidden rounded bg-white border-[0.5px] border-neutral-300 flex flex-row w-full">
-            <span className="flex-1 p-3 text-sm text-[#5d5d5d] border-none outline-none focus:ring-0 bg-transparent w-fit">
+          <div className="overflow-hidden rounded bg-white border-[0.5px] border-neutral-300 flex flex-row w-80">
+            <span className="flex-1 p-3 text-sm text-[#5d5d5d] border-none outline-none focus:ring-0 bg-transparent w-fit truncate">
               {initialUsername}
             </span>
 
@@ -81,7 +81,7 @@ export default function PreviewActionbar({
               <p
                 className={cn(
                   'text-[10px] font-bold uppercase',
-                  status === 'draft' ? 'text-[#B98900]' : 'text-[#009505]',
+                  status === 'draft' ? 'text-[#B98900]' : 'text-[#009505]'
                 )}
               >
                 {status}
@@ -89,10 +89,15 @@ export default function PreviewActionbar({
             </div>
 
             <Button
-              variant="default"
+              key={status}
+              variant={'default'}
               disabled={isChangingStatus}
               onClick={handleStatusChange}
-              className="flex items-center min-w-[100px] min-h-8 gap-1.5 px-3 py-1.5 h-auto bg-design-black hover:bg-[#333333] text-[#fcfcfc]"
+              className={`flex items-center min-w-[100px] min-h-8 gap-1.5 px-3 py-1.5 h-auto ${
+                status === 'draft'
+                  ? 'bg-design-black hover:bg-[#333333] text-[#fcfcfc]'
+                  : 'bg-design-white text-design-black hover:bg-gray-100'
+              }`}
             >
               {isChangingStatus ? (
                 <>
@@ -104,6 +109,17 @@ export default function PreviewActionbar({
                 </span>
               )}
             </Button>
+            {status === 'live' && (
+              <Button className="flex items-center min-w-[100px] min-h-8 gap-1.5 px-3 py-1.5 h-auto">
+                <a
+                  href={`${getSelfSoUrl(initialUsername)}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Visit Site
+                </a>
+              </Button>
+            )}
           </div>
         </div>
       </div>
