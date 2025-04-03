@@ -70,8 +70,8 @@ export function Education({
         role="feed"
         aria-labelledby="education-section"
       >
-        {educations.map((item) => (
-          <article key={item.school} role="article">
+        {educations.map((item, idx) => (
+          <article key={idx} role="article">
             <EducationItem education={item} />
           </article>
         ))}

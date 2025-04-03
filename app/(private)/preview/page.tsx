@@ -71,3 +71,5 @@ export default async function Preview() {
     </>
   );
 }
+
+export const maxDuration = 40;

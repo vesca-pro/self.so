@@ -9,9 +9,9 @@ const togetherai = createTogetherAI({
 
 export const generateResumeObject = async (resumeText: string) => {
   const startTime = Date.now();
-  // we can for now do the AI parsing here?
   const { object } = await generateObject({
-    model: togetherai('meta-llama/Llama-3.3-70B-Instruct-Turbo'),
+    model: togetherai('Qwen/Qwen2.5-72B-Instruct-Turbo'),
+    maxRetries: 1,
     schema: ResumeDataSchema,
     prompt: dedent`You are an expert resume writer. Generate a resume object from the following resume text. Be professional and concise.
 

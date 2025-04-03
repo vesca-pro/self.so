@@ -36,7 +36,11 @@ const WorkExperienceSection = z.array(
       .describe('Type of work contract like Full-time, Part-time, Contract'),
     title: z.string().describe('Job title'),
     start: z.string().describe("Start date in format 'YYYY-MM-DD'"),
-    end: z.string().optional().describe("End date in format 'YYYY-MM-DD'"),
+    end: z
+      .string()
+      .optional()
+      .nullable()
+      .describe("End date in format 'YYYY-MM-DD'"),
     description: z.string().describe('Job description'),
   })
 );
