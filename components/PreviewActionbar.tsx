@@ -10,6 +10,7 @@ import { useUserActions } from "@/hooks/useUserActions";
 import { toast } from "sonner";
 import { MAX_USERNAME_LENGTH } from "@/lib/config";
 import UsernameEditorView from "./UsernameEditorView";
+import { stat } from "fs";
 
 export type PublishStatuses = "draft" | "live";
 
@@ -41,7 +42,19 @@ export default function PreviewActionbar({
       <div className="w-full rounded-lg bg-[#fcfcfc] border-[0.5px] border-neutral-300 flex items-center justify-between py-3 px-5  sm:px-4 sm:py-2.5  flex-col sm:flex-row gap-4">
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
           <div className="flex items-center gap-1 mr-1">
-            <img src="/link-icon.png" className="w-4 h-4 text-design-black" />
+            <img
+              src="/link-icon.png"
+              className={cn(
+                "w-4 h-4 text-design-black ",
+                status === "live" && "cursor-pointer"
+              )}
+              onClick={() => {
+                if (!initialUsername || status !== "live") return;
+                const portofolioUrl = getSelfSoUrl(initialUsername);
+                navigator.clipboard.writeText(portofolioUrl);
+                toast.success("Copied link to your website");
+              }}
+            />
             <p className="text-sm text-design-black">{prefix}</p>
           </div>
 
@@ -61,54 +74,42 @@ export default function PreviewActionbar({
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          {status === "live" && (
-            <Button
-              onClick={() => {
-                if (!initialUsername) return;
-                const portofolioUrl = getSelfSoUrl(initialUsername);
-                navigator.clipboard.writeText(portofolioUrl);
-                toast.success("Copied link to your website");
-              }}
-              className="!size-8 "
-              variant="outline"
-            >
-              <CopyIcon className="size-5" />
-            </Button>
-          )}
+        <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <div
-              className="w-2 h-2 rounded-full"
-              style={{
-                backgroundColor: status === "draft" ? "#B98900" : "#009505",
-              }}
-            />
-            <p
-              className={cn(
-                "text-[10px] font-bold uppercase",
-                status === "draft" ? "text-[#B98900]" : "text-[#009505]"
-              )}
-            >
-              {status}
-            </p>
-          </div>
+            <div className="flex items-center gap-1">
+              <div
+                className="size-1.5 rounded-full"
+                style={{
+                  backgroundColor: status === "draft" ? "#B98900" : "#009505",
+                }}
+              />
+              <p
+                className={cn(
+                  "text-[10px] font-bold uppercase",
+                  status === "draft" ? "text-[#B98900]" : "text-[#009505]"
+                )}
+              >
+                {status}
+              </p>
+            </div>
 
-          <Button
-            variant="default"
-            disabled={isChangingStatus}
-            onClick={handleStatusChange}
-            className="flex items-center min-w-[100px] min-h-8 gap-1.5 px-3 py-1.5 h-auto bg-design-black hover:bg-[#333333] text-[#fcfcfc]"
-          >
-            {isChangingStatus ? (
-              <>
-                <span className="mr-2 h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
-              </>
-            ) : (
-              <span className="text-sm">
-                {status === "draft" ? "Publish" : "Unpublish"}
-              </span>
-            )}
-          </Button>
+            <Button
+              variant="default"
+              disabled={isChangingStatus}
+              onClick={handleStatusChange}
+              className="flex items-center min-w-[100px] min-h-8 gap-1.5 px-3 py-1.5 h-auto bg-design-black hover:bg-[#333333] text-[#fcfcfc]"
+            >
+              {isChangingStatus ? (
+                <>
+                  <span className="mr-2 h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+                </>
+              ) : (
+                <span className="text-sm">
+                  {status === "draft" ? "Publish" : "Unpublish"}
+                </span>
+              )}
+            </Button>
+          </div>
         </div>
       </div>
 

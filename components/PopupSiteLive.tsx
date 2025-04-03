@@ -31,11 +31,11 @@ export const PopupSiteLive = ({
             Your website is now live!
           </h3>
 
-          <div className="flex w-full flex-col md:flex-row gap-4 md:gap-2">
+          <div className="flex w-full flex-col gap-4 md:gap-2">
             <div className="flex-grow bg-gray-100 rounded-md border border-gray-300 p-2 px-3 text-sm text-gray-700 min-h-10">
               {websiteUrl}
             </div>
-            <div className="grid grid-cols-2 md:flex md:flex-row-reverse gap-2.5 md:gap-2">
+            <div className="grid grid-cols-2 gap-4 md:gap-2 ">
               <button
                 onClick={() => {
                   navigator.clipboard.writeText(websiteUrl);
@@ -45,7 +45,7 @@ export const PopupSiteLive = ({
                 title="Copy URL"
               >
                 <Copy className="h-5 w-5" />
-                <span className="md:hidden text-white">Copy URL</span>
+                <span className="text-white">Copy URL</span>
               </button>
               <a
                 href={websiteUrl}
@@ -54,7 +54,7 @@ export const PopupSiteLive = ({
                 className="bg-design-black hover:bg-gray-800 p-2 text-white rounded-md flex flex-row gap-2 items-center justify-center"
               >
                 <SquareArrowOutUpRight className="h-5 w-5" />
-                <span className="md:hidden text-white">Visit Site</span>
+                <span className="text-white">Visit Site</span>
               </a>
             </div>
           </div>
