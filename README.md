@@ -17,6 +17,7 @@
 
 ## Future TODOs
 
-- ability to edit links in the resume
-- ability to edit any section in the resume
+- add ability to get to the "preview" page if you have a site already
+- ability to edit any section in the resume (including links)
 - add themes that you can toggle on (start with ghibli)
+- Delete previously uploaded resume when we upload a new one

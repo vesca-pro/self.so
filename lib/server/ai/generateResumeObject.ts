@@ -4,7 +4,7 @@ import { ResumeDataSchema } from '@/lib/resume';
 import dedent from 'dedent';
 
 const togetherai = createTogetherAI({
-  apiKey: process.env.TOGETHER_AI_API_KEY ?? '',
+  apiKey: process.env.TOGETHER_API_KEY ?? '',
 });
 
 export const generateResumeObject = async (resumeText: string) => {
@@ -29,7 +29,7 @@ export const generateResumeObject = async (resumeText: string) => {
 
   const endTime = Date.now();
   console.log(
-    `Generating resume object took ${(endTime - startTime) / 1000} seconds`,
+    `Generating resume object took ${(endTime - startTime) / 1000} seconds`
   );
 
   return object;

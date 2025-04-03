@@ -2,7 +2,7 @@ import { generateText } from 'ai';
 import { createTogetherAI } from '@ai-sdk/togetherai';
 
 const togetherai = createTogetherAI({
-  apiKey: process.env.TOGETHER_AI_API_KEY ?? '',
+  apiKey: process.env.TOGETHER_API_KEY ?? '',
 });
 
 export const isFileContentBad = async (fileContent: string) => {
