@@ -1,10 +1,11 @@
-import { redirect } from 'next/navigation';
-import { getResume, getUserIdByUsername } from '../../lib/server/redisActions';
-import { clerkClient } from '@clerk/nextjs/server';
-import { unstable_cache } from 'next/cache';
-import Link from 'next/link';
-import { FullResume } from '@/components/resume/FullResume';
-import { Metadata } from 'next';
+import { redirect } from "next/navigation";
+import { getResume, getUserIdByUsername } from "../../lib/server/redisActions";
+import { clerkClient } from "@clerk/nextjs/server";
+import { unstable_cache } from "next/cache";
+import Link from "next/link";
+import { FullResume } from "@/components/resume/FullResume";
+import { Metadata } from "next";
+import { getUserData } from "./utils";
 
 export async function generateMetadata({
   params,
@@ -12,21 +13,19 @@ export async function generateMetadata({
   params: Promise<{ username: string }>;
 }): Promise<Metadata> {
   const { username } = await params;
-  const user_id = await getUserIdByUsername(username);
+  const { user_id, resume, clerkUser } = await getUserData(username);
 
   if (!user_id) {
     return {
-      title: 'User Not Found | Self.so',
-      description: 'This user profile could not be found on Self.so',
+      title: "User Not Found | Self.so",
+      description: "This user profile could not be found on Self.so",
     };
   }
 
-  const resume = await getResume(user_id);
-
-  if (!resume?.resumeData || resume.status !== 'live') {
+  if (!resume?.resumeData || resume.status !== "live") {
     return {
-      title: 'Resume Not Found | Self.so',
-      description: 'This resume could not be found on Self.so',
+      title: "Resume Not Found | Self.so",
+      description: "This resume could not be found on Self.so",
     };
   }
 
@@ -36,6 +35,14 @@ export async function generateMetadata({
     openGraph: {
       title: `${resume.resumeData.header.name}'s Resume | Self.so`,
       description: resume.resumeData.summary,
+      images: [
+        {
+          url: `https://self.so/${username}/og`,
+          width: 1200,
+          height: 630,
+          alt: "Self.so Profile",
+        },
+      ],
     },
   };
 }
@@ -47,32 +54,17 @@ export default async function ProfilePage({
 }) {
   const { username } = await params;
 
-  const user_id = await getUserIdByUsername(username);
+  const { user_id, resume, clerkUser } = await getUserData(username);
 
   if (!user_id) redirect(`/?usernameNotFound=${username}`);
-
-  const resume = await getResume(user_id);
-
-  if (!resume?.resumeData || resume.status !== 'live')
+  if (!resume?.resumeData || resume.status !== "live")
     redirect(`/?idNotFound=${user_id}`);
-
-  const getCachedUser = unstable_cache(
-    async () => {
-      return await (await clerkClient()).users.getUser(user_id);
-    },
-    [user_id],
-    {
-      tags: ['users'],
-      revalidate: 86400, // 1 day in seconds
-    }
-  );
-  const clerkUser = await getCachedUser();
 
   const profilePicture = clerkUser?.imageUrl;
 
   const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
+    "@context": "https://schema.org",
+    "@type": "Person",
     name: resume.resumeData.header.name,
     image: profilePicture,
     jobTitle: resume.resumeData.header.shortAbout,
@@ -87,7 +79,7 @@ export default async function ProfilePage({
   return (
     <>
       <script
-        type='application/ld+json'
+        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
@@ -97,13 +89,13 @@ export default async function ProfilePage({
         allSkills={resume?.resumeData?.header.skills || []}
       />
 
-      <div className='text-center mt-8 mb-4'>
+      <div className="text-center mt-8 mb-4">
         <Link
           href={`/?ref=${username}`}
-          className='text-design-gray font-mono text-sm'
+          className="text-design-gray font-mono text-sm"
         >
-          Made by{' '}
-          <span className='text-design-black underline underline-offset-2'>
+          Made by{" "}
+          <span className="text-design-black underline underline-offset-2">
             Self.so
           </span>
         </Link>
