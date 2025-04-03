@@ -40,6 +40,7 @@
 - [ ] Add Helicone for observability
 - [ ] add error logging to make sure to fix any bugs
 - [ ] add ability to get to the "preview" page if you have a site already
-- [ ] ability to edit any section in the resume (including links)
+- [ ] ability to edit links in the site
+- [ ] ability to edit any section in the site
 - [ ] add themes that you can toggle on (start with ghibli)
 - [ ] Delete previously uploaded resume when we upload a new one
