@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
           >
             <div style={{ display: "flex", alignItems: "center" }}>
               <img
-                src="https://self-so.vercel.app/logo.svg"
+                src="https://self.so/logo.svg"
                 alt="Self.so Logo"
                 style={{
                   width: "144px",

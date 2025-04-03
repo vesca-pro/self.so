@@ -35,6 +35,14 @@ export async function generateMetadata({
     openGraph: {
       title: `${resume.resumeData.header.name}'s Resume | Self.so`,
       description: resume.resumeData.summary,
+      images: [
+        {
+          url: `https://self.so/${username}/og`,
+          width: 1200,
+          height: 630,
+          alt: "Self.so Profile",
+        },
+      ],
     },
   };
 }
