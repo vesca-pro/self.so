@@ -1,7 +1,4 @@
 import { redirect } from 'next/navigation';
-import { getResume, getUserIdByUsername } from '../../lib/server/redisActions';
-import { clerkClient } from '@clerk/nextjs/server';
-import { unstable_cache } from 'next/cache';
 import Link from 'next/link';
 import { FullResume } from '@/components/resume/FullResume';
 import { Metadata } from 'next';
