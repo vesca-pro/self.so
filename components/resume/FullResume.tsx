@@ -9,11 +9,9 @@ import { WorkExperience } from './WorkExperience';
 export const FullResume = ({
   resume,
   profilePicture,
-  allSkills,
 }: {
   resume?: ResumeData | null;
   profilePicture?: string;
-  allSkills: string[];
 }) => {
   if (!resume) {
     return <LoadingFallback message="Loading Resume..." />;
@@ -33,7 +31,7 @@ export const FullResume = ({
 
         <Education educations={resume.education} />
 
-        <Skills skills={allSkills} />
+        <Skills skills={resume.header.skills} />
       </div>
     </section>
   );
