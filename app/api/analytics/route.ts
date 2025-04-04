@@ -14,18 +14,35 @@ export type GetResponse =
 // Cached function to fetch analytics
 const getCachedAnalytics = unstable_cache(
   async () => {
-    const keys = await upstashRedis.keys('resume:*');
+    let cursor = '0'; // Redis SCAN returns string cursor
     let publishedCount = 0;
+    let totalCount = 0;
 
-    for (const key of keys) {
-      const resume = (await upstashRedis.get(key)) as Resume;
-      if (resume && resume.status === 'live') {
-        publishedCount++;
+    // Use SCAN to iterate through all keys
+    do {
+      const [nextCursor, currentKeys] = await upstashRedis.scan(cursor, {
+        match: 'resume:*',
+        count: 100, // Process in batches of 100
+      });
+
+      cursor = nextCursor as string;
+
+      if (currentKeys.length > 0) {
+        totalCount += currentKeys.length;
+        // Get all resumes in current batch
+        const resumes = (await Promise.all(
+          currentKeys.map((key) => upstashRedis.get(key))
+        )) as (Resume | null)[];
+
+        // Count published resumes in current batch
+        publishedCount += resumes.filter(
+          (resume): resume is Resume => resume?.status === 'live'
+        ).length;
       }
-    }
+    } while (cursor !== '0');
 
     return {
-      totalResumes: keys.length,
+      totalResumes: totalCount,
       publishedResumes: publishedCount,
     };
   },
