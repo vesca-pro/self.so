@@ -98,7 +98,6 @@ export default function PreviewClient() {
         <FullResume
           resume={resumeQuery.data?.resume?.resumeData}
           profilePicture={user?.imageUrl}
-          allSkills={resumeQuery.data?.resume?.resumeData?.header.skills || []}
         />
       </div>
 
