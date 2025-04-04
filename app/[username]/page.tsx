@@ -83,11 +83,7 @@ export default async function ProfilePage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <FullResume
-        resume={resume?.resumeData}
-        profilePicture={profilePicture}
-        allSkills={resume?.resumeData?.header.skills || []}
-      />
+      <FullResume resume={resume?.resumeData} profilePicture={profilePicture} />
 
       <div className="text-center mt-8 mb-4">
         <Link
