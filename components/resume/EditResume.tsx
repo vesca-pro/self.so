@@ -1,6 +1,6 @@
 import LoadingFallback from '../LoadingFallback';
 import { ResumeData } from '../../lib/server/redisActions';
-import { Header } from './Header';
+import { toast } from 'sonner';
 
 export const EditResume = ({
   resume,
@@ -341,7 +341,22 @@ export const EditResume = ({
                 key={index}
                 className="group relative bg-gray-100 px-3 py-1 rounded-full flex items-center gap-2"
               >
-                <span>{skill}</span>
+                <input
+                  type="text"
+                  value={skill}
+                  onChange={(e) => {
+                    const newSkills = [...resume.header.skills];
+                    newSkills[index] = e.target.value;
+                    onChangeResume({
+                      ...resume,
+                      header: {
+                        ...resume.header,
+                        skills: newSkills,
+                      },
+                    });
+                  }}
+                  className="bg-transparent border-none outline-none"
+                />
                 <button
                   className="text-gray-400 hover:text-red-500 transition-colors"
                   onClick={() => {
@@ -375,13 +390,21 @@ export const EditResume = ({
             <button
               className="bg-gray-100 p-2 rounded-full hover:bg-gray-200"
               onClick={() => {
-                onChangeResume({
-                  ...resume,
-                  header: {
-                    ...resume.header,
-                    skills: [...resume.header.skills, ''],
-                  },
-                });
+                const skillToAdd = prompt('Enter a new skill:');
+                if (skillToAdd) {
+                  if (resume.header.skills.includes(skillToAdd)) {
+                    toast.warning('This skill is already added.');
+                  } else {
+                    onChangeResume({
+                      ...resume,
+                      header: {
+                        ...resume.header,
+                        skills: [...resume.header.skills, skillToAdd],
+                      },
+                    });
+                    toast.success('Skill added successfully.');
+                  }
+                }
               }}
             >
               <svg

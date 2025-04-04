@@ -3,10 +3,15 @@ import LoadingFallback from '@/components/LoadingFallback';
 import { PopupSiteLive } from '@/components/PopupSiteLive';
 import PreviewActionbar from '@/components/PreviewActionbar';
 import { FullResume } from '@/components/resume/FullResume';
+import { EditResume } from '@/components/resume/EditResume';
 import { useUserActions } from '@/hooks/useUserActions';
+import { ResumeData } from '@/lib/server/redisActions';
 import { getSelfSoUrl } from '@/lib/utils';
 import { useUser } from '@clerk/nextjs';
-import { useState } from 'react';
+import { use, useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { Eye, Edit, Save, X } from 'lucide-react';
 
 import { toast } from 'sonner';
 
@@ -14,6 +19,37 @@ export default function PreviewClient() {
   const { user } = useUser();
   const { resumeQuery, toggleStatusMutation, usernameQuery } = useUserActions();
   const [showModalSiteLive, setModalSiteLive] = useState(false);
+  const [localResumeData, setLocalResumeData] = useState<ResumeData>();
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+
+  useEffect(() => {
+    if (resumeQuery.data?.resume?.resumeData) {
+      setLocalResumeData(resumeQuery.data?.resume?.resumeData);
+    }
+  }, [resumeQuery.data?.resume?.resumeData]);
+
+  const handleSaveChanges = () => {
+    // This is a dummy save function for now
+    toast.success('Changes saved successfully');
+    setHasUnsavedChanges(false);
+    setIsEditMode(false);
+  };
+
+  const handleDiscardChanges = () => {
+    // Reset to original data
+    if (resumeQuery.data?.resume?.resumeData) {
+      setLocalResumeData(resumeQuery.data?.resume?.resumeData);
+    }
+    setHasUnsavedChanges(false);
+    setIsEditMode(false);
+    toast.info('Changes discarded');
+  };
+
+  const handleResumeChange = (newResume: ResumeData) => {
+    setLocalResumeData(newResume);
+    setHasUnsavedChanges(true);
+  };
 
   if (resumeQuery.isLoading || usernameQuery.isLoading || !usernameQuery.data) {
     return <LoadingFallback message="Loading..." />;
@@ -94,11 +130,59 @@ export default function PreviewClient() {
         />
       </div>
 
+      <div className="max-w-3xl mx-auto w-full flex justify-between items-center px-4">
+        <ToggleGroup
+          type="single"
+          value={isEditMode ? 'edit' : 'preview'}
+          onValueChange={(value) => setIsEditMode(value === 'edit')}
+          aria-label="View mode"
+        >
+          <ToggleGroupItem value="preview" aria-label="Preview mode">
+            <Eye className="h-4 w-4 mr-1" />
+            <span>Preview</span>
+          </ToggleGroupItem>
+          <ToggleGroupItem value="edit" aria-label="Edit mode">
+            <Edit className="h-4 w-4 mr-1" />
+            <span>Edit</span>
+          </ToggleGroupItem>
+        </ToggleGroup>
+
+        {isEditMode && (
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={handleDiscardChanges}
+              className="flex items-center gap-1"
+              disabled={!hasUnsavedChanges}
+            >
+              <X className="h-4 w-4" />
+              <span>Discard</span>
+            </Button>
+            <Button
+              onClick={handleSaveChanges}
+              className="flex items-center gap-1"
+              disabled={!hasUnsavedChanges}
+            >
+              <Save className="h-4 w-4" />
+              <span>Save</span>
+            </Button>
+          </div>
+        )}
+      </div>
+
       <div className="max-w-3xl mx-auto w-full md:rounded-lg border-[0.5px] border-neutral-300 flex items-center justify-between px-4">
-        <FullResume
-          resume={resumeQuery.data?.resume?.resumeData}
-          profilePicture={user?.imageUrl}
-        />
+        {isEditMode ? (
+          <EditResume
+            resume={localResumeData}
+            profilePicture={user?.imageUrl}
+            onChangeResume={handleResumeChange}
+          />
+        ) : (
+          <FullResume
+            resume={localResumeData}
+            profilePicture={user?.imageUrl}
+          />
+        )}
       </div>
 
       <PopupSiteLive
