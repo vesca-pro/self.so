@@ -1,6 +1,298 @@
 import LoadingFallback from '../LoadingFallback';
 import { ResumeData } from '../../lib/server/redisActions';
 import { toast } from 'sonner';
+import { DateRangePicker } from '../ui/date-range-picker';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+
+// WorkExperienceField subcomponent
+const WorkExperienceField = ({
+  work,
+  index,
+  onUpdate,
+  onDelete,
+}: {
+  work: any;
+  index: number;
+  onUpdate: (index: number, updatedWork: any) => void;
+  onDelete: (index: number) => void;
+}) => {
+  return (
+    <div className="relative p-4 border rounded-md group">
+      <button
+        className="absolute top-2 right-2 text-gray-400 hover:text-red-500 transition-colors"
+        onClick={() => onDelete(index)}
+      >
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="md:col-span-2">
+          <Label
+            htmlFor={`work-title-${index}`}
+            className="text-sm font-medium"
+          >
+            Job Title *
+          </Label>
+          <Input
+            id={`work-title-${index}`}
+            value={work.title}
+            onChange={(e) => {
+              onUpdate(index, {
+                ...work,
+                title: e.target.value,
+              });
+            }}
+            placeholder="Job Title"
+            required
+          />
+        </div>
+
+        <div>
+          <Label
+            htmlFor={`work-company-${index}`}
+            className="text-sm font-medium"
+          >
+            Company *
+          </Label>
+          <Input
+            id={`work-company-${index}`}
+            value={work.company}
+            onChange={(e) => {
+              onUpdate(index, {
+                ...work,
+                company: e.target.value,
+              });
+            }}
+            placeholder="Company"
+            required
+          />
+        </div>
+
+        <div>
+          <Label
+            htmlFor={`work-location-${index}`}
+            className="text-sm font-medium"
+          >
+            Location *
+          </Label>
+          <Input
+            id={`work-location-${index}`}
+            value={work.location}
+            onChange={(e) => {
+              onUpdate(index, {
+                ...work,
+                location: e.target.value,
+              });
+            }}
+            placeholder="Location"
+            required
+          />
+        </div>
+
+        <div className="md:col-span-2">
+          <Label className="text-sm font-medium">Date Range *</Label>
+          <DateRangePicker
+            startDate={work.start}
+            endDate={work.end}
+            onStartDateChange={(date) => {
+              onUpdate(index, {
+                ...work,
+                start: date,
+              });
+            }}
+            onEndDateChange={(date) => {
+              onUpdate(index, {
+                ...work,
+                end: date,
+              });
+            }}
+          />
+        </div>
+
+        <div className="md:col-span-2">
+          <Label
+            htmlFor={`work-description-${index}`}
+            className="text-sm font-medium"
+          >
+            Description *
+          </Label>
+          <textarea
+            id={`work-description-${index}`}
+            className="w-full p-2 border rounded-md font-mono text-sm"
+            value={work.description}
+            onChange={(e) => {
+              onUpdate(index, {
+                ...work,
+                description: e.target.value,
+              });
+            }}
+            placeholder="Description"
+            rows={3}
+            required
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// EducationField subcomponent
+const EducationField = ({
+  edu,
+  index,
+  onUpdate,
+  onDelete,
+}: {
+  edu: any;
+  index: number;
+  onUpdate: (index: number, updatedEdu: any) => void;
+  onDelete: (index: number) => void;
+}) => {
+  return (
+    <div className="relative p-4 border rounded-md group">
+      <button
+        className="absolute top-2 right-2 text-gray-400 hover:text-red-500 transition-colors"
+        onClick={() => onDelete(index)}
+      >
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="md:col-span-2">
+          <Label
+            htmlFor={`edu-degree-${index}`}
+            className="text-sm font-medium"
+          >
+            Degree *
+          </Label>
+          <Input
+            id={`edu-degree-${index}`}
+            value={edu.degree}
+            onChange={(e) => {
+              onUpdate(index, {
+                ...edu,
+                degree: e.target.value,
+              });
+            }}
+            placeholder="Degree"
+            required
+          />
+        </div>
+
+        <div className="md:col-span-2">
+          <Label
+            htmlFor={`edu-school-${index}`}
+            className="text-sm font-medium"
+          >
+            School *
+          </Label>
+          <Input
+            id={`edu-school-${index}`}
+            value={edu.school}
+            onChange={(e) => {
+              onUpdate(index, {
+                ...edu,
+                school: e.target.value,
+              });
+            }}
+            placeholder="School"
+            required
+          />
+        </div>
+
+        <div className="md:col-span-2">
+          <Label className="text-sm font-medium">Date Range *</Label>
+          <DateRangePicker
+            startDate={edu.start}
+            endDate={edu.end}
+            onStartDateChange={(date) => {
+              onUpdate(index, {
+                ...edu,
+                start: date,
+              });
+            }}
+            onEndDateChange={(date) => {
+              onUpdate(index, {
+                ...edu,
+                end: date,
+              });
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// SkillField subcomponent
+const SkillField = ({
+  skill,
+  index,
+  onUpdate,
+  onDelete,
+}: {
+  skill: string;
+  index: number;
+  onUpdate: (index: number, updatedSkill: string) => void;
+  onDelete: (index: number) => void;
+}) => {
+  return (
+    <div className="group relative bg-gray-100 px-3 py-1 rounded-full w-fit flex items-center gap-2">
+      <div
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={(e) => onUpdate(index, e.currentTarget.textContent || '')}
+        className="bg-transparent outline-none h-6 py-0 min-w-[40px] overflow-hidden whitespace-nowrap"
+        style={{ width: 'fit-content' }}
+      >
+        {skill}
+      </div>
+      <button
+        className="text-gray-400 hover:text-red-500 transition-colors"
+        onClick={() => onDelete(index)}
+      >
+        <svg
+          className="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    </div>
+  );
+};
 
 export const EditResume = ({
   resume,
@@ -22,10 +314,10 @@ export const EditResume = ({
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
-          <label htmlFor="name" className="text-sm font-medium text-gray-700">
+          <Label htmlFor="name" className="text-sm font-medium text-gray-700">
             Name
-          </label>
-          <input
+          </Label>
+          <Input
             type="text"
             id="name"
             value={resume?.header?.name || ''}
@@ -38,19 +330,18 @@ export const EditResume = ({
                 },
               });
             }}
-            className="w-full p-2 border rounded-md"
             placeholder="Your full name"
           />
         </div>
 
         <div className="flex flex-col gap-2">
-          <label
+          <Label
             htmlFor="location"
             className="text-sm font-medium text-gray-700"
           >
             Location
-          </label>
-          <input
+          </Label>
+          <Input
             type="text"
             id="location"
             value={resume?.header?.location || ''}
@@ -63,18 +354,17 @@ export const EditResume = ({
                 },
               });
             }}
-            className="w-full p-2 border rounded-md"
             placeholder="Your location"
           />
         </div>
 
         <div className="flex flex-col gap-2 col-span-2">
-          <label
+          <Label
             htmlFor="shortAbout"
             className="text-sm font-medium text-gray-700"
           >
             Short About
-          </label>
+          </Label>
           <textarea
             className="w-full p-2 border rounded-md font-mono text-sm"
             value={resume?.header?.shortAbout || ''}
@@ -116,82 +406,27 @@ export const EditResume = ({
           <h2 className="text-xl font-bold">Work Experience</h2>
           <div className="space-y-4">
             {resume?.workExperience?.map((work, index) => (
-              <div key={index} className="relative p-4 border rounded-md group">
-                <button
-                  className="absolute top-2 right-2 text-gray-400 hover:text-red-500 transition-colors"
-                  onClick={() => {
-                    const newWorkExperience = [...resume.workExperience];
-                    newWorkExperience.splice(index, 1);
-                    onChangeResume({
-                      ...resume,
-                      workExperience: newWorkExperience,
-                    });
-                  }}
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-                <input
-                  className="w-full font-bold mb-2"
-                  value={work.title}
-                  onChange={(e) => {
-                    const newWorkExperience = [...resume.workExperience];
-                    newWorkExperience[index] = {
-                      ...work,
-                      title: e.target.value,
-                    };
-                    onChangeResume({
-                      ...resume,
-                      workExperience: newWorkExperience,
-                    });
-                  }}
-                  placeholder="Job Title"
-                />
-                <input
-                  className="w-full mb-2"
-                  value={work.company}
-                  onChange={(e) => {
-                    const newWorkExperience = [...resume.workExperience];
-                    newWorkExperience[index] = {
-                      ...work,
-                      company: e.target.value,
-                    };
-                    onChangeResume({
-                      ...resume,
-                      workExperience: newWorkExperience,
-                    });
-                  }}
-                  placeholder="Company"
-                />
-                <textarea
-                  className="w-full"
-                  value={work.description}
-                  onChange={(e) => {
-                    const newWorkExperience = [...resume.workExperience];
-                    newWorkExperience[index] = {
-                      ...work,
-                      description: e.target.value,
-                    };
-                    onChangeResume({
-                      ...resume,
-                      workExperience: newWorkExperience,
-                    });
-                  }}
-                  placeholder="Description"
-                  rows={3}
-                />
-              </div>
+              <WorkExperienceField
+                key={index}
+                work={work}
+                index={index}
+                onUpdate={(index, updatedWork) => {
+                  const newWorkExperience = [...resume.workExperience];
+                  newWorkExperience[index] = updatedWork;
+                  onChangeResume({
+                    ...resume,
+                    workExperience: newWorkExperience,
+                  });
+                }}
+                onDelete={(index) => {
+                  const newWorkExperience = [...resume.workExperience];
+                  newWorkExperience.splice(index, 1);
+                  onChangeResume({
+                    ...resume,
+                    workExperience: newWorkExperience,
+                  });
+                }}
+              />
             ))}
             <button
               className="w-full p-2 border-2 border-dashed rounded-md text-gray-500 hover:border-gray-400"
@@ -223,97 +458,27 @@ export const EditResume = ({
           <h2 className="text-xl font-bold">Education</h2>
           <div className="space-y-4">
             {resume?.education?.map((edu, index) => (
-              <div key={index} className="relative p-4 border rounded-md group">
-                <button
-                  className="absolute top-2 right-2 text-gray-400 hover:text-red-500 transition-colors"
-                  onClick={() => {
-                    const newEducation = [...resume.education];
-                    newEducation.splice(index, 1);
-                    onChangeResume({
-                      ...resume,
-                      education: newEducation,
-                    });
-                  }}
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-                <input
-                  className="w-full font-bold mb-2"
-                  value={edu.degree}
-                  onChange={(e) => {
-                    const newEducation = [...resume.education];
-                    newEducation[index] = {
-                      ...edu,
-                      degree: e.target.value,
-                    };
-                    onChangeResume({
-                      ...resume,
-                      education: newEducation,
-                    });
-                  }}
-                  placeholder="Degree"
-                />
-                <input
-                  className="w-full mb-2"
-                  value={edu.school}
-                  onChange={(e) => {
-                    const newEducation = [...resume.education];
-                    newEducation[index] = {
-                      ...edu,
-                      school: e.target.value,
-                    };
-                    onChangeResume({
-                      ...resume,
-                      education: newEducation,
-                    });
-                  }}
-                  placeholder="School"
-                />
-                <input
-                  className="w-full"
-                  value={edu.start}
-                  onChange={(e) => {
-                    const newEducation = [...resume.education];
-                    newEducation[index] = {
-                      ...edu,
-                      start: e.target.value,
-                    };
-                    onChangeResume({
-                      ...resume,
-                      education: newEducation,
-                    });
-                  }}
-                  placeholder="Start Year"
-                />
-                <input
-                  className="w-full"
-                  value={edu.end}
-                  onChange={(e) => {
-                    const newEducation = [...resume.education];
-                    newEducation[index] = {
-                      ...edu,
-                      end: e.target.value,
-                    };
-                    onChangeResume({
-                      ...resume,
-                      education: newEducation,
-                    });
-                  }}
-                  placeholder="End Year"
-                />
-              </div>
+              <EducationField
+                key={index}
+                edu={edu}
+                index={index}
+                onUpdate={(index, updatedEdu) => {
+                  const newEducation = [...resume.education];
+                  newEducation[index] = updatedEdu;
+                  onChangeResume({
+                    ...resume,
+                    education: newEducation,
+                  });
+                }}
+                onDelete={(index) => {
+                  const newEducation = [...resume.education];
+                  newEducation.splice(index, 1);
+                  onChangeResume({
+                    ...resume,
+                    education: newEducation,
+                  });
+                }}
+              />
             ))}
             <button
               className="w-full p-2 border-2 border-dashed rounded-md text-gray-500 hover:border-gray-400"
@@ -337,55 +502,33 @@ export const EditResume = ({
           <h2 className="text-xl font-bold">Skills</h2>
           <div className="flex flex-wrap gap-2">
             {resume.header.skills.map((skill, index) => (
-              <div
+              <SkillField
                 key={index}
-                className="group relative bg-gray-100 px-3 py-1 rounded-full flex items-center gap-2"
-              >
-                <input
-                  type="text"
-                  value={skill}
-                  onChange={(e) => {
-                    const newSkills = [...resume.header.skills];
-                    newSkills[index] = e.target.value;
-                    onChangeResume({
-                      ...resume,
-                      header: {
-                        ...resume.header,
-                        skills: newSkills,
-                      },
-                    });
-                  }}
-                  className="bg-transparent border-none outline-none"
-                />
-                <button
-                  className="text-gray-400 hover:text-red-500 transition-colors"
-                  onClick={() => {
-                    const newSkills = [...resume.header.skills];
-                    newSkills.splice(index, 1);
-                    onChangeResume({
-                      ...resume,
-                      header: {
-                        ...resume.header,
-                        skills: newSkills,
-                      },
-                    });
-                  }}
-                >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              </div>
+                skill={skill}
+                index={index}
+                onUpdate={(index, updatedSkill) => {
+                  const newSkills = [...resume.header.skills];
+                  newSkills[index] = updatedSkill;
+                  onChangeResume({
+                    ...resume,
+                    header: {
+                      ...resume.header,
+                      skills: newSkills,
+                    },
+                  });
+                }}
+                onDelete={(index) => {
+                  const newSkills = [...resume.header.skills];
+                  newSkills.splice(index, 1);
+                  onChangeResume({
+                    ...resume,
+                    header: {
+                      ...resume.header,
+                      skills: newSkills,
+                    },
+                  });
+                }}
+              />
             ))}
             <button
               className="bg-gray-100 p-2 rounded-full hover:bg-gray-200"
