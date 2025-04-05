@@ -148,7 +148,7 @@ export default function PreviewClient() {
         />
       </div>
 
-      <div className="max-w-3xl mx-auto w-full flex justify-between items-center px-4">
+      <div className="max-w-3xl mx-auto w-full flex flex-col md:flex-row justify-between items-center px-4 md:px-0 gap-4">
         <ToggleGroup
           type="single"
           value={isEditMode ? 'edit' : 'preview'}

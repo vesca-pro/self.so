@@ -66,8 +66,8 @@ export function DateRangePicker({
 
   return (
     <div className={cn('flex flex-col space-y-2', className)}>
-      <div className="flex items-center justify-between">
-        <div className="flex-1 mr-2">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
+        <div className="flex-1 sm:mr-2">
           <Label htmlFor="start-date" className="text-sm font-medium">
             Start Date <span className="text-red-500">*</span>
           </Label>
@@ -77,10 +77,10 @@ export function DateRangePicker({
             value={formatDateForInput(startDate)}
             onChange={(e) => handleStartDateChange(e.target.value)}
             required
-            className="mt-1"
+            className="mt-1 w-full"
           />
         </div>
-        <div className="flex-1 ml-2">
+        <div className="flex-1 sm:ml-2">
           <Label htmlFor="end-date" className="text-sm font-medium">
             End Date
           </Label>
@@ -89,7 +89,7 @@ export function DateRangePicker({
             type="month"
             value={formatDateForInput(endDate)}
             onChange={(e) => handleEndDateChange(e.target.value)}
-            className="mt-1"
+            className="mt-1 w-full"
             placeholder="In progress"
           />
         </div>

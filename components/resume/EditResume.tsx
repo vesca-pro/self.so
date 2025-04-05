@@ -5,6 +5,24 @@ import { DateRangePicker } from '../ui/date-range-picker';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 
+// AddButton component
+const AddButton = ({
+  label,
+  onClick,
+}: {
+  label: string;
+  onClick: () => void;
+}) => {
+  return (
+    <button
+      className="w-full p-2 border-2 border-dashed rounded-md text-gray-500 hover:border-gray-400"
+      onClick={onClick}
+    >
+      + {label}
+    </button>
+  );
+};
+
 // WorkExperienceField subcomponent
 const WorkExperienceField = ({
   work,
@@ -313,7 +331,7 @@ export const EditResume = ({
       aria-label="Resume Content editing"
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 col-span-2 md:col-span-1">
           <Label htmlFor="name" className="text-sm font-medium text-gray-700">
             Name
           </Label>
@@ -428,8 +446,8 @@ export const EditResume = ({
                 }}
               />
             ))}
-            <button
-              className="w-full p-2 border-2 border-dashed rounded-md text-gray-500 hover:border-gray-400"
+            <AddButton
+              label="Add Work Experience"
               onClick={() => {
                 onChangeResume({
                   ...resume,
@@ -447,9 +465,7 @@ export const EditResume = ({
                   ],
                 });
               }}
-            >
-              + Add Work Experience
-            </button>
+            />
           </div>
         </div>
 
@@ -480,8 +496,8 @@ export const EditResume = ({
                 }}
               />
             ))}
-            <button
-              className="w-full p-2 border-2 border-dashed rounded-md text-gray-500 hover:border-gray-400"
+            <AddButton
+              label="Add Education"
               onClick={() => {
                 onChangeResume({
                   ...resume,
@@ -491,9 +507,7 @@ export const EditResume = ({
                   ],
                 });
               }}
-            >
-              + Add Education
-            </button>
+            />
           </div>
         </div>
 
@@ -530,41 +544,27 @@ export const EditResume = ({
                 }}
               />
             ))}
-            <button
-              className="bg-gray-100 p-2 rounded-full hover:bg-gray-200"
-              onClick={() => {
-                const skillToAdd = prompt('Enter a new skill:');
-                if (skillToAdd) {
-                  if (resume.header.skills.includes(skillToAdd)) {
-                    toast.warning('This skill is already added.');
-                  } else {
-                    onChangeResume({
-                      ...resume,
-                      header: {
-                        ...resume.header,
-                        skills: [...resume.header.skills, skillToAdd],
-                      },
-                    });
-                    toast.success('Skill added successfully.');
-                  }
-                }
-              }}
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
-            </button>
           </div>
+          <AddButton
+            label="Add Skill"
+            onClick={() => {
+              const skillToAdd = prompt('Enter a new skill:');
+              if (skillToAdd) {
+                if (resume.header.skills.includes(skillToAdd)) {
+                  toast.warning('This skill is already added.');
+                } else {
+                  onChangeResume({
+                    ...resume,
+                    header: {
+                      ...resume.header,
+                      skills: [...resume.header.skills, skillToAdd],
+                    },
+                  });
+                  toast.success('Skill added successfully.');
+                }
+              }
+            }}
+          />
         </div>
       </div>
     </section>
