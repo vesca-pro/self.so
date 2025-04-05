@@ -1,7 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Resume } from '@/lib/server/redisActions';
+import { Resume, ResumeData } from '@/lib/server/redisActions';
 import { useS3Upload } from 'next-s3-upload';
 import { PublishStatuses } from '@/components/PreviewActionbar';
+import { ResumeDataSchema } from '@/lib/resume';
 
 // Fetch resume data
 const fetchResume = async (): Promise<{
@@ -27,7 +28,7 @@ const fetchUsername = async (): Promise<{
 };
 
 const checkUsernameAvailability = async (
-  username: string,
+  username: string
 ): Promise<{
   available: boolean;
 }> => {
@@ -35,7 +36,7 @@ const checkUsernameAvailability = async (
     `/api/check-username?username=${encodeURIComponent(username)}`,
     {
       method: 'POST',
-    },
+    }
   );
   if (!response.ok) {
     const error = await response.json();
@@ -160,6 +161,43 @@ export function useUserActions() {
     },
   });
 
+  // Function to save resume data changes
+  const saveResumeDataChanges = async (newResumeData: ResumeData) => {
+    // Validate the resume data using Zod schema
+    try {
+      // Validate the resume data
+      ResumeDataSchema.parse(newResumeData);
+
+      // If validation passes, update the resume
+      if (!resumeQuery.data?.resume) {
+        throw new Error('No resume found to update');
+      }
+
+      const updatedResume: Resume = {
+        ...resumeQuery.data.resume,
+        resumeData: newResumeData,
+      };
+
+      await internalResumeUpdate(updatedResume);
+
+      return { success: true };
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(`Validation failed: ${error.message}`);
+      }
+      throw error;
+    }
+  };
+
+  // Mutation for saving resume data changes
+  const saveResumeDataMutation = useMutation({
+    mutationFn: saveResumeDataChanges,
+    onSuccess: () => {
+      // Invalidate and refetch resume data
+      queryClient.invalidateQueries({ queryKey: ['resume'] });
+    },
+  });
+
   return {
     resumeQuery,
     uploadResumeMutation,
@@ -167,5 +205,6 @@ export function useUserActions() {
     usernameQuery,
     updateUsernameMutation,
     checkUsernameMutation,
+    saveResumeDataMutation,
   };
 }

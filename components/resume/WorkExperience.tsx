@@ -11,6 +11,15 @@ export function WorkExperience({
 }: {
   work: ResumeDataSchemaType['workExperience'];
 }) {
+  // Filter out invalid work experiences
+  const validWork = work.filter(
+    (item) => item.company && item.location && item.title && item.description
+  );
+
+  if (validWork.length === 0) {
+    return null;
+  }
+
   return (
     <Section>
       <h2 className="text-lg font-bold" id="work-experience">
@@ -21,7 +30,7 @@ export function WorkExperience({
         role="feed"
         aria-labelledby="work-experience"
       >
-        {work.map((item) => {
+        {validWork.map((item) => {
           return (
             <div
               key={item.company + item.location + item.title}

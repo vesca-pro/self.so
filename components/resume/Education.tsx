@@ -26,6 +26,11 @@ function EducationItem({
 }) {
   const { school, start, end, degree } = education;
 
+  // Skip rendering if required fields are missing
+  if (!school || !degree || !start) {
+    return null;
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -60,6 +65,15 @@ export function Education({
 }: {
   educations: ResumeDataSchemaType['education'];
 }) {
+  // Filter out invalid education entries
+  const validEducations = educations.filter(
+    (edu) => edu.school && edu.degree && edu.start
+  );
+
+  if (validEducations.length === 0) {
+    return null;
+  }
+
   return (
     <Section>
       <h2 className="text-xl font-bold" id="education-section">
@@ -70,7 +84,7 @@ export function Education({
         role="feed"
         aria-labelledby="education-section"
       >
-        {educations.map((item, idx) => (
+        {validEducations.map((item, idx) => (
           <article key={idx} role="article">
             <EducationItem education={item} />
           </article>

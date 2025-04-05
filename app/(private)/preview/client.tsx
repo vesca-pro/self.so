@@ -8,7 +8,7 @@ import { useUserActions } from '@/hooks/useUserActions';
 import { ResumeData } from '@/lib/server/redisActions';
 import { getSelfSoUrl } from '@/lib/utils';
 import { useUser } from '@clerk/nextjs';
-import { use, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Eye, Edit, Save, X } from 'lucide-react';
@@ -17,7 +17,12 @@ import { toast } from 'sonner';
 
 export default function PreviewClient() {
   const { user } = useUser();
-  const { resumeQuery, toggleStatusMutation, usernameQuery } = useUserActions();
+  const {
+    resumeQuery,
+    toggleStatusMutation,
+    usernameQuery,
+    saveResumeDataMutation,
+  } = useUserActions();
   const [showModalSiteLive, setModalSiteLive] = useState(false);
   const [localResumeData, setLocalResumeData] = useState<ResumeData>();
   const [isEditMode, setIsEditMode] = useState(false);
@@ -29,11 +34,24 @@ export default function PreviewClient() {
     }
   }, [resumeQuery.data?.resume?.resumeData]);
 
-  const handleSaveChanges = () => {
-    // This is a dummy save function for now
-    toast.success('Changes saved successfully');
-    setHasUnsavedChanges(false);
-    setIsEditMode(false);
+  const handleSaveChanges = async () => {
+    if (!localResumeData) {
+      toast.error('No resume data to save');
+      return;
+    }
+
+    try {
+      await saveResumeDataMutation.mutateAsync(localResumeData);
+      toast.success('Changes saved successfully');
+      setHasUnsavedChanges(false);
+      setIsEditMode(false);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(`Failed to save changes: ${error.message}`);
+      } else {
+        toast.error('Failed to save changes');
+      }
+    }
   };
 
   const handleDiscardChanges = () => {
@@ -153,7 +171,7 @@ export default function PreviewClient() {
               variant="outline"
               onClick={handleDiscardChanges}
               className="flex items-center gap-1"
-              disabled={!hasUnsavedChanges}
+              disabled={!hasUnsavedChanges || saveResumeDataMutation.isPending}
             >
               <X className="h-4 w-4" />
               <span>Discard</span>
@@ -161,10 +179,16 @@ export default function PreviewClient() {
             <Button
               onClick={handleSaveChanges}
               className="flex items-center gap-1"
-              disabled={!hasUnsavedChanges}
+              disabled={!hasUnsavedChanges || saveResumeDataMutation.isPending}
             >
-              <Save className="h-4 w-4" />
-              <span>Save</span>
+              {saveResumeDataMutation.isPending ? (
+                <span className="animate-spin">⌛</span>
+              ) : (
+                <Save className="h-4 w-4" />
+              )}
+              <span>
+                {saveResumeDataMutation.isPending ? 'Saving...' : 'Save'}
+              </span>
             </Button>
           </div>
         )}
