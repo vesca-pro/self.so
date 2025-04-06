@@ -68,8 +68,11 @@ export function DateRangePicker({
     <div className={cn('flex flex-col space-y-2', className)}>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
         <div className="flex-1 sm:mr-2">
-          <Label htmlFor="start-date" className="text-sm font-medium">
-            Start Date <span className="text-red-500">*</span>
+          <Label
+            htmlFor="start-date"
+            className="text-sm font-medium text-slate-400"
+          >
+            Start Date
           </Label>
           <Input
             id="start-date"
@@ -81,7 +84,10 @@ export function DateRangePicker({
           />
         </div>
         <div className="flex-1 sm:ml-2">
-          <Label htmlFor="end-date" className="text-sm font-medium">
+          <Label
+            htmlFor="end-date"
+            className="text-sm font-medium text-slate-400"
+          >
             End Date
           </Label>
           <Input

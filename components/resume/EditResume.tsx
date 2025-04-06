@@ -62,7 +62,7 @@ const WorkExperienceField = ({
             htmlFor={`work-title-${index}`}
             className="text-sm font-medium"
           >
-            Job Title *
+            Job Title
           </Label>
           <Input
             id={`work-title-${index}`}
@@ -83,7 +83,7 @@ const WorkExperienceField = ({
             htmlFor={`work-company-${index}`}
             className="text-sm font-medium"
           >
-            Company *
+            Company
           </Label>
           <Input
             id={`work-company-${index}`}
@@ -104,7 +104,7 @@ const WorkExperienceField = ({
             htmlFor={`work-location-${index}`}
             className="text-sm font-medium"
           >
-            Location *
+            Location
           </Label>
           <Input
             id={`work-location-${index}`}
@@ -121,7 +121,7 @@ const WorkExperienceField = ({
         </div>
 
         <div className="md:col-span-2">
-          <Label className="text-sm font-medium">Date Range *</Label>
+          <Label className="text-sm font-medium">Date Range</Label>
           <DateRangePicker
             startDate={work.start}
             endDate={work.end}
@@ -145,7 +145,7 @@ const WorkExperienceField = ({
             htmlFor={`work-description-${index}`}
             className="text-sm font-medium"
           >
-            Description *
+            Description
           </Label>
           <textarea
             id={`work-description-${index}`}
@@ -206,7 +206,7 @@ const EducationField = ({
             htmlFor={`edu-degree-${index}`}
             className="text-sm font-medium"
           >
-            Degree *
+            Degree
           </Label>
           <Input
             id={`edu-degree-${index}`}
@@ -227,7 +227,7 @@ const EducationField = ({
             htmlFor={`edu-school-${index}`}
             className="text-sm font-medium"
           >
-            School *
+            School
           </Label>
           <Input
             id={`edu-school-${index}`}
@@ -244,7 +244,7 @@ const EducationField = ({
         </div>
 
         <div className="md:col-span-2">
-          <Label className="text-sm font-medium">Date Range *</Label>
+          <Label className="text-sm font-medium">Date Range</Label>
           <DateRangePicker
             startDate={edu.start}
             endDate={edu.end}
