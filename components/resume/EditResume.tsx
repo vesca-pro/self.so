@@ -284,7 +284,11 @@ const SkillField = ({
       <div
         contentEditable
         suppressContentEditableWarning
-        onBlur={(e) => onUpdate(index, e.currentTarget.textContent || '')}
+        onBlur={(e) => {
+          // Trim whitespace from both ends to prevent inconsistencies
+          const trimmedSkill = (e.currentTarget.textContent || '').trim();
+          onUpdate(index, trimmedSkill);
+        }}
         className="bg-transparent outline-none h-6 py-0 min-w-[40px] overflow-hidden whitespace-nowrap"
         style={{ width: 'fit-content' }}
       >
@@ -550,14 +554,23 @@ export const EditResume = ({
             onClick={() => {
               const skillToAdd = prompt('Enter a new skill:');
               if (skillToAdd) {
-                if (resume.header.skills.includes(skillToAdd)) {
+                // Trim whitespace from the input
+                const trimmedSkill = skillToAdd.trim();
+
+                // Check if the skill is empty after trimming
+                if (!trimmedSkill) {
+                  toast.warning('Skill cannot be empty.');
+                  return;
+                }
+
+                if (resume.header.skills.includes(trimmedSkill)) {
                   toast.warning('This skill is already added.');
                 } else {
                   onChangeResume({
                     ...resume,
                     header: {
                       ...resume.header,
-                      skills: [...resume.header.skills, skillToAdd],
+                      skills: [...resume.header.skills, trimmedSkill],
                     },
                   });
                   toast.success('Skill added successfully.');

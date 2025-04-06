@@ -12,6 +12,16 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Eye, Edit, Save, X } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 import { toast } from 'sonner';
 
@@ -27,6 +37,7 @@ export default function PreviewClient() {
   const [localResumeData, setLocalResumeData] = useState<ResumeData>();
   const [isEditMode, setIsEditMode] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
 
   useEffect(() => {
     if (resumeQuery.data?.resume?.resumeData) {
@@ -55,12 +66,18 @@ export default function PreviewClient() {
   };
 
   const handleDiscardChanges = () => {
+    // Show confirmation dialog instead of immediately discarding
+    setShowDiscardConfirmation(true);
+  };
+
+  const confirmDiscardChanges = () => {
     // Reset to original data
     if (resumeQuery.data?.resume?.resumeData) {
       setLocalResumeData(resumeQuery.data?.resume?.resumeData);
     }
     setHasUnsavedChanges(false);
     setIsEditMode(false);
+    setShowDiscardConfirmation(false);
     toast.info('Changes discarded');
   };
 
@@ -208,6 +225,27 @@ export default function PreviewClient() {
           />
         )}
       </div>
+
+      <AlertDialog
+        open={showDiscardConfirmation}
+        onOpenChange={setShowDiscardConfirmation}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Discard Changes?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to discard your changes? This action cannot
+              be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDiscardChanges}>
+              Discard
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <PopupSiteLive
         isOpen={showModalSiteLive}
