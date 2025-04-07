@@ -9,11 +9,12 @@ const togetherai = createTogetherAI({
 
 export const generateResumeObject = async (resumeText: string) => {
   const startTime = Date.now();
-  const { object } = await generateObject({
-    model: togetherai('Qwen/Qwen2.5-72B-Instruct-Turbo'),
-    maxRetries: 1,
-    schema: ResumeDataSchema,
-    prompt: dedent`You are an expert resume writer. Generate a resume object from the following resume text. Be professional and concise.
+  try {
+    const { object } = await generateObject({
+      model: togetherai('Qwen/Qwen2.5-72B-Instruct-Turbo'),
+      maxRetries: 1,
+      schema: ResumeDataSchema,
+      prompt: dedent`You are an expert resume writer. Generate a resume object from the following resume text. Be professional and concise.
 
     ## Instructions:
 
@@ -25,12 +26,16 @@ export const generateResumeObject = async (resumeText: string) => {
 
     ${resumeText}
     `,
-  });
+    });
 
-  const endTime = Date.now();
-  console.log(
-    `Generating resume object took ${(endTime - startTime) / 1000} seconds`
-  );
+    const endTime = Date.now();
+    console.log(
+      `Generating resume object took ${(endTime - startTime) / 1000} seconds`
+    );
 
-  return object;
+    return object;
+  } catch (error) {
+    console.warn('Impossible generating resume object');
+    return undefined;
+  }
 };
