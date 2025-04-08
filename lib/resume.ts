@@ -19,7 +19,6 @@ const HeaderSection = z.object({
   contacts: HeaderContactsSchema,
   skills: z
     .array(z.string())
-    .max(15)
     .describe('Skills used within the different jobs the user has had.'),
 });
 

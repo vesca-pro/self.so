@@ -35,7 +35,7 @@ export const generateResumeObject = async (resumeText: string) => {
 
     return object;
   } catch (error) {
-    console.warn('Impossible generating resume object');
+    console.warn('Impossible generating resume object', error);
     return undefined;
   }
 };
