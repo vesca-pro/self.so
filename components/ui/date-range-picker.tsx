@@ -1,7 +1,11 @@
-import React from 'react';
-import { Input } from './input';
+import React, { useState } from 'react';
 import { Label } from './label';
 import { cn } from '@/lib/utils';
+import { MonthPicker } from './monthpicker';
+import { Button } from './button';
+import { CalendarIcon, X } from 'lucide-react';
+import { format } from 'date-fns';
+import { Popover, PopoverContent, PopoverTrigger } from './popover';
 
 interface DateRangePickerProps {
   startDate: string | null | undefined;
@@ -18,86 +22,120 @@ export function DateRangePicker({
   onEndDateChange,
   className,
 }: DateRangePickerProps) {
-  // Format the date for display (YYYY-MM)
-  const formatDateForInput = (date: string | null | undefined) => {
-    if (!date) return '';
+  const [startOpen, setStartOpen] = useState(false);
+  const [endOpen, setEndOpen] = useState(false);
 
-    // Handle both YYYY-MM-DD and YYYY formats
-    if (date.includes('-')) {
-      // If it's already a full date (YYYY-MM-DD), just use the year and month
-      const [year, month] = date.split('-');
-      return `${year}-${month}`;
-    } else {
-      // If it's just a year (YYYY), add -01 for month input compatibility
-      return `${date}-01`;
-    }
+  // Convert string dates to Date objects for MonthPicker
+  const startDateObj = startDate ? new Date(startDate) : undefined;
+  const endDateObj = endDate ? new Date(endDate) : undefined;
+
+  // Handle month selection
+  const handleStartMonthSelect = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    onStartDateChange(`${year}-${month}-01`);
+    setStartOpen(false);
   };
 
-  // Handle date change while preserving the full date format
-  const handleStartDateChange = (value: string) => {
-    if (!value) {
-      onStartDateChange('');
-      return;
-    }
-
-    // If the value is just a year (YYYY), convert to YYYY-01-01
-    if (!value.includes('-')) {
-      onStartDateChange(`${value}-01-01`);
-    } else {
-      // If it's already a full date, keep it as is
-      onStartDateChange(value);
-    }
-  };
-
-  const handleEndDateChange = (value: string) => {
-    if (!value) {
-      onEndDateChange('');
-      return;
-    }
-
-    // If the value is just a year (YYYY), convert to YYYY-01-01
-    if (!value.includes('-')) {
-      onEndDateChange(`${value}-01-01`);
-    } else {
-      // If it's already a full date, keep it as is
-      onEndDateChange(value);
-    }
+  const handleEndMonthSelect = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    onEndDateChange(`${year}-${month}-01`);
+    setEndOpen(false);
   };
 
   return (
-    <div className={cn('flex flex-col space-y-2', className)}>
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
+    <div className={cn('flex flex-col space-y-4', className)}>
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 sm:gap-0">
         <div className="flex-1 sm:mr-2">
-          <Label
-            htmlFor="start-date"
-            className="text-sm font-medium text-slate-400"
-          >
+          <Label className="text-sm font-medium text-slate-400 mb-2 block">
             Start Date
           </Label>
-          <Input
-            id="start-date"
-            type="month"
-            value={formatDateForInput(startDate)}
-            onChange={(e) => handleStartDateChange(e.target.value)}
-            required
-            className="mt-1 w-full"
-          />
+          <Popover open={startOpen} onOpenChange={setStartOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className={cn(
+                  'w-full justify-start text-left font-normal',
+                  !startDateObj && 'text-muted-foreground'
+                )}
+              >
+                <div className="flex items-center w-full">
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  <span className="flex-1">
+                    {startDateObj
+                      ? format(startDateObj, 'MMM yyyy')
+                      : 'Pick a start month'}
+                  </span>
+                </div>
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0">
+              <MonthPicker
+                selectedMonth={startDateObj}
+                onMonthSelect={handleStartMonthSelect}
+                maxDate={endDateObj}
+                variant={{
+                  calendar: {
+                    main: 'ghost',
+                    selected: 'default',
+                  },
+                  chevrons: 'outline',
+                }}
+              />
+            </PopoverContent>
+          </Popover>
         </div>
         <div className="flex-1 sm:ml-2">
-          <Label
-            htmlFor="end-date"
-            className="text-sm font-medium text-slate-400"
-          >
+          <Label className="text-sm font-medium text-slate-400 mb-2 block">
             End Date
           </Label>
-          <Input
-            id="end-date"
-            type="month"
-            value={formatDateForInput(endDate)}
-            onChange={(e) => handleEndDateChange(e.target.value)}
-            className="mt-1 w-full"
-            placeholder="In progress"
-          />
+          <Popover open={endOpen} onOpenChange={setEndOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className={cn(
+                  'w-full justify-start text-left font-normal',
+                  !endDateObj && 'text-muted-foreground'
+                )}
+              >
+                <div className="flex items-center w-full">
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  <span className="flex-1">
+                    {endDateObj
+                      ? format(endDateObj, 'MMM yyyy')
+                      : 'Pick an end month'}
+                  </span>
+                  {endDateObj && (
+                    <div
+                      role="button"
+                      className="h-4 w-4 p-0 flex items-center justify-center hover:bg-accent rounded-sm cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEndDateChange('');
+                      }}
+                    >
+                      <X className="h-3 w-3" />
+                    </div>
+                  )}
+                </div>
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0">
+              <MonthPicker
+                selectedMonth={endDateObj}
+                onMonthSelect={handleEndMonthSelect}
+                minDate={startDateObj}
+                variant={{
+                  calendar: {
+                    main: 'ghost',
+                    selected: 'default',
+                  },
+                  chevrons: 'outline',
+                }}
+              />
+            </PopoverContent>
+          </Popover>
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@ import LoadingFallback from '@/components/LoadingFallback';
 import { PopupSiteLive } from '@/components/PopupSiteLive';
 import PreviewActionbar from '@/components/PreviewActionbar';
 import { FullResume } from '@/components/resume/FullResume';
-import { EditResume } from '@/components/resume/EditResume';
+import { EditResume } from '@/components/resume/editing/EditResume';
 import { useUserActions } from '@/hooks/useUserActions';
 import { ResumeData } from '@/lib/server/redisActions';
 import { getSelfSoUrl } from '@/lib/utils';
@@ -44,6 +44,8 @@ export default function PreviewClient({ messageTip }: { messageTip?: string }) {
       setLocalResumeData(resumeQuery.data?.resume?.resumeData);
     }
   }, [resumeQuery.data?.resume?.resumeData]);
+
+  console.log('resumeQuery', resumeQuery.data);
 
   const handleSaveChanges = async () => {
     if (!localResumeData) {
@@ -86,7 +88,12 @@ export default function PreviewClient({ messageTip }: { messageTip?: string }) {
     setHasUnsavedChanges(true);
   };
 
-  if (resumeQuery.isLoading || usernameQuery.isLoading || !usernameQuery.data) {
+  if (
+    resumeQuery.isLoading ||
+    usernameQuery.isLoading ||
+    !usernameQuery.data ||
+    !localResumeData
+  ) {
     return <LoadingFallback message="Loading..." />;
   }
 
@@ -234,7 +241,6 @@ export default function PreviewClient({ messageTip }: { messageTip?: string }) {
         {isEditMode ? (
           <EditResume
             resume={localResumeData}
-            profilePicture={user?.imageUrl}
             onChangeResume={handleResumeChange}
           />
         ) : (

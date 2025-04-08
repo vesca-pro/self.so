@@ -52,19 +52,26 @@ export function Header({
     return url.startsWith('http') ? url : `https://${url}`;
   };
 
-  const website = useMemo(() => {
-    return prefixUrl(header.contacts.website);
-  }, [header.contacts.website]);
-
-  const github = useMemo(() => {
-    return prefixUrl(header.contacts.github);
-  }, [header.contacts.github]);
-  const twitter = useMemo(() => {
-    return prefixUrl(header.contacts.twitter);
-  }, [header.contacts.twitter]);
-  const linkedin = useMemo(() => {
-    return prefixUrl(header.contacts.linkedin);
-  }, [header.contacts.linkedin]);
+  const socialLinks = useMemo(
+    () => ({
+      website: prefixUrl(header.contacts.website),
+      github: header.contacts.github
+        ? `https://github.com/${header.contacts.github}`
+        : undefined,
+      twitter: header.contacts.twitter
+        ? `https://x.com/${header.contacts.twitter}`
+        : undefined,
+      linkedin: header.contacts.linkedin
+        ? `https://linkedin.com/in/${header.contacts.linkedin}`
+        : undefined,
+    }),
+    [
+      header.contacts.website,
+      header.contacts.github,
+      header.contacts.twitter,
+      header.contacts.linkedin,
+    ]
+  );
 
   return (
     <header className="flex items-start md:items-center justify-between gap-4 ">
@@ -83,7 +90,7 @@ export function Header({
           <a
             className="inline-flex gap-x-1.5 align-baseline leading-none hover:underline text-[#9CA0A8]"
             href={`https://www.google.com/maps/search/${encodeURIComponent(
-              header.location,
+              header.location || ''
             )}`}
             target="_blank"
             rel="noopener noreferrer"
@@ -98,9 +105,9 @@ export function Header({
           role="list"
           aria-label="Contact links"
         >
-          {website && (
+          {socialLinks.website && (
             <SocialButton
-              href={website}
+              href={socialLinks.website}
               icon={GlobeIcon}
               label="Personal website"
             />
@@ -119,15 +126,23 @@ export function Header({
               label="Phone"
             />
           )}
-          {github && (
-            <SocialButton href={`${github}`} icon={Github} label="GitHub" />
-          )}
-          {twitter && (
-            <SocialButton href={`${twitter}`} icon={Twitter} label="Twitter" />
-          )}
-          {linkedin && (
+          {socialLinks.github && (
             <SocialButton
-              href={`${linkedin}`}
+              href={socialLinks.github}
+              icon={Github}
+              label="GitHub"
+            />
+          )}
+          {socialLinks.twitter && (
+            <SocialButton
+              href={socialLinks.twitter}
+              icon={Twitter}
+              label="Twitter"
+            />
+          )}
+          {socialLinks.linkedin && (
+            <SocialButton
+              href={socialLinks.linkedin}
               icon={Linkedin}
               label="LinkedIn"
             />
@@ -138,10 +153,13 @@ export function Header({
           className="hidden gap-x-2 font-mono text-sm text-design-resume print:flex print:text-[12px]"
           aria-label="Print contact information"
         >
-          {website && (
+          {socialLinks.website && (
             <>
-              <a className="underline hover:text-foreground/70" href={website}>
-                {new URL(website).hostname}
+              <a
+                className="underline hover:text-foreground/70"
+                href={socialLinks.website}
+              >
+                {new URL(socialLinks.website).hostname}
               </a>
               <span aria-hidden="true">/</span>
             </>
