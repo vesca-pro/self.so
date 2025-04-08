@@ -11,7 +11,6 @@ import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import LoadingFallback from '../../../components/LoadingFallback';
 import { MAX_USERNAME_LENGTH } from '@/lib/config';
-import { deleteS3File } from '@/lib/server/deleteS3File';
 import { currentUser } from '@clerk/nextjs/server';
 
 async function LLMProcessing({ userId }: { userId: string }) {
@@ -21,10 +20,14 @@ async function LLMProcessing({ userId }: { userId: string }) {
 
   if (!resume?.fileContent || !resume.file) redirect('/upload');
 
+  let messageTip: string | undefined;
+
   if (!resume.resumeData) {
     let resumeObject = await generateResumeObject(resume?.fileContent);
 
     if (!resumeObject) {
+      messageTip =
+        "We couldn't extract data from your PDF. Please edit your resume manually.";
       resumeObject = {
         header: {
           name:
@@ -32,7 +35,7 @@ async function LLMProcessing({ userId }: { userId: string }) {
           shortAbout: 'This is a short description of your profile',
           location: '',
           contacts: {},
-          skills: [],
+          skills: ['Add your skills here'],
         },
         summary: 'You should add a summary here',
         workExperience: [],
@@ -74,7 +77,7 @@ async function LLMProcessing({ userId }: { userId: string }) {
     if (!creation) redirect('/upload?error=usernameCreationFailed');
   }
 
-  return <PreviewClient />;
+  return <PreviewClient messageTip={messageTip} />;
 }
 
 export default async function Preview() {
