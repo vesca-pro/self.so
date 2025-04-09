@@ -5,6 +5,12 @@ import dedent from 'dedent';
 
 const togetherai = createTogetherAI({
   apiKey: process.env.TOGETHER_API_KEY ?? '',
+  baseURL: 'https://together.helicone.ai/v1',
+  headers: {
+    'Helicone-Auth': `Bearer ${process.env.HELICONE_API_KEY}`,
+    'Helicone-Property-AppName': 'self.so',
+    'Helicone-Property-BYOK': 'false',
+  },
 });
 
 export const generateResumeObject = async (resumeText: string) => {
@@ -14,8 +20,8 @@ export const generateResumeObject = async (resumeText: string) => {
       model: togetherai('Qwen/Qwen2.5-72B-Instruct-Turbo'),
       maxRetries: 1,
       schema: ResumeDataSchema,
-      prompt: dedent`You are an expert resume writer. Generate a resume object from the following resume text. Be professional and concise.
-
+      prompt:
+        dedent(`You are an expert resume writer. Generate a resume object from the following resume text. Be professional and concise.
     ## Instructions:
 
     - If the resume text does not include an 'about' section or specfic skills mentioned, please generate appropriate content for these sections based on the context of the resume and based on the job role.
@@ -26,7 +32,7 @@ export const generateResumeObject = async (resumeText: string) => {
     ## Resume text:
 
     ${resumeText}
-    `,
+    `),
     });
 
     const endTime = Date.now();
