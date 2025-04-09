@@ -9,7 +9,6 @@ const togetherai = createTogetherAI({
   headers: {
     'Helicone-Auth': `Bearer ${process.env.HELICONE_API_KEY}`,
     'Helicone-Property-AppName': 'self.so',
-    'Helicone-Property-BYOK': 'false',
   },
 });
 

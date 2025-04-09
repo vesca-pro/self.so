@@ -36,7 +36,7 @@ export const EditResume = ({
 
   return (
     <section
-      className="mx-auto w-full max-w-2xl space-y-8 bg-white print:space-y-4 my-8 px-4"
+      className="mx-auto w-full max-w-2xl space-y-8 bg-white my-8"
       aria-label="Resume Content editing"
     >
       <div className="flex flex-col gap-2">

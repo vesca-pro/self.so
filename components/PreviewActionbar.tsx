@@ -53,7 +53,7 @@ export default function PreviewActionbar({
             <p className="text-sm text-design-black">{prefix}</p>
           </div>
 
-          <div className="overflow-hidden rounded bg-white border-[0.5px] border-neutral-300 flex flex-row w-80">
+          <div className="overflow-hidden rounded bg-white border-[0.5px] border-neutral-300 flex flex-row md:w-80 w-full">
             <span className="flex-1 p-3 text-sm text-[#5d5d5d] border-none outline-none focus:ring-0 bg-transparent w-fit truncate">
               {initialUsername}
             </span>
