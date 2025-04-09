@@ -52,26 +52,45 @@ export function Header({
     return url.startsWith('http') ? url : `https://${url}`;
   };
 
-  const socialLinks = useMemo(
-    () => ({
+  const socialLinks = useMemo(() => {
+    const formatSocialUrl = (
+      url: string | undefined,
+      platform: 'github' | 'twitter' | 'linkedin'
+    ) => {
+      if (!url) return undefined;
+
+      const cleanUrl = url.trim();
+      if (cleanUrl.startsWith('http')) return cleanUrl;
+
+      // Handle twitter.com and x.com variations
+      if (
+        platform === 'twitter' &&
+        (cleanUrl.startsWith('twitter.com') || cleanUrl.startsWith('x.com'))
+      ) {
+        return `https://${cleanUrl}`;
+      }
+
+      const platformUrls = {
+        github: 'github.com',
+        twitter: 'x.com',
+        linkedin: 'linkedin.com/in',
+      } as const;
+
+      return `https://${platformUrls[platform]}/${cleanUrl}`;
+    };
+
+    return {
       website: prefixUrl(header.contacts.website),
-      github: header.contacts.github
-        ? `https://github.com/${header.contacts.github}`
-        : undefined,
-      twitter: header.contacts.twitter
-        ? `https://x.com/${header.contacts.twitter}`
-        : undefined,
-      linkedin: header.contacts.linkedin
-        ? `https://linkedin.com/in/${header.contacts.linkedin}`
-        : undefined,
-    }),
-    [
-      header.contacts.website,
-      header.contacts.github,
-      header.contacts.twitter,
-      header.contacts.linkedin,
-    ]
-  );
+      github: formatSocialUrl(header.contacts.github, 'github'),
+      twitter: formatSocialUrl(header.contacts.twitter, 'twitter'),
+      linkedin: formatSocialUrl(header.contacts.linkedin, 'linkedin'),
+    };
+  }, [
+    header.contacts.website,
+    header.contacts.github,
+    header.contacts.twitter,
+    header.contacts.linkedin,
+  ]);
 
   return (
     <header className="flex items-start md:items-center justify-between gap-4 ">
