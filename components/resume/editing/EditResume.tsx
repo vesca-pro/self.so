@@ -120,7 +120,7 @@ export const EditResume = ({
                 {
                   id: 'website',
                   label: 'Website',
-                  prefix: 'www.',
+                  prefix: '',
                   placeholder: 'your-website.com',
                   key: 'website',
                 },
@@ -141,7 +141,7 @@ export const EditResume = ({
                 {
                   id: 'twitter',
                   label: 'Twitter/X',
-                  prefix: 'twitter.com/',
+                  prefix: 'x.com/',
                   placeholder: 'username',
                   key: 'twitter',
                 },
@@ -151,7 +151,11 @@ export const EditResume = ({
                     {label}
                   </Label>
                   <div className="flex items-center">
-                    <span className="text-sm text-gray-500 mr-2">{prefix}</span>
+                    {prefix && (
+                      <span className="text-sm text-gray-500 mr-2">
+                        {prefix}
+                      </span>
+                    )}
                     <Input
                       type="text"
                       id={id}
