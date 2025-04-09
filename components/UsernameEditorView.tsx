@@ -107,6 +107,15 @@ function UsernameEditorContent({
               maxLength={MAX_USERNAME_LENGTH}
               placeholder="Enter new username"
               className="w-full p-3 text-sm text-[#5d5d5d] border-none outline-none focus:ring-0 bg-transparent"
+              onKeyDown={(e) => {
+                if (
+                  e.key === 'Enter' &&
+                  isValid &&
+                  !checkUsernameMutation.isPending
+                ) {
+                  handleSave();
+                }
+              }}
             />
             <div className="pr-3">
               {isInitialUsername ? (

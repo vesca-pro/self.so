@@ -53,7 +53,7 @@ export default function PreviewActionbar({
             <p className="text-sm text-design-black">{prefix}</p>
           </div>
 
-          <div className="overflow-hidden rounded bg-white border-[0.5px] border-neutral-300 flex flex-row w-80">
+          <div className="overflow-hidden rounded bg-white border-[0.5px] border-neutral-300 flex flex-row md:w-80 w-full">
             <span className="flex-1 p-3 text-sm text-[#5d5d5d] border-none outline-none focus:ring-0 bg-transparent w-fit truncate">
               {initialUsername}
             </span>
@@ -72,20 +72,38 @@ export default function PreviewActionbar({
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-1">
-              <div
-                className="size-1.5 rounded-full"
-                style={{
-                  backgroundColor: status === 'draft' ? '#B98900' : '#009505',
-                }}
-              />
-              <p
-                className={cn(
-                  'text-[10px] font-bold uppercase',
-                  status === 'draft' ? 'text-[#B98900]' : 'text-[#009505]'
-                )}
-              >
-                {status}
-              </p>
+              {status === 'live' ? (
+                <button
+                  onClick={() =>
+                    window.open(getSelfSoUrl(initialUsername), '_blank')
+                  }
+                  className="flex items-center gap-1 hover:opacity-80 transition-opacity"
+                >
+                  <div
+                    className="size-1.5 rounded-full relative"
+                    style={{
+                      backgroundColor: '#009505',
+                    }}
+                  >
+                    <div className="absolute inset-0 rounded-full bg-[#009505] animate-ping opacity-50" />
+                  </div>
+                  <p className="text-[10px] font-bold uppercase text-[#009505]">
+                    {status}
+                  </p>
+                </button>
+              ) : (
+                <>
+                  <div
+                    className="size-1.5 rounded-full"
+                    style={{
+                      backgroundColor: '#B98900',
+                    }}
+                  />
+                  <p className="text-[10px] font-bold uppercase text-[#B98900]">
+                    {status}
+                  </p>
+                </>
+              )}
             </div>
 
             <Button

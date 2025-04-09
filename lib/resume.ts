@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const HeaderContactsSchema = z.object({
-  website: z.string().describe('Personal website or portfolio URL'),
+  website: z.string().describe('Personal website or portfolio URL').optional(),
   email: z.string().describe('Email address').optional(),
   phone: z.string().describe('Phone number').optional(),
   twitter: z.string().describe('Twitter/X username').optional(),
@@ -14,11 +14,11 @@ const HeaderSection = z.object({
   shortAbout: z.string().describe('Short description of your profile'),
   location: z
     .string()
-    .describe("Location with format 'City, Country, Timezone'"),
+    .describe("Location with format 'City, Country'")
+    .optional(),
   contacts: HeaderContactsSchema,
   skills: z
     .array(z.string())
-    .max(15)
     .describe('Skills used within the different jobs the user has had.'),
 });
 

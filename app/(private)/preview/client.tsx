@@ -3,19 +3,97 @@ import LoadingFallback from '@/components/LoadingFallback';
 import { PopupSiteLive } from '@/components/PopupSiteLive';
 import PreviewActionbar from '@/components/PreviewActionbar';
 import { FullResume } from '@/components/resume/FullResume';
+import { EditResume } from '@/components/resume/editing/EditResume';
 import { useUserActions } from '@/hooks/useUserActions';
+import { ResumeData } from '@/lib/server/redisActions';
 import { getSelfSoUrl } from '@/lib/utils';
 import { useUser } from '@clerk/nextjs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { Eye, Edit, Save, X } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 import { toast } from 'sonner';
 
-export default function PreviewClient() {
+export default function PreviewClient({ messageTip }: { messageTip?: string }) {
   const { user } = useUser();
-  const { resumeQuery, toggleStatusMutation, usernameQuery } = useUserActions();
+  const {
+    resumeQuery,
+    toggleStatusMutation,
+    usernameQuery,
+    saveResumeDataMutation,
+  } = useUserActions();
   const [showModalSiteLive, setModalSiteLive] = useState(false);
+  const [localResumeData, setLocalResumeData] = useState<ResumeData>();
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
 
-  if (resumeQuery.isLoading || usernameQuery.isLoading || !usernameQuery.data) {
+  useEffect(() => {
+    if (resumeQuery.data?.resume?.resumeData) {
+      setLocalResumeData(resumeQuery.data?.resume?.resumeData);
+    }
+  }, [resumeQuery.data?.resume?.resumeData]);
+
+  console.log('resumeQuery', resumeQuery.data);
+
+  const handleSaveChanges = async () => {
+    if (!localResumeData) {
+      toast.error('No resume data to save');
+      return;
+    }
+
+    try {
+      await saveResumeDataMutation.mutateAsync(localResumeData);
+      toast.success('Changes saved successfully');
+      setHasUnsavedChanges(false);
+      setIsEditMode(false);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(`Failed to save changes: ${error.message}`);
+      } else {
+        toast.error('Failed to save changes');
+      }
+    }
+  };
+
+  const handleDiscardChanges = () => {
+    // Show confirmation dialog instead of immediately discarding
+    setShowDiscardConfirmation(true);
+  };
+
+  const confirmDiscardChanges = () => {
+    // Reset to original data
+    if (resumeQuery.data?.resume?.resumeData) {
+      setLocalResumeData(resumeQuery.data?.resume?.resumeData);
+    }
+    setHasUnsavedChanges(false);
+    setIsEditMode(false);
+    setShowDiscardConfirmation(false);
+    toast.info('Changes discarded');
+  };
+
+  const handleResumeChange = (newResume: ResumeData) => {
+    setLocalResumeData(newResume);
+    setHasUnsavedChanges(true);
+  };
+
+  if (
+    resumeQuery.isLoading ||
+    usernameQuery.isLoading ||
+    !usernameQuery.data ||
+    !localResumeData
+  ) {
     return <LoadingFallback message="Loading..." />;
   }
 
@@ -71,6 +149,25 @@ export default function PreviewClient() {
 
   return (
     <div className="w-full min-h-screen bg-background flex flex-col gap-4 pb-8">
+      {messageTip && (
+        <div className="max-w-3xl mx-auto w-full md:px-0 px-4">
+          <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-md p-4 flex items-start">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 mr-2 mt-0.5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <p>{messageTip}</p>
+          </div>
+        </div>
+      )}
       <div className="max-w-3xl mx-auto w-full md:px-0 px-4">
         <PreviewActionbar
           initialUsername={usernameQuery.data.username}
@@ -94,12 +191,86 @@ export default function PreviewClient() {
         />
       </div>
 
-      <div className="max-w-3xl mx-auto w-full md:rounded-lg border-[0.5px] border-neutral-300 flex items-center justify-between px-4">
-        <FullResume
-          resume={resumeQuery.data?.resume?.resumeData}
-          profilePicture={user?.imageUrl}
-        />
+      <div className="max-w-3xl mx-auto w-full flex flex-col md:flex-row justify-between items-center px-4 md:px-0 gap-4">
+        <ToggleGroup
+          type="single"
+          value={isEditMode ? 'edit' : 'preview'}
+          onValueChange={(value) => setIsEditMode(value === 'edit')}
+          aria-label="View mode"
+        >
+          <ToggleGroupItem value="preview" aria-label="Preview mode">
+            <Eye className="h-4 w-4 mr-1" />
+            <span>Preview</span>
+          </ToggleGroupItem>
+          <ToggleGroupItem value="edit" aria-label="Edit mode">
+            <Edit className="h-4 w-4 mr-1" />
+            <span>Edit</span>
+          </ToggleGroupItem>
+        </ToggleGroup>
+
+        {isEditMode && (
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={handleDiscardChanges}
+              className="flex items-center gap-1"
+              disabled={!hasUnsavedChanges || saveResumeDataMutation.isPending}
+            >
+              <X className="h-4 w-4" />
+              <span>Discard</span>
+            </Button>
+            <Button
+              onClick={handleSaveChanges}
+              className="flex items-center gap-1"
+              disabled={!hasUnsavedChanges || saveResumeDataMutation.isPending}
+            >
+              {saveResumeDataMutation.isPending ? (
+                <span className="animate-spin">⌛</span>
+              ) : (
+                <Save className="h-4 w-4" />
+              )}
+              <span>
+                {saveResumeDataMutation.isPending ? 'Saving...' : 'Save'}
+              </span>
+            </Button>
+          </div>
+        )}
       </div>
+
+      <div className="max-w-3xl mx-auto w-full md:rounded-lg border-[0.5px] border-neutral-300 flex items-center justify-between px-4">
+        {isEditMode ? (
+          <EditResume
+            resume={localResumeData}
+            onChangeResume={handleResumeChange}
+          />
+        ) : (
+          <FullResume
+            resume={localResumeData}
+            profilePicture={user?.imageUrl}
+          />
+        )}
+      </div>
+
+      <AlertDialog
+        open={showDiscardConfirmation}
+        onOpenChange={setShowDiscardConfirmation}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Discard Changes?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to discard your changes? This action cannot
+              be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDiscardChanges}>
+              Discard
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <PopupSiteLive
         isOpen={showModalSiteLive}

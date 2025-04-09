@@ -1,20 +1,8 @@
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Section } from '@/components/ui/section';
 import { ResumeDataSchemaType } from '@/lib/resume';
-
-/**
- * Displays the education period in a consistent format
- */
-function EducationPeriod({ start, end }: { start: string; end: string }) {
-  return (
-    <div
-      className="text-sm tabular-nums text-gray-500"
-      aria-label={`Period: ${start} to ${end}`}
-    >
-      {start} - {end}
-    </div>
-  );
-}
+import { getShortMonth, getYear } from './resumeUtils';
+import { useMemo } from 'react';
 
 /**
  * Individual education card component
@@ -26,6 +14,11 @@ function EducationItem({
 }) {
   const { school, start, end, degree } = education;
 
+  // Skip rendering if required fields are missing
+  if (!school || !degree || !start) {
+    return null;
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -36,7 +29,14 @@ function EducationItem({
           >
             {school}
           </h3>
-          <EducationPeriod start={start} end={end} />
+          <div
+            className="text-sm tabular-nums text-gray-500"
+            aria-label={`Period: ${getYear(start)} to ${
+              end ? ` ${getYear(end)}` : 'Present'
+            }`}
+          >
+            {getYear(start)} - {end ? `${getYear(end)}` : 'Present'}
+          </div>
         </div>
       </CardHeader>
       <CardContent
@@ -60,6 +60,16 @@ export function Education({
 }: {
   educations: ResumeDataSchemaType['education'];
 }) {
+  // Filter out invalid education entries
+  const validEducations = useMemo(
+    () => educations.filter((edu) => edu.school && edu.degree && edu.start),
+    [educations]
+  );
+
+  if (validEducations.length === 0) {
+    return null;
+  }
+
   return (
     <Section>
       <h2 className="text-xl font-bold" id="education-section">
@@ -70,7 +80,7 @@ export function Education({
         role="feed"
         aria-labelledby="education-section"
       >
-        {educations.map((item, idx) => (
+        {validEducations.map((item, idx) => (
           <article key={idx} role="article">
             <EducationItem education={item} />
           </article>

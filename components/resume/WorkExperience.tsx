@@ -1,16 +1,35 @@
 import { Section } from '@/components/ui/section';
 import { ResumeDataSchemaType } from '@/lib/resume';
-
-const getYear = (date: string) => {
-  const dateObject = new Date(date);
-  return dateObject.getFullYear();
-};
+import { getShortMonth, getYear } from './resumeUtils';
+import { useMemo } from 'react';
 
 export function WorkExperience({
   work,
 }: {
   work: ResumeDataSchemaType['workExperience'];
 }) {
+  // Filter out invalid work experiences and pre-format dates
+  const validWork = useMemo(() => {
+    return work
+      .filter(
+        (item) =>
+          item.company && item.location && item.title && item.description
+      )
+      .map((item) => ({
+        ...item,
+        formattedDate: `${getShortMonth(item.start)} ${getYear(item.start)} - ${
+          !!item.end
+            ? `${getShortMonth(item.end)} ${getYear(item.end)}`
+            : 'Present'
+        }`,
+        companyLower: item.company.toLowerCase(),
+      }));
+  }, [work]);
+
+  if (validWork.length === 0) {
+    return null;
+  }
+
   return (
     <Section>
       <h2 className="text-lg font-bold" id="work-experience">
@@ -21,7 +40,7 @@ export function WorkExperience({
         role="feed"
         aria-labelledby="work-experience"
       >
-        {work.map((item) => {
+        {validWork.map((item) => {
           return (
             <div
               key={item.company + item.location + item.title}
@@ -39,13 +58,12 @@ export function WorkExperience({
                   </div>
                 </div>
                 <p className="text-sm text-right text-[#54575e]">
-                  {getYear(item.start)} -{' '}
-                  {!!item.end ? getYear(item.end) : 'Present'}
+                  {item.formattedDate}
                 </p>
               </div>
               <div className="flex flex-col justify-start items-start relative gap-1.5">
                 <p className="self-stretch text-sm font-medium text-left text-[#54575e] font-mono capitalize flex flex-wrap gap-1">
-                  <span>{item.company.toLowerCase()}</span>
+                  <span>{item.companyLower}</span>
                   {item.company && item.contract && <span>·</span>}
                   <span>{item.contract}</span>
                 </p>

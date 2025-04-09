@@ -52,19 +52,45 @@ export function Header({
     return url.startsWith('http') ? url : `https://${url}`;
   };
 
-  const website = useMemo(() => {
-    return prefixUrl(header.contacts.website);
-  }, [header.contacts.website]);
+  const socialLinks = useMemo(() => {
+    const formatSocialUrl = (
+      url: string | undefined,
+      platform: 'github' | 'twitter' | 'linkedin'
+    ) => {
+      if (!url) return undefined;
 
-  const github = useMemo(() => {
-    return prefixUrl(header.contacts.github);
-  }, [header.contacts.github]);
-  const twitter = useMemo(() => {
-    return prefixUrl(header.contacts.twitter);
-  }, [header.contacts.twitter]);
-  const linkedin = useMemo(() => {
-    return prefixUrl(header.contacts.linkedin);
-  }, [header.contacts.linkedin]);
+      const cleanUrl = url.trim();
+      if (cleanUrl.startsWith('http')) return cleanUrl;
+
+      // Handle twitter.com and x.com variations
+      if (
+        platform === 'twitter' &&
+        (cleanUrl.startsWith('twitter.com') || cleanUrl.startsWith('x.com'))
+      ) {
+        return `https://${cleanUrl}`;
+      }
+
+      const platformUrls = {
+        github: 'github.com',
+        twitter: 'x.com',
+        linkedin: 'linkedin.com/in',
+      } as const;
+
+      return `https://${platformUrls[platform]}/${cleanUrl}`;
+    };
+
+    return {
+      website: prefixUrl(header.contacts.website),
+      github: formatSocialUrl(header.contacts.github, 'github'),
+      twitter: formatSocialUrl(header.contacts.twitter, 'twitter'),
+      linkedin: formatSocialUrl(header.contacts.linkedin, 'linkedin'),
+    };
+  }, [
+    header.contacts.website,
+    header.contacts.github,
+    header.contacts.twitter,
+    header.contacts.linkedin,
+  ]);
 
   return (
     <header className="flex items-start md:items-center justify-between gap-4 ">
@@ -83,7 +109,7 @@ export function Header({
           <a
             className="inline-flex gap-x-1.5 align-baseline leading-none hover:underline text-[#9CA0A8]"
             href={`https://www.google.com/maps/search/${encodeURIComponent(
-              header.location,
+              header.location || ''
             )}`}
             target="_blank"
             rel="noopener noreferrer"
@@ -98,9 +124,9 @@ export function Header({
           role="list"
           aria-label="Contact links"
         >
-          {website && (
+          {socialLinks.website && (
             <SocialButton
-              href={website}
+              href={socialLinks.website}
               icon={GlobeIcon}
               label="Personal website"
             />
@@ -119,15 +145,23 @@ export function Header({
               label="Phone"
             />
           )}
-          {github && (
-            <SocialButton href={`${github}`} icon={Github} label="GitHub" />
-          )}
-          {twitter && (
-            <SocialButton href={`${twitter}`} icon={Twitter} label="Twitter" />
-          )}
-          {linkedin && (
+          {socialLinks.github && (
             <SocialButton
-              href={`${linkedin}`}
+              href={socialLinks.github}
+              icon={Github}
+              label="GitHub"
+            />
+          )}
+          {socialLinks.twitter && (
+            <SocialButton
+              href={socialLinks.twitter}
+              icon={Twitter}
+              label="Twitter"
+            />
+          )}
+          {socialLinks.linkedin && (
+            <SocialButton
+              href={socialLinks.linkedin}
               icon={Linkedin}
               label="LinkedIn"
             />
@@ -138,10 +172,13 @@ export function Header({
           className="hidden gap-x-2 font-mono text-sm text-design-resume print:flex print:text-[12px]"
           aria-label="Print contact information"
         >
-          {website && (
+          {socialLinks.website && (
             <>
-              <a className="underline hover:text-foreground/70" href={website}>
-                {new URL(website).hostname}
+              <a
+                className="underline hover:text-foreground/70"
+                href={socialLinks.website}
+              >
+                {new URL(socialLinks.website).hostname}
               </a>
               <span aria-hidden="true">/</span>
             </>
