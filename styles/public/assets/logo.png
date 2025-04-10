@@ -1,0 +1,40 @@
+// src/components/Header.js
+
+import React from 'react';
+import logo from '../assets/logo.png'; // استدعاء اللوجو
+
+const Header = () => {
+  return (
+    <header style={styles.header}>
+      <img src={logo} alt="Hesham's Creative Space" style={styles.logo} />
+      <nav>
+        <ul style={styles.nav}>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+  );
+};
+
+const styles = {
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '20px',
+    backgroundColor: '#000000',
+  },
+  logo: {
+    width: '100px',
+    height: 'auto',
+  },
+  nav: {
+    listStyle: 'none',
+    display: 'flex',
+    gap: '20px',
+  },
+};
+
+export default Header;
